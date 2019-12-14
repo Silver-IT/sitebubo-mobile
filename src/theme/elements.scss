@@ -465,4 +465,10 @@ ion-skeleton-text {
   margin: 0 !important;
 }
 
+ion-slides {
+  &.process .swiper-wrapper{
+    // justify-content: center !important;
+  }
+}
+
 

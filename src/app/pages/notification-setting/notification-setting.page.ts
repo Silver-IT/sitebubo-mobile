@@ -90,16 +90,16 @@ export class NotificationSettingPage implements OnInit {
     const value = $event.detail.checked;
     item.notification[key] = value;
     console.log(item);
-    // this.changeObjectToArray(item.notification).then(res => {
-    //   this.notifcationAPI.saveDomainPushPermission(this.userID, this.token, item.id, JSON.stringify(res)).subscribe((result) => {
-    //     if (result['RESPONSECODE'] === 1) {
-    //     } else {
-    //       this.ionService.presentToast(result['RESPONSE']);
-    //     }
-    //   }, err => {
-    //     this.ionService.presentToast('Server API Problem');
-    //   });
-    // });
+    this.changeObjectToArray(item.notification).then(res => {
+      this.notifcationAPI.saveDomainPushPermission(this.userID, this.token, item.id, JSON.stringify(res)).subscribe((result) => {
+        if (result['RESPONSECODE'] === 1) {
+        } else {
+          this.ionService.presentToast(result['RESPONSE']);
+        }
+      }, err => {
+        this.ionService.presentToast('Server API Problem');
+      });
+    });
   }
 
   switchpage(event) {

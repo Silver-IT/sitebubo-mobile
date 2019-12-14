@@ -26,13 +26,13 @@ ion-content {
     align-items: center;
     align-content: center;
     img {
-      width: 80%;
+      height: 90%;
     }
   }
   div.process {
     height: 40%;
     width: 100%;
-    margin-top: 20px;
+    padding-top: 30px;
     // display: flex;
     // justify-content: center;
     // align-items: center;
@@ -51,4 +51,30 @@ ion-content {
     }
   }
 
+  ion-slides.process {
+    height: 40%;
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    // display: block;
+    color: white;
+    img {
+      display: block;
+      width: 70px;
+      margin: auto;
+    }
+    ion-slide {
+      font-size: 19px;
+      font-weight: bold;
+      display: block;
+      text-align: center;
+    }
+    .highlight {
+      font-size: 15px;
+      color: rgb(224, 224, 224);
+    }
+  }
 }
