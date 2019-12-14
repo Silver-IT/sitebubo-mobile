@@ -94,10 +94,9 @@ export class DashboardPage implements OnInit {
         result.data['seo-score']['seoscore'] = parseInt(result.data['seo-score']['seoscore']);
         this.domainData = result.data;
         this.orders = result.data['monitor-orders'];
-        this.cdr.detectChanges();
-        console.log(this.orders);
-        // this.orderCards(result.data['monitor-orders']);
+        this.cdr.detectChanges();  
         this.fullReport = result.data['full-report']['fullreport'];
+        this.tempService.saveBrokenLinksCount(result.data['broken-links']['count']);
       } else {
         this.ionService.presentToast(result['RESPONSE']);
       }

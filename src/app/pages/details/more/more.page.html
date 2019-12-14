@@ -1,7 +1,10 @@
 <ion-header class='underHeader'>
   <ion-segment mode='md' [value]='pageType'>
     <ion-segment-button mode='md' value = '1' (click) = 'changePageType(1)' chkecked>
-      <ion-label>Broken Links</ion-label>
+      <ion-label>
+        Broken Links
+        <div class="submenu-badge" *ngIf='brokenlinksCount'>{{ brokenlinksCount }}</div>
+      </ion-label>
     </ion-segment-button>
     <ion-segment-button mode='md' value = '2' (click) = 'changePageType(2)'>
       <ion-label>Domain Expire</ion-label>

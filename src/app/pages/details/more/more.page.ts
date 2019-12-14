@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class MorePage implements OnInit {
   pageType: any;
+  brokenlinksCount: number;
   constructor(
     private generalSerive: GeneralService,
     private tempService: TempService,
@@ -19,6 +20,7 @@ export class MorePage implements OnInit {
 
   ngOnInit() {
     if (this.tempService.dashboardParams) {
+      this.brokenlinksCount = this.tempService.brokenLinksCount;
       this.activateRoute.queryParams.subscribe((params) => {
         if (params) {
           if (params.pageName === 'expire') {
