@@ -1,0 +1,7 @@
+{
+  "name": "sitewiser_mobile",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,20 @@
+<div class="c-content" *ngIf='details'>
+  <ion-label class="c-header">Welcome Friend!</ion-label>
+  <ion-label class="c-welcome" style="margin:15px">
+    We hope this is the begining of a long and fruitful friendship where we hope to provide you
+    enough peace of mind so you stick around
+    long after the trial ends.
+  </ion-label>
+  <ion-label class="c-bigfnt">£{{details.bigprc}}.<span class="c-smallfnt">{{details.smallprc}}</span></ion-label>
+  <ion-label class="c-norfnt">will be taken on <b>{{details.next_payment_date}}</b></ion-label>
+  <ion-icon class='c-paypal'></ion-icon>
+  <ion-label class="c-norfnt" style="margin:15px">{{details.name}} Plan</ion-label>
+  <ion-button *ngIf='!newUser' mode='md' expand='block' class="c-greenButton red" (click)="upgrade()">
+    {{ details.id !== 4 ? "Upgrade" : "Change" }}
+  </ion-button>
+  <ion-button *ngIf='newUser' mode='md' expand='block' class="c-greenButton red" (click)="addSite()">Get started</ion-button>
+  <div class="c-btmdiv">
+    <ion-icon class='c-cancel-membership'></ion-icon>
+    <ion-label (click)='cancelMembership()'>Cancel your membership</ion-label>
+  </div>
+</div>

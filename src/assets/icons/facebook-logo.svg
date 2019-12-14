@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="56" viewBox="0 0 30 56">
+  <defs>
+    <pattern id="pattern" width="1" height="1" viewBox="0 -1.749 30 56">
+      <image preserveAspectRatio="none" width="30" height="56" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAA4CAYAAADqxUiJAAAABHNCSVQICAgIfAhkiAAAAdtJREFUWEft2buKFFEQxvHfGGlgYLKJiSCClxUvGJn4ABp4WSN9ABXBUDTRTA0EI30AFcRr4gMsLAqLwoJ4WxDNRBDBwMALOHJkBpplZ+uc7mHbxZ5sqO/Uv6u6Tp3q7l6/39fwtwUHsBvbMIE16C3h93mvAXgvzg2gxddeF3wZZ4tplQV1wI+xvwk0rS0FP8ShptBS8AncGAe0BLwOH7F6ucEXcWFc0JKIP2DDcoN3Ym6c0NyIT+J6DfAXfMZ3rBqsT90s1clMzna6hjMF4F84hTv4NmpdDvgWjhWAz+NSpM8BP8DhyFHFvgMvIn0OuLRbpdPq7TjApRFvxZs2wOlMfr2iwXdxNIqgYt+I95E+p7juYSpyVLFvwrtIn8A3sWcJ4XqsjRxV7Kmv/wj0VxO48bRXcFFD6Xxb4Nm2wE87cI06qbXkSVup/v/Az9pK9VwCn8Yu/F5QJun/z8HTYMloex+fRgz/aehLM9ntnEMi9fLjBbWbnjq+RvoccIrgSOSoYt+M+UifAy4dfVb+BNJFHNVNd48XzVC3nRZLS7eduu20MANdA+kayN8M/NMt8xEORpu3Yp/Eq0ifE/E09kWOKvbteBnpc8DpzfyV4HPOkDM7+HQw8h3mUPgHjW8YZnpEp8MAAAAASUVORK5CYII="/>
+    </pattern>
+  </defs>
+  <rect id="facebook-logo_1_" data-name="facebook-logo (1)" width="30" height="56" fill="url(#pattern)"/>
+</svg>

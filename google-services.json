@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "524005109228",
+    "firebase_url": "https://sitewiser.firebaseio.com",
+    "project_id": "sitewiser",
+    "storage_bucket": "sitewiser.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524005109228:android:d00637570d34855c",
+        "android_client_info": {
+          "package_name": "com.sitewiser.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524005109228-1sqgc7mdgsmott9pe2sbrk3m6it4h3hd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYxFfm_x1Jxor1NEIewE5wZMaTh2iUfRk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "524005109228-1sqgc7mdgsmott9pe2sbrk3m6it4h3hd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "524005109228-a7ot7o0faq73sr32u1fsco0i4k5bcdga.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sitewiser.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

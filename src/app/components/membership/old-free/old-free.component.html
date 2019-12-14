@@ -1,0 +1,14 @@
+<div id="freeuser" class='c-content' *ngIf='details'>
+  <ion-label class="c-header">Welcome, Friend! </ion-label>
+  <ion-label class="c-welcome">
+    We hope this is the begining of a <br />long and fruitful friendship where<br /> we hope to provide you
+    enough<br /> peace of mind.
+  </ion-label>
+  <ion-label class="c-freecls">FREE</ion-label>
+  <ion-label class="c-plancls">{{ details.name }} plan</ion-label>
+  <ion-button mode='md' expand='block' size='large' class="c-greenButton red" (click)="changeMembership()">Upgrade</ion-button>
+  <div class="c-btmdiv"> 
+    <ion-icon class='c-cancel-membership'></ion-icon>
+    <ion-label (click)='deleteMembership()'>Delete Free Account</ion-label>
+  </div>
+</div>

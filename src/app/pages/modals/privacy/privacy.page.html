@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar mode='ios' class="modal-toolbar">
+    <ion-buttons>
+      <ion-title>{{ pageName }}</ion-title>
+      <ion-button class='close' mode='ios' (click) = 'dismiss()'>
+        <ion-icon class='close' ios="md-close" md="md-close" slot='icon-only'></ion-icon>
+      </ion-button>
+    </ion-buttons>  
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id='content' class="ion-padding">
+  {{ pageContent }}
+</ion-content>

@@ -1,0 +1,137 @@
+<ion-header class='small-header'>
+  <ion-toolbar class='toolbar' mode='md'>
+    <ion-buttons>
+      <ion-title>{{ planName }} Plan</ion-title>
+      <ion-button mode='md' class='back' (click) = 'goback()'>
+        <ion-icon class='back' name='arrow-back' mode='ios' slot='icon-only'></ion-icon>
+      </ion-button>
+      <ion-label class='price' *ngIf='planPrice == 0'>Free</ion-label>
+      <ion-label class='price' *ngIf='planPrice != 0'>£{{ planPrice }}</ion-label>
+    </ion-buttons>  
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list mode='ios' *ngIf="details">
+    <ion-item>
+      <ion-label class='title' slot='start'>NO.OF.SITES</ion-label>
+      <ion-icon class='help' (click)="showPopup($event, 'No. of Sites', details.site_desc);"></ion-icon>
+      <div class="end">
+        <ion-label class='answer' slot='end'>{{ details.noofdomain }}</ion-label>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class='title' slot='start'>MULTI_USER LOGIN</ion-label>
+      <ion-icon class='help'  (click)="showPopup($event, 'Multi-User Login', details.multiuser_desc);" ></ion-icon>
+      <ion-icon class='answer' name="close-circle" mode='ios' slot='end' *ngIf='details.is_multi_user_login != "1"'></ion-icon>
+      <div class="end">
+        <ion-icon class='answer' name="checkmark-circle" mode='ios' slot='end' *ngIf='details.is_multi_user_login == "1"'></ion-icon>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class='title' slot='start'>No. of users</ion-label>
+      <div class="end">
+        <ion-label class='answer' slot='end'>{{ details.noofuser }}</ion-label>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class='title' slot='start'>UPTIME MONITOR</ion-label>
+      <ion-icon class='help' (click)="showPopup($event, 'Uptime Monitor', details.uptime_desc);"></ion-icon>
+      <div class="end">
+        <ion-icon class='answer' name="close-circle" mode='ios' slot='end' *ngIf='details.is_uptime_monitor != "1"'></ion-icon>
+        <ion-icon class='answer' name="checkmark-circle" mode='ios' slot='end' *ngIf='details.is_uptime_monitor == "1"'></ion-icon>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class='title' slot='start'>Check Interval</ion-label>
+      <div class="end">
+        <ion-label class='answer' slot='end'>{{ details.uptimecheck_mins }} min</ion-label>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class='title' slot='start'>SECURITY MONITOR</ion-label>
+      <ion-icon class='help' (click)="showPopup($event, 'Security Monitor', details.security_desc);"></ion-icon>
+      <div class="end">
+        <ion-icon class='answer' name="close-circle" mode='ios' slot='end' *ngIf='details.is_security_monitor != "1"'></ion-icon>
+        <ion-icon class='answer' name="checkmark-circle" mode='ios' slot='end' *ngIf='details.is_security_monitor == "1"'></ion-icon>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class='title' slot='start'>Check Interval</ion-label>
+      <div class="end">
+        <ion-label class='answer' slot='end'>{{ details.domain_check_hour }} hour</ion-label>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class='title' slot='start'>SPEED MONITOR</ion-label>
+      <ion-icon class='help' (click)="showPopup($event, 'Speed Monitor', details.speed_desc);"></ion-icon>
+      <div class="end">
+        <ion-icon class='answer' name="close-circle" mode='ios' slot='end' *ngIf='details.is_speed_monitor != "1"'></ion-icon>
+        <ion-icon class='answer' name="checkmark-circle" mode='ios' slot='end' *ngIf='details.is_speed_monitor == "1"'></ion-icon>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class='title' slot='start'>ANALYTICS MONITOR</ion-label>
+      <ion-icon class='help' (click)="showPopup($event, 'Analytics Monitor', details.analytic_desc);"></ion-icon>
+      <div class="end">
+        <ion-icon class='answer' name="close-circle" mode='ios' slot='end' *ngIf='details.is_analytics_monitor != "1"'></ion-icon>
+        <ion-icon class='answer' name="checkmark-circle" mode='ios' slot='end' *ngIf='details.is_analytics_monitor == "1"'></ion-icon>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class='title' slot='start'>DOMAIN MONITOR</ion-label>
+      <ion-icon class='help' (click)="showPopup($event, 'Domain Monitor', details.domain_desc);"></ion-icon>
+      <div class="end">
+        <ion-icon class='answer' name="close-circle" mode='ios' slot='end' *ngIf='details.domain_check_scan != "1"'></ion-icon>
+        <ion-icon class='answer' name="checkmark-circle" mode='ios' slot='end' *ngIf='details.domain_check_scan == "1"'></ion-icon>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class='title' slot='start'>SEO HEALTH SCAN</ion-label>
+      <ion-icon class='help' (click)="showPopup($event, 'SEO Health Scan', details.seo_desc);"></ion-icon>
+      <div class="end">
+        <ion-icon class='answer' name="close-circle" mode='ios' slot='end' *ngIf='details.is_seo_scan != "1"'></ion-icon>
+        <ion-icon class='answer' name="checkmark-circle" mode='ios' slot='end' *ngIf='details.is_seo_scan == "1"'></ion-icon>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class='title' slot='start'>Report Frequency</ion-label>
+      <div class="end">
+        <ion-label class='answer' slot='end'>{{ details.report_frequency }}</ion-label>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class='title' slot='start'>No. of Manual Scans</ion-label>
+      <div class="end">
+        <ion-label class='answer' slot='end'>{{ details.noofmanual }}</ion-label>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class='title' slot='start'>BROKEN LINK SCAN</ion-label>
+      <ion-icon class='help'  (click)="showPopup($event, 'Broken Link Scan', details.broken_desc);"></ion-icon>
+      <div class="end">
+        <ion-icon class='answer' name="close-circle" mode='ios' slot='end' *ngIf='details.is_broken_link != "1"'></ion-icon>
+        <ion-icon class='answer' name="checkmark-circle" mode='ios' slot='end' *ngIf='details.is_broken_link == "1"'></ion-icon>
+      </div>
+    </ion-item>
+    <ion-button *ngIf='showbtn' mode='md' size='default' expand='block' class='continue' (click)="continuePlan();">
+        <ion-spinner name="lines-small" *ngIf='!planID'></ion-spinner>
+        <ion-label *ngIf='!freeTrial || planID == "1"'>Continue</ion-label>
+        <ion-label *ngIf='freeTrial && planID != "1"'>Get started with free trial</ion-label>
+    </ion-button>
+  </ion-list>
+</ion-content>
+
+

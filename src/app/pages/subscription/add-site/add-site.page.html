@@ -1,0 +1,77 @@
+<ion-header class='small-header'>
+    <ion-toolbar mode='md' class="toolbar">
+      <ion-buttons>
+        <ion-title>Site</ion-title>
+        <!-- <ion-button class='close' mode='ios'>
+        <ion-icon class='close' ios="md-close" md="md-close" slot='icon-only'></ion-icon>
+        </ion-button>
+        <ion-button  disabled='{{ !readyToSubmit }}' class='readySubmit' mode='ios' (click)='ValidateDomain()'>Create</ion-button> -->
+      </ion-buttons>  
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <div class='content'>
+      <ion-row class='logo'>
+        <ion-col size='3' class='image'>
+          <img src="assets/icons/magnifier.svg">
+        </ion-col>
+        <ion-col size='9' class='description'>
+          <ion-label>Hello! to get started, just add your site details below</ion-label>
+        </ion-col>
+      </ion-row>
+      <form [formGroup]="domain_addForm" (ngSubmit)='ValidateDomain()'>
+        <ion-list mode='ios' >
+          <ion-item mode='md' [disabled]='duringSubmit' [ngClass]="{'error-input': validate_domainUrl && (domain_addForm.get('domainUrl').hasError('pattern') && (domain_addForm.get('domainUrl').dirty || domain_addForm.get('domainUrl').touched)) }">
+            <ion-icon slot='start' class='domainUrl'></ion-icon>
+            <ion-input  #urlInput class='domainUrl' mode='md' type='text' placeholder='yourdomain.com' formControlName="domainUrl" name="domainUrl" [(ngModel)]="domname" (ionFocus)='setDomainUrlValidation(false)' (ionBlur)='setDomainUrlValidation(true)' ><ion-label>www.</ion-label></ion-input>
+          </ion-item>
+          <div class="validation-errors" *ngIf='validate_domainUrl'>
+            <ng-container *ngFor="let validation of validation_messages.domainUrl">
+              <div class="error-message"
+                *ngIf="domain_addForm.get('domainUrl').hasError(validation.type) && (domain_addForm.get('domainUrl').dirty || domain_addForm.get('domainUrl').touched)">
+                <ion-icon class='error'></ion-icon>
+                <ion-label>{{ validation.message }}</ion-label>
+              </div>
+            </ng-container>
+          </div>
+          <div class="validation-errors" *ngIf='duplicatedDomain'>
+            <ng-container>
+              <div class="error-message">
+                <ion-icon class='error'></ion-icon>
+                <ion-label>This Domain Name Already Exists</ion-label>
+              </div>
+            </ng-container>
+          </div>
+          <ion-item  mode='md' [disabled]='duringSubmit' [ngClass]="{'error-input': validate_domainName && (domain_addForm.get('domainName').hasError('minlength')) }">
+            <ion-icon slot='start' class='domainName'></ion-icon>
+            <ion-input mode='md' type='text' placeholder='site name' formControlName="domainName" name="domainName" [(ngModel)]="compname" (ionFocus)='setDomainNameValidation(false)' (ionBlur)='setDomainNameValidation(true)'></ion-input>
+          </ion-item>
+          <div class="validation-errors" *ngIf='validate_domainName'>
+            <ng-container *ngFor="let validation of validation_messages.domainName">
+              <div class="error-message"
+                *ngIf="domain_addForm.get('domainName').hasError(validation.type)">
+                <ion-icon class='error'></ion-icon>
+                <ion-label>{{ validation.message }}</ion-label>
+              </div>
+            </ng-container>
+          </div>
+          <ion-button [disabled] = 'duringSubmit' mode='md' class='red submit'  size='large' type='submit'>
+            <ion-label *ngIf='!duringSubmit'>Add Site</ion-label>
+            <ion-spinner name="lines-small" *ngIf='duringSubmit'></ion-spinner>
+          </ion-button>
+        </ion-list>
+      </form>
+    </div>
+  </ion-content>
+  
+  <script>
+      (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    
+      ga('create', 'UA-131219006-1', 'auto');
+      ga('send', 'pageview');</script>
+  

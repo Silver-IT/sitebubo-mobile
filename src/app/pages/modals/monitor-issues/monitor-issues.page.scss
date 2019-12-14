@@ -1,0 +1,94 @@
+ion-content {
+  --padding-bottom: 30px;
+  --padding-top: 20px;
+  --padding-start: 5%;
+  --padding-end: 5%;
+  ion-label.des {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+  div.filterType {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    ion-card {
+      width: 45%;
+      height: 120px;
+      border-radius: 10px;
+      border: 2px solid #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      div {
+        margin-top: 15px;
+        width: 55px;
+        height: 55px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        &.negative-div {
+          background-color: #FE3F40;
+        }
+        &.positive-div{
+          background-color: #00CA06;
+        }
+        .notification-div {
+            position: absolute !important;
+            top: -20px;
+            right: -11px;
+            background: red;
+            color: white;
+            width: 18px !important;
+            height: 18px !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            border-radius: 50% !important;
+        }
+      }
+      ion-label {
+        display: block;
+        margin-top: 15px;
+        font-size: 16px;
+        font-weight: bold;
+      }
+      &.positive {
+        &.selected {
+          box-shadow: 0 0px 5px #00CA06;
+          border: 2px solid #00CA06;
+          ion-label {
+            color: #00CA06;
+          }
+        }
+      }
+      &.negative {
+        &.selected {
+          box-shadow: 0 0px 5px #FE3F40;
+          border: 2px solid #FE3F40;
+          ion-label {
+            color: #FE3F40;
+          }
+        }
+      }
+    }
+  }
+  ion-list {
+    .mat-expansion-panel {
+      border-radius: 0px;
+      border-bottom: 1px solid lightgray;
+      box-shadow: none !important;
+      .mat-expansion-panel-header {
+        font-weight: bold !important;
+        padding: 0 15px;
+        ion-label {
+          padding-left: 10px;
+        }  
+      }
+    }
+  }
+}

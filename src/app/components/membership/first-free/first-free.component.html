@@ -1,0 +1,11 @@
+
+<div class='c-content' *ngIf='details'>
+  <ion-label class="c-header">Welcome, Friend! </ion-label>
+  <ion-label class="c-welcome">
+    We hope this is the begining of a <br />long and fruitful friendship where<br /> we hope to provide you
+    enough<br /> peace of mind.
+  </ion-label>
+  <ion-label class="c-freecls">FREE</ion-label>
+  <ion-label class="c-plancls">{{ details.name }} plan<a (click) = 'changePlan()'>change</a></ion-label>
+  <ion-button mode='md' size='large'  block id="paypal-checkout" (click)="addDomain()" class="c-greenButton red">Get Started</ion-button>
+</div>

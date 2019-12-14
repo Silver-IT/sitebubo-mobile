@@ -1,0 +1,31 @@
+mat-expansion-panel {
+  mat-expansion-panel-header{
+    padding-left: 0px !important;
+    ion-item {
+      .submenu-badge {
+        margin-top: -19px;
+        margin-left: -7px;
+        z-index: 1;
+      }
+      ion-label {
+        font-weight: 500;
+        text-overflow: unset !important;
+        white-space: unset !important;
+        padding-left: 18px !important;
+      }
+    }
+  }
+  mat-panel-description {
+    ion-label {
+      margin-top: 20px;
+    }
+  }
+}
+ion-label {
+  display: block;
+  &.no-links {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 18px;
+  }
+}

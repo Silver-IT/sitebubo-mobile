@@ -1,0 +1,38 @@
+ion-header {
+  ion-toolbar {
+    ion-buttons {
+      height: 50px;
+      ion-title.domain-name {
+        text-transform: uppercase;
+      }
+      ion-button {
+        position: absolute;
+        &.back {
+          left: 0;
+        }
+        &.menu {
+          right: 0;
+        }
+        &.bell {
+          right: 35px;
+        }
+      }
+    }
+  }
+  ion-slides {
+    height: 50px;
+    ion-slide {
+      &.swiper-slide-active {
+        border-bottom: 2px solid #a586fd !important;
+        ion-label {
+          font-weight: 500;
+          color: white !important;
+        }
+      }
+      ion-label {
+        font-size: 16px;
+        color: #D7D7D7;
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+ion-content {
+  ion-label {
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    &.thanks {
+      margin-top: 20px;
+    }
+  }
+  ion-button {
+    display: block;
+    width: 60%;
+    height: 47px;
+    font-size: 16px;
+    margin: 20px auto;
+    --border-radius: 30px;
+  }
+}

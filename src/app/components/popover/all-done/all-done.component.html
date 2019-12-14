@@ -1,0 +1,7 @@
+<div class="all" *ngIf='title && content'>
+  <div class='header popover-header'>
+    <img src='assets/icons/magnifier.svg'/>
+    <ion-label class='title'>{{title}}</ion-label>
+  </div>
+  <div class='content popover-content' [innerHTML]="content"></div>
+</div>

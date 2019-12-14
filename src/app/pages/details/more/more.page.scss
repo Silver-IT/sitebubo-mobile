@@ -1,0 +1,16 @@
+ion-header {
+  &.underHeader { 
+    ion-segment {
+      --min-height: 50px !important;
+      margin-left: 5%;
+      margin-right: 5%;
+      ion-segment-button {
+        text-transform: none;
+        min-height: 48px;
+        --color: gray;
+        --color-checked: white;
+        --indicator-color-checked: #a586fd !important;
+      }
+    }
+  }
+}

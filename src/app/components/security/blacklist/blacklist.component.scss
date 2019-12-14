@@ -1,0 +1,22 @@
+ion-item {
+  --min-height: 52px;
+  --padding-start: 20px;
+  --padding-end: 20px;
+  &:last-child {
+    --border-color: transparent;
+  }
+  ion-label {
+    &.title {
+      font-size: 14px;
+      min-width: 60%;
+      font-weight: bold !important;
+      white-space: unset;
+    }
+    &.status {
+      font-size: 13px;
+      text-align: center;
+      font-weight: 100 !important;
+      white-space: unset;
+    }
+  }
+}

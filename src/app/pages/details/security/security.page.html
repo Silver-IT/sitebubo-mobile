@@ -1,0 +1,27 @@
+<ion-header class='underHeader'>
+    <ion-toolbar mode='md' class='toolbar'>
+        <ion-slides mode='ios' #slides [options]='slideOpts' mode='ios' (ionSlideDidChange) ='switchPages($event)'>
+            <ion-slide>
+              <ion-label>Security</ion-label>
+            </ion-slide>
+            <ion-slide>
+              <ion-label>Malware</ion-label>
+            </ion-slide>
+            <ion-slide>
+              <ion-label>Blacklist</ion-label>
+            </ion-slide>
+        </ion-slides>
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content [ngSwitch]='pageType'>
+  <app-website-security *ngSwitchCase = '0'></app-website-security>
+  <app-malware *ngSwitchCase = '1'></app-malware>
+  <app-blacklist *ngSwitchCase = '2'></app-blacklist>
+  <ion-fab class='feedback-fab nopadding-top' vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button mode='md' class='feedback' (click)='openFeedback()'>
+        <ion-icon class='feedback'></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

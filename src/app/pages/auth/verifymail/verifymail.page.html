@@ -1,0 +1,35 @@
+<ion-content>
+  <div class = 'content'>
+    <div class = 'logo' id='logo'>
+      <img src="assets/imgs/sub_logo.png" alt="">
+    </div>
+    <div class='verify-content'>
+      <ion-label class='pageName'>Verify Your Email</ion-label>
+      <div [class]="beforeVerified">
+        <!-- <ion-label class='header'>Your almost there!</ion-label> -->
+        <ion-label class='description'>We have sent an email to verify your <br /> email address to complete the signup <br />process
+        </ion-label>
+      </div>
+      <div [class]="afterVerified">
+          <ion-label class='description'>{{message}}</ion-label>
+      </div>
+      <ion-button class="red submit" (click)="login()">Log In</ion-button>
+      <ion-label class='resend'>Didn't you receive email? <b (click)='resendVerificationEmail()'>Resend</b></ion-label>
+    </div>
+  </div>
+
+  
+</ion-content>
+
+
+<script>
+  (function (i, s, o, g, r, a, m) {
+  i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+    (i[r].q = i[r].q || []).push(arguments)
+  }, i[r].l = 1 * new Date(); a = s.createElement(o),
+    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+  })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+  ga('create', 'UA-131219006-1', 'auto');
+  ga('send', 'pageview');
+</script>

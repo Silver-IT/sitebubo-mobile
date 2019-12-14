@@ -1,0 +1,26 @@
+<ion-header class='small-header'>
+  <ion-toolbar class='toolbar' mode='md' >
+    <ion-buttons>
+      <ion-title>Your Membership</ion-title>
+      <ion-button class='menu' mode='md' (click) = 'toggleMenu()'>
+        <ion-icon class='menu' slot='icon-only'></ion-icon>
+      </ion-button>
+      <ion-button class='back' (click)='back()' mode='md' >
+        <ion-icon class='back' name='arrow-back' mode='ios'></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+<ion-content [ngSwitch]='displayValue'>
+  <app-old-free *ngSwitchCase='1' [details]='planInfo'></app-old-free>
+  <app-free-trial *ngSwitchCase='2' [details]='planInfo'></app-free-trial>
+  <app-no-trial *ngSwitchCase='4' [details]='planInfo'></app-no-trial>
+  <app-first-pay *ngSwitchCase='3' [details]='planInfo'></app-first-pay>
+  <ion-fab class='feedback-fab'vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button mode='md' class='feedback' (click)='openFeedback()'>
+        <ion-icon class='feedback'></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

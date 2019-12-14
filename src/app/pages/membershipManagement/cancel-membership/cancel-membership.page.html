@@ -1,0 +1,30 @@
+<ion-header class='small-header'>
+  <ion-toolbar class='toolbar'>
+    <ion-buttons>
+      <ion-title>Cancel Membership</ion-title>
+      <ion-button mode='ios' class='back' (click) = 'goback()'>
+        <ion-icon class='back' name='arrow-back' mode='ios' slot='icon-only'></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-label class="sorry">SORRY TO SEE YOU GO!</ion-label>
+  <div class='extra'>
+    <ion-label class="days-left">You still have <b>{{ daysLeft }} days</b> left of your membership.</ion-label>
+  </div>
+  <ion-label class="expire">ONCE MEMBERSHIP EXPIRES...</ion-label>
+  <ion-label class="revert">You can revert to the free service where you get to keep a single user and domain active.</ion-label>
+  <ion-button class="red to-free" (click)='checkExDomainList()'>
+    Revert to free service
+  </ion-button>
+  <div class='line'>
+    <div class='each left'></div>
+    <ion-label>OR</ion-label>
+    <div class='each right'></div>
+  </div>
+  <ion-button class="gray" (click)='deleteAccount()'>
+    Delete my account
+  </ion-button>
+</ion-content>

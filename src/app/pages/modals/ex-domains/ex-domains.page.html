@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar class='modal-toolbar'>
+    <ion-buttons>
+      <ion-button class='close' mode='ios' (click) = 'dismiss()'>
+        <ion-icon class='close' ios="md-close" md="md-close" slot='icon-only'></ion-icon>
+      </ion-button>
+      <ion-title *ngIf='!cancel'>Downgrade</ion-title>
+      <ion-title *ngIf='cancel'>Cancel Membership</ion-title>
+      <!-- <ion-button class='readySubmit' mode='ios' (click)='deleteDomains()'>Submit</ion-button> -->
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <div class="description" *ngIf="domains.length > 0">
+    <div class='extra'>
+      <ion-label class="days-left" *ngIf='!cancel'>You still have {{ daysLeft }} days left of your membership.</ion-label>
+    </div>
+    <ion-label *ngIf='!cancel' class='descript'>
+      You are current on the {{ currentPlan }} Plan and would like to downgrade to the {{ newPlan }} Plan. You are only allowed to have {{ allowedCnt }} {{ single }} on the {{ newPlan }} Plan.
+    </ion-label>
+  </div>
+  <div class="domainlist" *ngIf="domains.length > 0">
+    <ion-label class="selection">
+      Which domain would you like to keep?
+    </ion-label>
+    <ion-item class="domains" *ngFor='let domain of domains , let i = index'>
+      <ion-checkbox mode='md' color='tertiary' slot="start" (ionChange)='getValues(i, $event)'></ion-checkbox>
+      <ion-label class="domain-name">{{ domain.domain_name }}</ion-label>
+    </ion-item>
+  </div>
+  <!-- <ion-label class="no-domains" *ngIf='!domains'>You have no domains registered</ion-label> -->
+  <div class="feedback">
+    <ion-label class="kind-label" *ngIf='!cancel'>
+      It would really help us to give us some feedback about why you're downgrading.
+    </ion-label>
+    <ion-label class="kind-label" *ngIf='cancel'>
+      It would really help us to give us some feedback about why you're cancelling.
+    </ion-label>
+    <ion-textarea class="feedback-content" rows='4' [(ngModel)]="feedback"></ion-textarea>
+  </div>
+  <div class="settings">
+    <ion-button #downgrade class="downgrade red" (click)='changeStyle(true)' *ngIf='!cancel'>Downgrade</ion-button>
+    <ion-button #downgrade class="downgrade red" (click)='changeStyle(true)' *ngIf='cancel'>Finalise cancellation</ion-button>
+    <div class="confirm hide" #confirm>
+      <ion-label class="verify">Are you sure to downgrade?</ion-label>
+      <div class="buttons">
+        <ion-button class="signOut" (click)='changeStyle(false)'>Cancel</ion-button>
+        <ion-button class="changePlan" (click)='deleteDomains()'>Ok</ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

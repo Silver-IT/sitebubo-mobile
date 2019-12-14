@@ -1,0 +1,101 @@
+
+  <ion-content >
+      <div class='content'>
+        <div class = 'logo' id='logo'>
+          <img src="assets/imgs/sub_logo.png" alt="">
+        </div>
+        <div class='email-login' id='signup'>
+          <form [formGroup]="validate_signupform" (ngSubmit)="validateForm()"> 
+            <ion-label class='pageName'>Register</ion-label>
+            <ion-list>
+               <ion-item [disabled]='readyForSubmit || facebookReady' mode='md' class='item-input' [ngClass]="{'error-input': validate_fullname && (validate_signupform.get('fullname').hasError('minlength')) }">
+                <ion-icon class='fullname' slot='start'></ion-icon>
+                <ion-input  mode='md' type='text'  [(ngModel)]="fname" placeholder='Full Name' formControlName="fullname" name="fullname" (ionBlur)='setFullnameValidation(true)' (ionFocus)='setFullnameValidation(false)'></ion-input>
+              </ion-item>
+              <div class="validation-errors" *ngIf='validate_fullname'>
+                <ng-container *ngFor="let validation of validation_messages.fullname">
+                  <div class="error-message"
+                    *ngIf="validate_signupform.get('fullname').hasError(validation.type)">
+                    <ion-icon class='error'></ion-icon>
+                    <ion-label>{{ validation.message }}</ion-label>
+                  </div>
+                </ng-container>
+              </div>
+    
+              <ion-item [disabled]='readyForSubmit || facebookReady' mode='md' class='item-input' [ngClass]="{'error-input': validate_email && (validate_signupform.get('email').hasError('pattern')) }">
+                <ion-icon class='email' slot='start'></ion-icon>
+                <ion-input  mode='md' type='email' [(ngModel)]="email" placeholder='Email Address' formControlName="email" name="email" (ionBlur)='setEmailValidation(true)' (ionFocus)='setEmailValidation(false)'></ion-input>
+              </ion-item>
+              <div class="validation-errors" *ngIf='validate_email'>
+                <ng-container *ngFor="let validation of validation_messages.email">
+                  <div class="error-message"
+                    *ngIf="validate_signupform.get('email').hasError(validation.type)">
+                    <ion-icon class='error'></ion-icon>
+                    <ion-label>{{ validation.message }}</ion-label>
+                  </div>
+                </ng-container>
+              </div>
+              <div class="validation-errors" *ngIf='duplicatedEmail'>
+                <ng-container>
+                  <div class="error-message">
+                    <ion-icon class='error'></ion-icon>
+                    <ion-label>Email Address Already Exists</ion-label>
+                  </div>
+                </ng-container>
+              </div>
+    
+              <ion-item [disabled]='readyForSubmit || facebookReady' mode='md' class='item-input' [ngClass]="{ 'error-input': validate_password && ((validate_signupform.get('password').hasError('pattern') || validate_signupform.get('password').hasError('minlength'))) }">
+                <ion-icon class='password' slot='start'></ion-icon>
+                <ion-input mode='md' type='password' [(ngModel)]="pwd" placeholder='Password' formControlName="password" name="password" (ionBlur)='setPasswordValidation(true)' (ionFocus)='setPasswordValidation(false)'></ion-input>
+              </ion-item>
+              <div class="validation-errors" *ngIf='validate_password'>
+                <ng-container *ngFor="let validation of validation_messages.password">
+                  <div class="error-message"
+                    *ngIf="validate_signupform.get('password').hasError(validation.type)">
+                    <ion-icon class='error'></ion-icon>
+                    <ion-label>{{ validation.message }}</ion-label>
+                  </div>
+                </ng-container>
+              </div>
+              <div class='check-toogle'>
+                <div class='toogle'>
+                  <ion-checkbox color="tertiary" (ionChange)="btnchkTerm()" mode='md'></ion-checkbox>
+                  <ion-label id='terms' (click)="presentTerm()">I agree to the <b><u>Terms & Conditions</u></b></ion-label>
+                </div>
+                <div class='toogle'>
+                  <ion-checkbox color='tertiary' (ionChange)="btnchkPol()" mode='md'></ion-checkbox>
+                  <ion-label id='privacy' (click)="presentPrivacy()">I have read the <b><u>Privacy Policy</u></b></ion-label>
+                </div>
+              </div>
+            </ion-list>
+            <ion-button [disabled]='readyForSubmit || facebookReady' mode='md' class='login' size='large' type='submit'>
+                <ion-spinner name="lines-small" *ngIf='readyForSubmit'></ion-spinner>
+                <ion-label *ngIf='!readyForSubmit'>Sign Up</ion-label>
+            </ion-button>
+          </form>
+          
+          <div class='social-login'>
+              <div class='line'>
+                <div class='each left'></div>
+                <ion-label>OR CONNECT WITH</ion-label>
+                <div class='each right'></div>
+              </div>
+              <ion-button [disabled]='readyForSubmit || facebookReady' mode='md' class='facebook' size='default' (click)="signUpwithFB()">
+                  <ion-spinner name="lines-small" *ngIf='facebookReady'></ion-spinner>
+                  <ion-icon class="logo-facebook" slot='start'></ion-icon>
+                  <ion-label *ngIf='!facebookReady'>Facebook</ion-label>
+              </ion-button>
+          </div>    
+          <div class='accident'>
+            <ion-label (click) = 'gotoLogIn()'>Already have an account?<b> Log In </b></ion-label>
+          </div>
+        </div>
+      </div>
+  </ion-content>
+    <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    
+    ga('create', 'UA-131219006-1', 'auto');
+    ga('send', 'pageview');</script>

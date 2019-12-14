@@ -1,0 +1,146 @@
+ion-content {
+  div.content {
+    width: 100%;
+    .logo {
+      background-image: url('../../../../assets/imgs/signup_header.png') !important;
+      background-size: 100% 100%;
+      background-repeat: no-repeat !important;
+      width: 100%;
+      min-height: 18vh;
+      display: flex;
+      align-content: center;
+      align-items: center;
+      img {
+        width: 50%;
+        display: block;
+        margin: auto;
+      }
+    }
+    div.email-login {
+      background-image: url('../../../../assets/imgs/signup_footer.png') !important;
+      background-size: contain;
+      background-repeat: no-repeat !important;
+      background-position-y: bottom;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      margin: auto;
+      padding-left: 5%;
+      padding-right: 5%;
+      min-height: 82vh;
+      padding-bottom: 15px;
+      ion-label.pageName {
+        display: block;
+        font-size : 24px;
+        font-weight: bold;
+        padding-left: 5%;
+      }
+      form{
+        // height: 70%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        ion-list {
+          --border-color: transparent;
+          ion-item{
+            margin-top: 15px;
+            ion-icon{
+              margin: 0px;
+              color:#757575;
+            }
+            ion-input {
+              margin-left: 3%;
+              --border-color: transparent;
+              border-left: 1px solid #C2C3C5;
+              --padding-start: 14px;
+              height: 48px;
+            }
+          }
+        }
+        div.check-toogle {
+          padding-left: 5%;
+          .toogle{
+            display: flex;
+            align-items: center;
+            padding-top: 5%;
+            ion-label{
+              padding-left: 5%;
+              font-size: 14px;
+            }
+          }
+        }
+        ion-button.login {
+          width: 84%;
+          height: 53px;
+          font-size: 19px;
+          margin:auto;
+          display: block;
+          --border-radius: 30px;
+          --background: #FE7A80;
+          --background-activated: rgb(246, 146, 151);
+          --background-focused: rgb(246, 146, 151);
+          --background-hover: rgb(246, 146, 151);
+          --color: white;
+          --color-activated: white;
+          text-transform: none;
+          margin-top: 2vh;
+        }
+        
+      }
+      div.social-login {
+        width: 100%;
+        margin-top: 2vh;
+        text-align: center;
+        display: block;
+        .line{
+          padding-left: 15%;
+          padding-right: 15%;
+          display: flex;
+          align-content: center;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 2vh;
+          .each{
+            width: 20%;
+            height: 1px;
+            background-color: black;
+          }
+          ion-label{
+            width: 60%;
+            font-size: 3.2vw;
+            // font-size: 14px;
+            // padding-left: 7px;
+            // padding-right: 7px;
+          }
+        }
+        ion-button.facebook {
+          width: 47%;
+          height: 47px;
+          display: block;
+          margin: auto;
+          --color-activated: white;
+          --border-radius: 30px;
+          --background: #4064AD;
+          --background-activated: rgb(87, 114, 168);
+          --background-focused: rgb(87, 114, 168);
+          --background-hover: rgb(87, 114, 168);
+          text-transform: none;
+          font-size: 15px;
+          font-weight: inherit;
+        }
+        ion-icon.logo-facebook{
+          background-image: url('../../../../assets/icons/facebook-logo.svg');
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+        }
+      }
+      div.accident{
+        text-align: center;
+        ion-label{
+          display: block;
+          padding-top: 5%;
+        }
+      }
+    }
+  }
+}
