@@ -1,38 +1,21 @@
 ion-header {
-  ion-toolbar {
-    ion-buttons {
-      height: 50px;
-      ion-title.domain-name {
-        text-transform: uppercase;
-      }
-      ion-button {
-        position: absolute;
-        &.back {
-          left: 0;
-        }
-        &.menu {
-          right: 0;
-        }
-        &.bell {
-          right: 35px;
-        }
-      }
-    }
-  }
-  ion-slides {
-    height: 50px;
-    ion-slide {
-      &.swiper-slide-active {
-        border-bottom: 2px solid #a586fd !important;
+  &.underHeader {
+    ion-segment {
+      --min-height: 50px !important;
+      ion-segment-button {
+        min-height: 48px;
+        --color: gray;
+        --color-checked: white;
+        --indicator-color-checked: #a586fd !important;
         ion-label {
-          font-weight: 500;
-          color: white !important;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
-      }
-      ion-label {
-        font-size: 16px;
-        color: #D7D7D7;
       }
     }
   }
+}
+ion-content {
+  --padding-bottom: 40px;
 }

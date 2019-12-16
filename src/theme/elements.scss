@@ -231,7 +231,7 @@ ion-button {
 
 ion-card.priority {
   margin: 0;
-  height: 190px;
+  height: 170px;
   ion-skeleton-text {
     height: 100%;
     width: 100%;
@@ -248,13 +248,17 @@ ion-card.priority {
     height: 40px !important;
     align-items: center;
   }
+  ion-card-content {
+    height: 130px;
+    margin-top: -10px;
+  }
   ion-icon {
     position: absolute;
     left: 0;
     right: 0;
-    top: 0;
+    top: 0px;
     bottom: 0;
-    font-size: 90px;
+    font-size: 100px !important;
     display: block;
     margin: auto;
   }

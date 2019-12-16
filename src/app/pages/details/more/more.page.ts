@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./more.page.scss'],
 })
 export class MorePage implements OnInit {
-  pageType: any;
+  pageType: number;
   brokenlinksCount: number;
   constructor(
     private generalSerive: GeneralService,
@@ -18,18 +18,21 @@ export class MorePage implements OnInit {
     private activateRoute: ActivatedRoute
   ) { }
 
-  ngOnInit() {
+  ngOnInit() {  
     if (this.tempService.dashboardParams) {
       this.brokenlinksCount = this.tempService.brokenLinksCount;
       this.activateRoute.queryParams.subscribe((params) => {
+        console.log(params);
         if (params) {
           if (params.pageName === 'expire') {
-            this.pageType = 2;
-          } else  {
             this.pageType = 1;
+          } else if (params.pageName === 'link')  {
+            this.pageType = 2;
+          } else {
+            this.pageType = 0;
           }
         } else {
-          this.pageType = 1; 
+          this.pageType = 0; 
         }
       });
     } else {
@@ -37,10 +40,10 @@ export class MorePage implements OnInit {
     }
   }
 
-  changePageType(value) {
-    this.pageType = value;
+  ionViewWillEnter() {
+    console.log('more more more more more');
   }
-  
+
   openFeedback() {
     this.generalSerive.openFeedback();
   }

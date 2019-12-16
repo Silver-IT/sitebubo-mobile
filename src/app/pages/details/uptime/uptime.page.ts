@@ -76,13 +76,13 @@ export class UptimePage implements OnInit {
 
   defineRecords() {
     if (this.filterType === 1) {
-      this.filterLabel = 'Last 24 hours';
+      this.filterLabel = 'last 24 hours';
       this.downtimeRecord = this.uptimeStatus['downtimes_24hours'];
     } else if (this.filterType === 2) {
-      this.filterLabel = 'Last 7 days';
+      this.filterLabel = 'last 7 days';
       this.downtimeRecord = this.uptimeStatus['downtimes_7days'];
     } else {
-      this.filterLabel = 'Last 30 days';
+      this.filterLabel = 'last 30 days';
       this.downtimeRecord = this.uptimeStatus['downtimes_30days'];
       console.log(this.downtimeRecord);
     }

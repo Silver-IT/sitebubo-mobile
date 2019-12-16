@@ -44,7 +44,7 @@
       </ion-card-header>
       <ion-card-content *ngIf='domainData'>
         <ion-label>Last Checked</ion-label>
-        <ion-label class='lower highlighted'>{{ domainData?.uptime.time }}</ion-label>
+        <ion-label class='highlighted'>{{ domainData?.uptime.time }}</ion-label>
       </ion-card-content>
     </ion-card>
     <ion-card class="virus" (click)='jumpToTabs("security")'>
@@ -58,7 +58,7 @@
       </ion-card-header>
       <ion-card-content *ngIf='domainData'>
         <ion-label>Last Checked</ion-label>
-        <ion-label class='lower highlighted'>{{ domainData?.security.time }}</ion-label>
+        <ion-label class='highlighted'>{{ domainData?.security.time }}</ion-label>
       </ion-card-content>
     </ion-card>
   </div>
@@ -88,7 +88,7 @@
     <ion-reorder-group  #group [disabled]='false' (ionItemReorder)="onRenderItems($event)">
       <ng-container *ngFor="let item of orders">
         <ng-template [ngIf] = 'item === "google-analytics-conversion-rate"'>
-          <ion-card id='google-analytics-conversion-rate' class='conversion-rate' (click)='jumpToTabs("more")' *ngIf='domainData?.analytics?.conversion'>
+          <ion-card id='google-analytics-conversion-rate' class='conversion-rate' (click)='jumpToTabs("more")' >
             <ion-reorder></ion-reorder>
             <ion-row class='white-row'>
               <ion-col size='2'>
@@ -96,7 +96,7 @@
               </ion-col>
               <ion-col size='7'>
                 <ion-label class='heavy-font'>CONVERSION RATE</ion-label>
-                <ion-label class='conversion-rate'>{{ domainData?.analytics?.conversion }}%</ion-label>
+                <ion-label class='conversion-rate' counto [countFrom] = '0' [duration]='1' [countTo]="domainData?.analytics?.conversion" [step]='10' (countoChange)="countos.conversion = $event">{{ countos.conversion |intparse }}%</ion-label>
               </ion-col>
               <ion-col size='3' class='last-checked'>
                 <ion-label>Last Checked</ion-label>
@@ -106,7 +106,7 @@
           </ion-card>
         </ng-template>
         <ng-template [ngIf] = 'item === "google-analytics-visitors"'>
-          <ion-card  id='google-analytics-visitors' class='visitors' *ngIf='domainData?.analytics?.visitors'>
+          <ion-card  id='google-analytics-visitors' class='visitors'>
             <ion-reorder></ion-reorder>
             <ion-row class='white-row'>
               <ion-col size='2'>
@@ -114,14 +114,13 @@
               </ion-col>
               <ion-col size='7'>
                 <ion-label class='heavy-font'>VISITORS THIS MONTH</ion-label>
-                <ion-label class='visitors-cnt'>{{ domainData?.analytics?.visitors }}</ion-label>
+                <ion-label class='visitors-cnt' counto [countFrom] = '0' [duration]='1' [countTo]="domainData?.analytics?.visitors" [step]='10' (countoChange)="countos.visitors = $event">{{ countos.visitors | intparse }}</ion-label>
               </ion-col>
               <ion-col size='3' class='last-checked'>
                 <ion-label>Last Checked</ion-label>
                 <ion-label class='highlighted'>{{ domainData?.analytics?.last_checked }}</ion-label>
               </ion-col>
             </ion-row>
-    
           </ion-card>
         </ng-template>
         <ng-template [ngIf] = 'item === "seo-score"'>
@@ -133,8 +132,8 @@
                 <ion-label class='small-font'>Great</ion-label>
               </ion-col>
               <ion-col size='4' class='flex-col'>
-                <ion-label class='bigger-font'>
-                  {{ domainData ? domainData['seo-score']['seoscore'] : 0 }}
+                <ion-label class='bigger-font' counto [countFrom] = '0' [duration]='1' [countTo]="domainData['seo-score']['seoscore']" [step]='10' (countoChange)="countos.seo = $event">
+                  {{ countos.seo | intparse }}
                 </ion-label>
                 <ion-label class='big-font'>/100</ion-label>
               </ion-col>
@@ -153,7 +152,7 @@
                 <ion-label class='small-font'>Poor</ion-label>
               </ion-col>
               <ion-col size='4' class='flex-col'>
-                <ion-label class='bigger-font'>{{ domainData ? domainData['site-speed']['speedindex'] : 0 }}</ion-label>
+                <ion-label class='bigger-font' counto [countFrom] = '0' [duration]='1' [countTo]="domainData['site-speed']['speedindex']" [step]='10' (countoChange)="countos.speed = $event">{{ countos.speed | floatone }}</ion-label>
                 <ion-label class="big-font">sec</ion-label>
               </ion-col>
               <ion-col size='2'>
@@ -170,7 +169,7 @@
                 <ion-label class='big-font'>BROKEN LINKS</ion-label>
               </ion-col>
               <ion-col size='3'>
-                <ion-badge>{{ domainData ? domainData['broken-links']['count'] : 0 }}</ion-badge>
+                <ion-badge  counto [countFrom] = '0' [duration]='1' [countTo]="domainData['broken-links']['count']" [step]='10' (countoChange)="countos.brokens = $event">{{ countos.brokens | intparse }}</ion-badge>
               </ion-col>
               <ion-col size='2'>
                 <ion-icon class="d-brokenlink"></ion-icon>

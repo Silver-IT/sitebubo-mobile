@@ -39,10 +39,10 @@ export class MonitorIssuesPage implements OnInit {
         this.title = 'Issues'
       } else if (this.reportName === 'desktop'){
         this.getDesktopIssues();
-        this.title = 'Google Desktop Score';
+        this.title = 'Desktop Score';
       } else {
         this.getMobileIssues();
-        this.title = 'Google Mobile Score';
+        this.title = 'Mobile Score';
       }
     });
   }

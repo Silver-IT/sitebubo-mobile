@@ -54,6 +54,11 @@ const routes: Routes = [
             path: '',
             loadChildren: () =>
               import('../more/more.module').then(m => m.MorePageModule)
+          },
+          {
+            path: 'domain',
+            loadChildren: () => 
+              import('../../domain/domain-list/domain-list.module').then(m => m.DomainListPageModule)
           }
         ]
       },

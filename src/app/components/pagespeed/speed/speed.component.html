@@ -1,11 +1,13 @@
 <ion-card mode='ios' *ngIf = 'speedData'>
   <ion-label class='header'>
-    Lighthoust analysis is the current page on an emulated mobile network. Values are estimated and may vary
+    Lighthoust analysis is the current page on an emulated mobile network. Values are estimated and may vary.
   </ion-label>
   <ion-list mode='ios'>
     <ion-item *ngFor="let item of speedData?.primary">
         <ion-label class="title">{{ item.description }}</ion-label>
-        <ion-label class="status">{{ item.status }}</ion-label>
+        <ion-label class="status">
+          {{ item.status }}
+        </ion-label>
         <ion-icon class="s-danger" *ngIf=' item.alertlevel === 0'></ion-icon>
         <ion-icon class="s-warning" *ngIf=' item.alertlevel === 1'></ion-icon>
         <ion-icon class="s-safe" *ngIf=' item.alertlevel === 2'></ion-icon>

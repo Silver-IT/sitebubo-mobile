@@ -93,13 +93,11 @@
         <ion-label>There is no change since your last report</ion-label>
       </ion-col>
       <ion-col size='3' *ngIf = 'seoData?.healthscore_status !== "No Change"'>
-        <ion-icon class="d-siteUp" *ngIf = 'seoData?.healthscore_status == "Increased"'></ion-icon>
-        <ion-icon class="d-siteDown" *ngIf = 'seoData?.healthscore_status == "Decreased"'></ion-icon>
+        <ion-icon class="m-up" *ngIf = 'seoData?.healthscore_status == "Increased"'></ion-icon>
+        <ion-icon class="m-down" *ngIf = 'seoData?.healthscore_status == "Decreased"'></ion-icon>
       </ion-col>
       <ion-col size='9' class='description' *ngIf = 'seoData?.healthscore_status !== "No Change"'>
-        <ion-item lines='none' *ngFor="let item of seoData?.scoredetails">
-          <ion-label><b>{{ item.title }}</b> check has {{ seoData?.healthscore_status }} by <b>{{ item.score }}</b></ion-label>
-        </ion-item>
+          <ion-label *ngFor="let item of seoData?.scoredetails"><b>{{ item.title }}</b> check has <b>{{ seoData?.healthscore_status | smallcase }}</b> by <b>{{ item.score }}</b></ion-label>
       </ion-col>
     </ion-row>
   </ion-card-content>
@@ -114,12 +112,12 @@
           <ion-label>There is no change since your last report</ion-label>
         </ion-col>
         <ion-col size='3' *ngIf = 'seoData?.desktop_speedscore_status !== "No Change"'>
-          <ion-icon class="d-siteUp" *ngIf='seoData?.desktop_speedscore_status === "Increased"'></ion-icon>
-          <ion-icon class="d-siteDown" *ngIf='seoData?.desktop_speedscore_status !== "Increased"'></ion-icon>
+          <ion-icon class="m-up" *ngIf='seoData?.desktop_speedscore_status === "Increased"'></ion-icon>
+          <ion-icon class="m-down" *ngIf='seoData?.desktop_speedscore_status == "Decreased"'></ion-icon>
         </ion-col>
         <ion-col size='9' class='description'  *ngIf = 'seoData?.desktop_speedscore_status !== "No Change"'>
-          <ion-label *ngIf = 'seoData?.desktop_speedscore_differnce'>
-            Desktop PageSpeed Score Score has<br/><b>{{ seoData?.desktop_speedscore_status }}</b> by <b>{{ seoData?.desktop_speedscore_differnce }}</b>
+          <ion-label>
+            Desktop page speed score Score has <b>{{ seoData?.desktop_speedscore_status | smallcase }}</b> by <b>{{ seoData?.desktop_speedscore_differnce }}</b>
           </ion-label>
         </ion-col>
       </ion-row>
@@ -135,12 +133,12 @@
         <ion-label>There is no change since your last report</ion-label>
       </ion-col>
       <ion-col size='3' *ngIf = 'seoData?.mobile_speedscore_status !== "No Change"'>
-        <ion-icon class="d-siteUp" *ngIf='seoData?.mobile_speedscore_status === "Increased"'></ion-icon>
-        <ion-icon class="d-siteDown" *ngIf='seoData?.mobile_speedscore_status !== "Increased"'></ion-icon>
+        <ion-icon class="m-up" *ngIf='seoData?.mobile_speedscore_status === "Increased"'></ion-icon>
+        <ion-icon class="m-down" *ngIf='seoData?.mobile_speedscore_status == "Decreased"'></ion-icon>
       </ion-col>
       <ion-col size='9' class='description' *ngIf = 'seoData?.mobile_speedscore_status !== "No Change"'>
-        <ion-label *ngIf = 'seoData?.mobile_speedscore_differnce'>
-          Mobile PageSpeed Score Score has<br/><b>{{ seoData?.mobile_speedscore_status }}</b> by <b>{{ seoData?.mobile_speedscore_differnce }}</b>
+        <ion-label>
+          Mobile PageSpeed Score Score has<br/><b>{{ seoData?.mobile_speedscore_status | smallcase }}</b> by <b>{{ seoData?.mobile_speedscore_differnce }}</b>
         </ion-label>
       </ion-col>
     </ion-row>
@@ -167,7 +165,7 @@
 </ion-card>
 <ion-card class="warning" mode='ios' *ngIf = 'pageType === 2'>
     <ion-card-title>
-      What is affecting your Google Desktop Score
+      What is affecting your Desktop Score
     </ion-card-title>
     <ion-card-content>
       <div class="factor" (click) = 'openFactors("desktop", 1)'>
@@ -182,7 +180,7 @@
 </ion-card>
 <ion-card class="warning" mode='ios' *ngIf = 'pageType === 3'>
     <ion-card-title>
-      What is affecting your Google Mobile Score
+      What is affecting your Mobile Score
     </ion-card-title>
     <ion-card-content>
       <div class="factor" (click) = 'openFactors("mobile", 1)'>

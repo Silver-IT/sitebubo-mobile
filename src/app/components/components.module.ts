@@ -1,11 +1,11 @@
 import { MatExpansionModule } from '@angular/material/expansion';
-import { DatetimePipe } from './../pipes/datetime.pipe';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import {RoundProgressModule} from 'angular-svg-round-progressbar';
+import { CountoModule } from 'angular2-counto';
+import { RoundProgressModule } from 'angular-svg-round-progressbar';
 
 import { SkeletonDomainListComponent } from './skeletons/skeleton-domain-list/skeleton-domain-list.component';
 import { SkeletonFeedbackComponent } from './skeletons/skeleton-feedback/skeleton-feedback.component';
@@ -26,7 +26,13 @@ import { IssuesComponent } from './seo/issues/issues.component';
 import { CseoscoreComponent } from './seo/cseoscore/cseoscore.component';
 import { CdomainExpireComponent } from './more/cdomain-expire/cdomain-expire.component';
 import { CbrokenLinksComponent } from './more/cbroken-links/cbroken-links.component';
+import { MoreOptionsComponent } from './more/more-options/more-options.component';
 
+
+import { DatetimePipe } from '../pipes/datetime/datetime.pipe';
+import { IntparsePipe } from '../pipes/intparse/intparse.pipe';
+import { FloatonePipe } from '../pipes/floatone/floatone.pipe';
+import { SmallcasePipe } from './../pipes/smallcase/smallcase.pipe';
 
 @NgModule({
   declarations: [
@@ -49,7 +55,12 @@ import { CbrokenLinksComponent } from './more/cbroken-links/cbroken-links.compon
     CseoscoreComponent,
     CdomainExpireComponent,
     CbrokenLinksComponent,
-    DatetimePipe
+    MoreOptionsComponent,
+
+    DatetimePipe,
+    IntparsePipe,
+    FloatonePipe,
+    SmallcasePipe
   ],
   imports: [
     CommonModule,
@@ -57,7 +68,8 @@ import { CbrokenLinksComponent } from './more/cbroken-links/cbroken-links.compon
     RouterModule,
     FormsModule,
     RoundProgressModule,
-    MatExpansionModule
+    MatExpansionModule,
+    CountoModule
   ],
   exports: [
     SkeletonDomainListComponent,
@@ -76,7 +88,12 @@ import { CbrokenLinksComponent } from './more/cbroken-links/cbroken-links.compon
     CseoscoreComponent,
     CdomainExpireComponent,
     CbrokenLinksComponent,
-    DatetimePipe
+    MoreOptionsComponent,
+    
+    DatetimePipe,
+    IntparsePipe,
+    FloatonePipe,
+    SmallcasePipe
   ]
 })
 export class ComponentsModule { }

@@ -30,6 +30,13 @@ export class DashboardPage implements OnInit {
   invitedUserList = [];
   invitedErroMessage: string;
   notifications = [];
+  countos = {
+    seo: 0,
+    conversion: 0,
+    visitors: 0,
+    speed: 0.0,
+    brokens: 0
+  }
   pluginsStatus = {
     googleAnalytics: false,
     emailChecker: true,
@@ -54,13 +61,16 @@ export class DashboardPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.initData();
   }
-
+  
   ngAfterViewInit() {
     this.userMenu.ionWillOpen.subscribe(() => {
       this.getInvitedUserList();
     });
+  }
+  
+  ionViewWillEnter() {
+    this.initData();
   }
 
   initData() {
@@ -284,13 +294,18 @@ export class DashboardPage implements OnInit {
   }
 
   jumpToTabs(page) {
-    if (page === 'expire' || page === 'link') {
-      this.router.navigate(['tabs/more'], { queryParams: {
-        pageName: page
-      } });
-    } else {
-      this.router.navigate(['tabs/' + page]);
-    }
+    console.log(this.domainData);
+    this.tempService.saveDashboardData(this.domainData).then((result) => {
+      if (result) {
+        if (page === 'expire' || page === 'link') {
+          this.router.navigate(['tabs/more'], { queryParams: {
+            pageName: page
+          } });
+        } else {
+          this.router.navigate(['tabs/' + page]);
+        }
+      }
+    });
   }
 
   onRenderItems(event) {

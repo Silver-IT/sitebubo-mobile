@@ -37,6 +37,7 @@
     "@ionic/angular": "^4.7.1",
     "@ionic/storage": "^2.2.0",
     "angular-svg-round-progressbar": "^3.0.1",
+    "angular2-counto": "^1.2.5",
     "content-disposition": "^0.5.3",
     "cordova-android": "^8.1.0",
     "cordova-plugin-apprate": "^1.4.0",

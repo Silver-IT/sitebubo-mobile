@@ -14,6 +14,7 @@ export class CdomainExpireComponent implements OnInit {
   domainName: string;
   domainUserID: number;
   expireData: any;
+  expiredays: number;
   constructor(
     private monitorAPI: MonitorService,
     private storage: Storage,

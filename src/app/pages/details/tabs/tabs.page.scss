@@ -33,16 +33,16 @@ ion-tab-bar {
       ion-icon {
         font-size: 20px;
         &.t-uptime {
-          background-image: url('../../../../assets/icons/tabs/t-uptime.png');
+          background-image: url('../../../../assets/icons/tabs/tab-uptime.png');
         }
         &.t-security {
-          background-image: url('../../../../assets/icons/tabs/t-security.png');
+          background-image: url('../../../../assets/icons/tabs/tab-security.png');
         }
         &.t-speed {
-          background-image: url('../../../../assets/icons/tabs/t-speed.png');
+          background-image: url('../../../../assets/icons/tabs/tab-speed.png');
         }
         &.t-seo {
-          background-image: url('../../../../assets/icons/tabs/t-seo.png');
+          background-image: url('../../../../assets/icons/tabs/tab-seo.png');
         }
         &.t-more {
           background-image: url('../../../../assets/icons/tabs/t-more.png');
@@ -56,16 +56,16 @@ ion-tab-bar {
       &.tab-selected {
         ion-icon {
           &.t-uptime {
-            background-image: url('../../../../assets/icons/tabs/t-uptimeActive.png') !important;
+            background-image: url('../../../../assets/icons/tabs/tab-activeuptime.png') !important;
           }
           &.t-security {
-            background-image: url('../../../../assets/icons/tabs/t-securityActive.png') !important;
+            background-image: url('../../../../assets/icons/tabs/tab-activesecurity.png') !important;
           }
           &.t-speed {
-            background-image: url('../../../../assets/icons/tabs/t-speedActive.png') !important;
+            background-image: url('../../../../assets/icons/tabs/tab-activespeed.png') !important;
           }
           &.t-seo {
-            background-image: url('../../../../assets/icons/tabs/t-seoActive.png') !important;
+            background-image: url('../../../../assets/icons/tabs/tab-activeseo.png') !important;
           }
           &.t-more {
             background-image: url('../../../../assets/icons/tabs/t-moreActive.png') !important;

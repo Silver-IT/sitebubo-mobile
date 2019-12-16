@@ -1,13 +1,15 @@
-<ion-header class='underHeader'>
+<ion-header class='underHeader' *ngIf = 'pageType === 2'>
   <ion-segment mode='md' [value]='pageType'>
-    <ion-segment-button mode='md' value = '1' (click) = 'changePageType(1)' chkecked>
+    <ion-segment-button mode='md' value = '2' chkecked>
       <ion-label>
-        Broken Links
+        BROKEN LINKS
         <div class="submenu-badge" *ngIf='brokenlinksCount'>{{ brokenlinksCount }}</div>
       </ion-label>
     </ion-segment-button>
-    <ion-segment-button mode='md' value = '2' (click) = 'changePageType(2)'>
-      <ion-label>Domain Expire</ion-label>
+    <!-- <ion-segment-button mode='md' value = '2' (click) = 'changePageType(2)'>
+      <ion-label>DOMAIN EXPIRY</ion-label>
+    </ion-segment-button> -->
+    <ion-segment-button mode='md' [disabled]='true'>
     </ion-segment-button>
     <ion-segment-button mode='md' [disabled]='true'>
     </ion-segment-button>
@@ -15,8 +17,9 @@
 </ion-header>
 
 <ion-content [ngSwitch]='pageType'>
-  <app-cbroken-links *ngSwitchCase='1'></app-cbroken-links>
-  <app-cdomain-expire *ngSwitchCase='2'></app-cdomain-expire>
+  <app-more-options *ngSwitchCase='0'></app-more-options>
+  <app-cbroken-links *ngSwitchCase='2'></app-cbroken-links>
+  <app-cdomain-expire *ngSwitchCase='1'></app-cdomain-expire>
   <ion-fab class='feedback-fab'vertical="bottom" horizontal="start" slot="fixed">
     <ion-fab-button mode='md' class='feedback' (click)='openFeedback()'>
         <ion-icon class='feedback'></ion-icon>

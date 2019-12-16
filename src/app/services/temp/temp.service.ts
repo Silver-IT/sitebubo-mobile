@@ -9,6 +9,7 @@ export class TempService {
   public filterType = 0;
   public unreadCount: any;
   public brokenLinksCount: number;
+  public dashboardData: any;
   constructor() {
   }
 
@@ -38,6 +39,13 @@ export class TempService {
     return new Promise((resolve, reject) => {
       this.unreadCount = count;
       resolve(true);
+    });
+  }
+
+  saveDashboardData(dashboard): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.dashboardData = dashboard;
+      resolve(dashboard);
     });
   }
 }

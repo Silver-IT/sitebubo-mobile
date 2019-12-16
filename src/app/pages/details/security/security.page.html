@@ -1,24 +1,30 @@
 <ion-header class='underHeader'>
     <ion-toolbar mode='md' class='toolbar'>
-        <ion-slides mode='ios' #slides [options]='slideOpts' mode='ios' (ionSlideDidChange) ='switchPages($event)'>
-            <ion-slide>
-              <ion-label>Security</ion-label>
-            </ion-slide>
-            <ion-slide>
-              <ion-label>Malware</ion-label>
-            </ion-slide>
-            <ion-slide>
-              <ion-label>Blacklist</ion-label>
-            </ion-slide>
-        </ion-slides>
+      <ion-segment mode='md' [value]='pageType' (ionChange) = 'switchPages($event)'>
+        <ion-segment-button mode='md' value='1'>
+          <ion-label>
+            SECURITY
+          </ion-label>
+        </ion-segment-button>
+        <ion-segment-button mode='md' value='2'>
+          <ion-label>
+            MALWARE
+          </ion-label>
+        </ion-segment-button>
+        <ion-segment-button mode='md' value='3'>
+          <ion-label>
+            BLACKLIST
+          </ion-label>
+        </ion-segment-button>
+      </ion-segment>
     </ion-toolbar>
 </ion-header>
 
 
 <ion-content [ngSwitch]='pageType'>
-  <app-website-security *ngSwitchCase = '0'></app-website-security>
-  <app-malware *ngSwitchCase = '1'></app-malware>
-  <app-blacklist *ngSwitchCase = '2'></app-blacklist>
+  <app-website-security *ngSwitchCase = '1'></app-website-security>
+  <app-malware *ngSwitchCase = '2'></app-malware>
+  <app-blacklist *ngSwitchCase = '3'></app-blacklist>
   <ion-fab class='feedback-fab nopadding-top' vertical="bottom" horizontal="start" slot="fixed">
     <ion-fab-button mode='md' class='feedback' (click)='openFeedback()'>
         <ion-icon class='feedback'></ion-icon>

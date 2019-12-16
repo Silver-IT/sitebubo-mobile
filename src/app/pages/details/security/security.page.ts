@@ -10,13 +10,7 @@ import { IonSlides } from '@ionic/angular';
   styleUrls: ['./security.page.scss'],
 })
 export class SecurityPage implements OnInit {
-  slideOpts = {
-    loop: true,
-    slidesPerView: 3,
-    centeredSlides: true,
-    slideToClickedSlide: true
-  }
-  pageType: number;
+  pageType = 1;
   @ViewChild('slides', { static: false }) slides: IonSlides;
   constructor(
     private generalSerive: GeneralService,
@@ -26,11 +20,9 @@ export class SecurityPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    
-  }
-  
-  ionViewWillEnter() {
-
+    if ( !this.tempService.dashboardParams) {
+      this.router.navigate(['domain-list'], { replaceUrl: true });
+    }
   }
   
   openFeedback() {
@@ -38,10 +30,6 @@ export class SecurityPage implements OnInit {
   }
 
   switchPages(event) {
-    this.slides.getActiveIndex().then(result => {
-      console.log(result);
-      this.pageType = result%3;
-      this.cdr.detectChanges();
-    })
+    this.pageType = parseInt(event.target.value);
   }
 }

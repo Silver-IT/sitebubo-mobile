@@ -38,6 +38,11 @@ ion-card {
       }
     }
   }
+  &.details {
+    ion-icon {
+      font-size: 55px !important;
+    }
+  }
   &.warning {
     ion-card-content {
       display: flex;

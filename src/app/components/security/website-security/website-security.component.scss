@@ -27,6 +27,8 @@ ion-card {
           text-align: center;
           font-weight: 100 !important;
           white-space: unset;
+          display: flex;
+          justify-content: flex-end;
         }
       }
     }

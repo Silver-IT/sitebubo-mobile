@@ -298,22 +298,29 @@ export class GeneralService {
     });
   }
 
-  async openMonitorIssues(reportName, factorNum) {
-    let css: string;
-    if (reportName === 'seo') {
-      css = 'seo-Issues'
-    } else {
-      css = 'device-Issues'
-    }
-    const modal = await this.modalCtrl.create({
-      component:  MonitorIssuesPage,
-      componentProps: {
-        reportName: reportName,
-        factor: factorNum
-      },
-      cssClass: 'monitor-issues'
+  async openMonitorIssues(reportName, factorNum): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      let css: string;
+      if (reportName === 'seo') {
+        css = 'seo-Issues'
+      } else {
+        css = 'device-Issues'
+      }
+      const modal = await this.modalCtrl.create({
+        component:  MonitorIssuesPage,
+        componentProps: {
+          reportName: reportName,
+          factor: factorNum
+        },
+        cssClass: 'monitor-issues'
+      });
+      if (reportName === 'seo') {
+        modal.onDidDismiss().then(() => {
+          resolve(true);
+        })
+      }
+      await modal.present();
     });
-    return await modal.present();
   }
 
   getReportDetails(): Promise<any> {

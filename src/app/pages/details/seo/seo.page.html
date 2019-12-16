@@ -4,12 +4,17 @@
           <ion-segment-button mode='md' value='1' checked>
             <ion-label>SEO Score</ion-label>
           </ion-segment-button>
+          <ion-segment-button mode='md' value='2'>
+            <ion-label>
+              ISSUES
+              <div class="submenu-badge" *ngIf="manualAlerts">{{ manualAlerts }}</div>
+            </ion-label>
+          </ion-segment-button>
         </ion-segment>
-        <ion-button class="red issues" (click) = 'launchIssues("seo", 1)'>
+        <!-- <ion-button class="red issues" (click) = 'launchIssues("seo", 1)'>
           <ion-label>Issues</ion-label>
-          <div class="submenu-badge" *ngIf="manualAlerts">{{ manualAlerts }}</div>
-        </ion-button>
-        <ion-button class="red manual-scan" (click) = 'manualScan()'>Scan</ion-button>
+        </ion-button> -->
+        <ion-button class="red manual-scan" (click) = 'manualScan()'>SCAN</ion-button>
     </ion-toolbar>
 </ion-header>
 

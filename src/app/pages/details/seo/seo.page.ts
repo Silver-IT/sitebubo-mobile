@@ -42,6 +42,9 @@ export class SeoPage implements OnInit {
 
   switchPages(event) {
     this.pageType = parseInt(event.target.value);
+    if (this.pageType === 2 ) {
+      this.launchIssues("seo", 1);
+    }
     this.cdr.detectChanges();
   }
   
@@ -50,7 +53,10 @@ export class SeoPage implements OnInit {
   }
 
   launchIssues(reportName, factorNum) {
-    this.generalSerive.openMonitorIssues(reportName, factorNum);
+    this.generalSerive.openMonitorIssues(reportName, factorNum).then((result) => {
+      this.pageType = 1;
+      this.cdr.detectChanges();
+    });
   }
 
   manualScan() {

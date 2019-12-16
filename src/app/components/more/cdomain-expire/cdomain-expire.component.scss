@@ -12,13 +12,18 @@
         &.title {
           font-weight: 500;
           font-size: 17px;
-          max-width: 40%;
+          max-width: 35%;
         }
         &.state {
           color: #4A4A4A;
           font-size: 14px;
-          display: flex;
-          justify-content: flex-end;
+          display: block;
+          text-align: right;
+        }
+        &.description {
+          margin-top: 15px;
+          color: #4A4A4A;
+          font-size: 14px;
         }
       }
     }

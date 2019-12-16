@@ -18,12 +18,13 @@
 <ion-content>
   <ion-list mode='ios'>
     <mat-accordion>
-      <mat-expansion-panel id='mat_{{ i }}' *ngFor="let item of showData, let i = index" [ngClass]='{"red": item.view}' (opened)="onExpand(i)">
+      <!-- <mat-expansion-panel id='mat_{{ i }}' *ngFor="let item of showData, let i = index" [ngClass]='{"red": item.view}' (opened)="onExpand(i)"> -->
+      <mat-expansion-panel id='mat_{{ i }}' *ngFor="let item of showData, let i = index">
         <mat-expansion-panel-header [collapsedHeight]="'65px'" [expandedHeight]="'65px'">
-          <ion-icon class='d-siteUp' *ngIf='item.title === "Site UP"'></ion-icon>
-          <ion-icon class='d-siteDown' *ngIf='item.title === "Site DOWN"'></ion-icon>
+          <ion-icon class='m-up' *ngIf='item.title === "Site Up"'></ion-icon>
+          <ion-icon class='m-down' *ngIf='item.title === "Site Down"'></ion-icon>
           <ion-icon class="n-report" *ngIf='item.type === "report"'></ion-icon>
-          <ion-label class='date'>{{ item.date}}</ion-label>
+          <ion-label class='date'>{{ item.date | datetime }}</ion-label>
         </mat-expansion-panel-header>
         <mat-panel-description>
           <ion-label class='title'>{{ item.title }}</ion-label>

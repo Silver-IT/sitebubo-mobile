@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { DashboardPage } from './dashboard.page';
 import { ComponentsModule } from './../../components/components.module';
-
+import { CountoModule } from 'angular2-counto';
 const routes: Routes = [
   {
     path: '',
@@ -21,6 +21,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     ComponentsModule,
+    CountoModule,
     RouterModule.forChild(routes)
   ],
   declarations: [DashboardPage]
