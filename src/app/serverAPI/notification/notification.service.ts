@@ -31,4 +31,22 @@ export class NotificationService extends BaseService {
     url += 'domain_name=' + domainName + '&user_id=' + userID + '&token=' + token;
     return this.sendGetRequest(url); 
   }
+
+  getNotificationSetting(userID, token): any {
+    let url = this.auth_url + 'pushconfigurations?';
+    url += 'user_id=' + userID + '&token=' +  token;
+    return this.sendGetRequest(url);
+  }
+
+  saveGeneralPermission(userID, token, monitors): any {
+    let url = this.auth_url + 'pushgeneralpermission?';
+    url += 'user_id=' + userID + '&token=' + token + '&monitors=' + monitors;
+    return this.sendGetRequest(url);
+  }
+
+  saveDomainPushPermission(userID, token, domainID, monitors): any {
+    let url = this.auth_url + 'pushdomainpermission?';
+    url += 'user_id=' + userID + '&token=' + token + '&monitors=' + monitors + '&domain_id=' + domainID;
+    return this.sendGetRequest(url);
+  }
 }

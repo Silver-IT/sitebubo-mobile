@@ -18,11 +18,10 @@ export class MorePage implements OnInit {
     private activateRoute: ActivatedRoute
   ) { }
 
-  ngOnInit() {  
+  ngOnInit() {
     if (this.tempService.dashboardParams) {
       this.brokenlinksCount = this.tempService.brokenLinksCount;
       this.activateRoute.queryParams.subscribe((params) => {
-        console.log(params);
         if (params) {
           if (params.pageName === 'expire') {
             this.pageType = 1;
@@ -38,10 +37,6 @@ export class MorePage implements OnInit {
     } else {
       this.router.navigate(['domain-list'], { replaceUrl: true });
     }
-  }
-
-  ionViewWillEnter() {
-    console.log('more more more more more');
   }
 
   openFeedback() {

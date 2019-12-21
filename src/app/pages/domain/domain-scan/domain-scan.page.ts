@@ -6,6 +6,9 @@ import { ReportService } from './../../../serverAPI/report/report.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IongagetService } from './../../../services/ionGadgets/iongaget.service';
 import { DomainService } from './../../../serverAPI/domain/domain.service';
+import { AdmobService } from 'src/app/services/admob/admob.service';
+import { SocketService } from 'src/app/services/socket/socket.service';
+
 
 
 @Component({
@@ -14,7 +17,8 @@ import { DomainService } from './../../../serverAPI/domain/domain.service';
   styleUrls: ['./domain-scan.page.scss'],
 })
 export class DomainScanPage implements OnInit {
-  userID: any;
+  userID: number;
+  planID: number;
   action: any;
   token: any;
   domainName: any;
@@ -29,7 +33,9 @@ export class DomainScanPage implements OnInit {
     private reportAPI: ReportService,
     private ionService: IongagetService,
     private domainAPI: DomainService,
-    private tempService: TempService
+    private tempService: TempService,
+    private admobservice: AdmobService,
+    private socket: SocketService
     ) {
       this.initData();
     }
@@ -45,24 +51,29 @@ export class DomainScanPage implements OnInit {
   }
 
   initData() {
-    this.ga.startTrackerWithId('UA-131219006-1') .then(() => {
-      this.ga.trackView('Home');
-    }).catch(e => console.log('Error starting GoogleAnalytics', e));
+    // this.ga.startTrackerWithId('UA-131219006-1') .then(() => {
+    //   this.ga.trackView('Home');
+    // }).catch(e => console.log('Error starting GoogleAnalytics', e));
 
     this.storage.get('userInfo').then((user) => {
-      console.log(user);
       if ( user ) {
         this.userID = user.id;
         this.token = user.token;
+        this.storage.get('planInfo').then((info) => {
+          this.planID = info.id;
+        });
         this.activatedRoute.queryParams.subscribe(params => {
           if (params) {
+            const parameter = {
+              user_id: this.userID,
+              domain_name: this.tempService.dashboardParams.domainName
+            };
             if (params.action === 'addDomain') {
               this.domainName = params.domainName;
-              this.generateReport(user.id, user.token);
+              this.generateReport();
+              this.startWebSocket(parameter, 'generate');
             } else if (params.action === 'manual-scan') {
-              const domainName = this.tempService.dashboardParams.domainName;
-              const domainUserID = this.tempService.dashboardParams.domainUserID;
-              this.manualScan(domainName, domainUserID);
+              this.startWebSocket(parameter, 'manual');
             }
           }
         });
@@ -70,15 +81,36 @@ export class DomainScanPage implements OnInit {
     });
   }
 
-  generateReport(userID, token) {
-    this.reportAPI.generateReport(this.domainName, userID, token).subscribe((result) => {
-      console.log(result);
+  startWebSocket(parameter, action) {
+    this.socket.websiteScan(parameter).then((res) => {
+      if (res) {
+        if (action === 'generate') {
+          this.generateReport();
+        } else if (action === 'manual') {
+          this.manualScan();
+        }
+      }
+    });
+  }
+
+  generateReport() {
+    this.reportAPI.generateReport(this.domainName, this.userID, this.token).subscribe((result) => {
       if (result['RESPONSECODE'] ===  1) {
         this.percentage = 100;
         this.completed = true;
-        setTimeout(() => {
-          this.router.navigate(['domain-list'], { replaceUrl: true });
-        }, 2000);
+        if (this.planID === 1) {
+          this.admobservice.showInterstitial().then((result) => {
+            if (result) {
+              setTimeout(() => {
+                this.router.navigate(['domain-list'], { replaceUrl: true });
+              }, 2000);
+            }
+          });
+        } else {
+          setTimeout(() => {
+            this.router.navigate(['domain-list'], { replaceUrl: true });
+          }, 2000);
+        } 
       } else {
         this.ionService.presentToast(result['RESPONSE']);
         this.deleteDomain();
@@ -89,25 +121,34 @@ export class DomainScanPage implements OnInit {
     });
   }
 
-  manualScan(domainName, domainUserID) { 
-    this.reportAPI.manualScan(domainName, domainUserID, this.userID, this.token).subscribe((result) => {
-      console.log(result);
+  manualScan() {
+    this.reportAPI.manualScan(this.tempService.dashboardParams.domainName, this.tempService.dashboardParams.domainUserID, this.userID, this.token).subscribe((result) => {
       if (result['RESPONSECODE'] === 1) {
         this.percentage = 100;
         this.completed = true;
-        setTimeout(() => {
-          this.router.navigateByUrl('tabs/seo', { replaceUrl: true });
-        }, 2000);
+        if (this.planID === 1) { 
+          this.admobservice.showInterstitial().then((result) => {
+            if (result) {
+              setTimeout(() => {
+                this.router.navigate(['tabs/seo'], { replaceUrl: true, queryParams: { reload: true } });
+              }, 2000);
+            }
+          })
+        } else {
+          setTimeout(() => {
+            this.router.navigate(['tabs/seo'], { replaceUrl: true, queryParams: { reload: true } });
+          }, 2000);
+        }
       } else {
         this.ionService.presentToast(result['RESPONSE']);
         setTimeout(() => {
-          this.router.navigateByUrl('tabs/seo', { replaceUrl: true });
+          this.router.navigate(['tabs/seo'], { replaceUrl: true });
         }, 2000);
       }
     }, err => {
       this.ionService.presentToast('Server API Problem');
       setTimeout(() => {
-        this.router.navigateByUrl('tabs/seo', { replaceUrl: true });
+        this.router.navigate(['tabs/seo'], { replaceUrl: true });
       }, 2000);
     });
   }
@@ -115,7 +156,6 @@ export class DomainScanPage implements OnInit {
   deleteDomain() {
     this.ionService.showLoading();
     this.domainAPI.deleteDomain(this.domainName, this.userID, this.token).subscribe((result) => {
-      console.log(result);
       this.ionService.closeLoading();
       this.router.navigate(['domain-list'], { replaceUrl: true });
     }, err => {

@@ -70,6 +70,10 @@ ion-icon{
     font-size: 22px !important;
     background-image: url('assets/icons/membership.svg');
   }
+  &.menu-notifcation {
+    font-size: 22px !important;
+    background-image: url('assets/icons/menu-notification.png');
+  }
   &.menu-feedback {
     font-size: 22px !important;
     background-image: url('assets/icons/feedback-1.svg');
@@ -249,11 +253,11 @@ ion-icon{
     background-image: url('assets/icons/dashboard/siteup_icon.png');
   }
   &.positive-icon {
-    font-size: 23px;
+    font-size: 22px;
     background-image: url('assets/icons/dashboard/monitorSettings/positiveIcon.svg');
   }
   &.negative-icon {
-    font-size: 23px;
+    font-size: 22px;
     background-image: url('assets/icons/dashboard/monitorSettings/negativeIcon.svg');
   }
   &.factor-activated {

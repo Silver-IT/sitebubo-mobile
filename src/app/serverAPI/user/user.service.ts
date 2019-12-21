@@ -27,7 +27,7 @@ export class UserService extends BaseService{
     return this.sendGetRequest(url);
   }
 
-  updateMyProfile(name, userID, token) {
+  updateMyProfile(name, userID, token): any {
     let url = this.auth_url + 'updateprofile?';
     url += '&name=' + name + '&mobile=8122403630&address=london&status=1';
     url += '&user_id=' + userID + '&token=' + token;

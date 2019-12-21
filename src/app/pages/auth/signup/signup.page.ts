@@ -110,11 +110,11 @@ export class SignupPage implements OnInit {
   }
 
   googleStart() {
-    this.ga.startTrackerWithId('UA-131219006-1').then(() => {
-      this.ga.trackView('Menu');
-    }).catch(e => {
-      console.log('Error starting GoogleAnalytics', e);
-    });
+    // this.ga.startTrackerWithId('UA-131219006-1').then(() => {
+    //   this.ga.trackView('Menu');
+    // }).catch(e => {
+    //   console.log('Error starting GoogleAnalytics', e);
+    // });
   }
 
   getToken() {
@@ -156,7 +156,7 @@ export class SignupPage implements OnInit {
 
   signUpWithEmail() {
     this.readyForSubmit = true;
-    this.ga.trackEvent('Signup', 'Signup User', this.fname + this.email, 0).then(() => { });
+    // this.ga.trackEvent('Signup', 'Signup User', this.fname + this.email, 0).then(() => { });
     const password = Md5.hashStr(this.pwd);
     this.authService.signup(this.email, password, this.fname, this.deviceID ).subscribe((result) => {
       if (result.RESPONSECODE === 1) {
@@ -283,11 +283,11 @@ export class SignupPage implements OnInit {
   }
 
   facebookSignUp(email, name) {
-    this.ga.trackEvent('Signup', 'Signup User', name + email, 0).then(() => {
-    }).catch(err => {
-      this.ionService.presentToast(JSON.stringify(err));
-      this.facebookReady = false;
-    });
+    // this.ga.trackEvent('Signup', 'Signup User', name + email, 0).then(() => {
+    // }).catch(err => {
+    //   this.ionService.presentToast(JSON.stringify(err));
+    //   this.facebookReady = false;
+    // });
     this.authService.facebookSignUp(email, name, this.deviceID).subscribe(async (result) => {
       this.facebookReady = true;
       console.log(result);

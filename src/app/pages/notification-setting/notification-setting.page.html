@@ -1,0 +1,53 @@
+<ion-header class='small-header'>
+  <ion-toolbar class='toolbar' mode='md' >
+    <ion-buttons>
+      <ion-title>Notifications</ion-title>
+      <ion-button class='menu' mode='md' (click) = 'toggleMenu()'>
+        <ion-icon class='menu' slot='icon-only'></ion-icon>
+      </ion-button>
+      <ion-button class='back' (click)='back()' mode='md' >
+        <ion-icon class='back' name='arrow-back' mode='ios'></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment mode='md' [value]='filterType' (ionChange)="switchpage($event)">
+    <ion-segment-button mode='md'  value = '1'>
+      General
+    </ion-segment-button>
+    <ion-segment-button mode='md'  value = '2'>
+      By Domain
+    </ion-segment-button>
+  </ion-segment>
+  <div class="content" [ngSwitch]='filterType'>
+    <div class="general" *ngSwitchCase='1'>
+      <ion-list mode='ios'>
+        <ion-item lines='none' *ngFor='let item of generalSetting | keyvalue'>
+          <ion-label>{{ item.key | camelCase }}</ion-label>
+          <ion-toggle (ionChange)='listenGeneralSettings(item.key, $event)'  #general mode='ios'  slot='end' [checked]="item.value"></ion-toggle>
+        </ion-item>
+      </ion-list>
+    </div>
+    <div class="domain" *ngSwitchCase='2'>
+      <ion-list mode='ios'>
+        <mat-accordion>
+          <mat-expansion-panel *ngFor="let item of bydomainSetting, let i = index">
+            <mat-expansion-panel-header  [collapsedHeight]="'65px'" [expandedHeight]="'65px'">
+              <ion-label class="domain-name">{{ item.url }}</ion-label>
+            </mat-expansion-panel-header>
+            <mat-panel-description>
+              <ion-list mode='ios'>
+                <ion-item lines='none' *ngFor = 'let noti of item.notification | keyvalue'>
+                  <ion-label>{{ noti.key | camelCase}}</ion-label>
+                  <ion-toggle #domains mode='ios' (ionChange)='listenDomainMonitors(item, noti.key, $event)' [checked]="noti.value" slot='end'></ion-toggle>
+                </ion-item>
+              </ion-list>
+            </mat-panel-description>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>

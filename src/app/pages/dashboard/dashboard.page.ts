@@ -9,6 +9,8 @@ import { UserService } from './../../serverAPI/user/user.service';
 import { DomainService } from './../../serverAPI/domain/domain.service';
 import { TempService } from './../../services/temp/temp.service';
 import { MonitorService } from './../../serverAPI/monitor/monitor.service';
+import { AdmobService } from 'src/app/services/admob/admob.service';
+import { PluginsService } from 'src/app/serverAPI/plugins/plugins.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -36,13 +38,8 @@ export class DashboardPage implements OnInit {
     visitors: 0,
     speed: 0.0,
     brokens: 0
-  }
-  pluginsStatus = {
-    googleAnalytics: false,
-    emailChecker: true,
-    rankChecker: false,
-    dnsChecker: false
-  }
+  };
+  pluginData = [];
   fullReport: string;
   unreadCount: number;
   constructor(
@@ -57,7 +54,9 @@ export class DashboardPage implements OnInit {
     private actionCtrl: ActionSheetController,
     private cdr: ChangeDetectorRef,
     private tempService: TempService,
-    private monitorAPI: MonitorService
+    private monitorAPI: MonitorService,
+    private admobservice: AdmobService,
+    private pluginsAPI: PluginsService
   ) { }
 
   ngOnInit() {
@@ -66,6 +65,9 @@ export class DashboardPage implements OnInit {
   ngAfterViewInit() {
     this.userMenu.ionWillOpen.subscribe(() => {
       this.getInvitedUserList();
+    });
+    this.monitorMenu.ionWillOpen.subscribe(() => {
+      this.getAnalyticsInfo();
     });
   }
   
@@ -84,6 +86,7 @@ export class DashboardPage implements OnInit {
           if (user) {
             this.userID = user.id;
             this.token = user.token;
+            this.defineAdmob();
             this.getDomainDetails(this.domainName, this.domainUserID);
             this.getNotifications(this.domainName, this.domainUserID);
           } else {
@@ -93,6 +96,14 @@ export class DashboardPage implements OnInit {
       } else {
         this.router.navigate(['domain-list'], { replaceUrl: true });
       }
+  }
+
+  defineAdmob() {
+    this.storage.get('planInfo').then((info) => {
+      if (info.id === 1) {
+        this.admobservice.showAdmobBanner();
+      }
+    });
   }
 
   getDomainDetails(domainName, domainUserID) {
@@ -160,6 +171,19 @@ export class DashboardPage implements OnInit {
         }
       }).catch(err => {
         console.log(err);
+    });
+  }
+
+  getAnalyticsInfo() {
+    this.pluginsAPI.listplugins(this.userID, this.domainUserID, this.domainID, this.token).subscribe((result) => {
+      console.log(result);
+      if (result['RESPONSECODE'] === 1) {
+        this.pluginData = result.data.plugins;
+      } else {
+
+      }
+    }, err => {
+      this.ionService.presentToast('Server API Erroron Google Analytics');
     });
   }
 
@@ -261,6 +285,7 @@ export class DashboardPage implements OnInit {
   ionViewWillLeave(){
     this.monitorMenu.disabled = true;
     this.menuCtrl.enable(true, 'totalMenu');
+    this.admobservice.removeBanner();
   }
 
   closeAllMenu(): Promise<any> {
@@ -289,10 +314,6 @@ export class DashboardPage implements OnInit {
     this.navCtrl.back();
   }
 
-  changeStyle(plugIn) {
-    this.pluginsStatus[plugIn] = !this.pluginsStatus[plugIn];
-  }
-
   jumpToTabs(page) {
     console.log(this.domainData);
     this.tempService.saveDashboardData(this.domainData).then((result) => {
@@ -315,10 +336,6 @@ export class DashboardPage implements OnInit {
     this.orders[event.detail.to] = temp1;
     this.orders[event.detail.from] = temp2;
     console.log(this.orders);
-    // let draggedItem = this.orders.splice(event.detail.from,1)[0];
-    // console.log(draggedItem);
-    // this.orders.splice(event.detail.to,0,draggedItem);
-    // this.orderCards(this.orders);
     event.detail.complete();
     this.updateCardOrders().then((result) => {
       if (result) {
@@ -365,16 +382,30 @@ export class DashboardPage implements OnInit {
       }
     });
  }
-
- connectGoogleAnalytics() {
-   if (this.pluginsStatus.googleAnalytics) {
-    this.pluginsStatus.googleAnalytics = false;
-    return;
+ 
+ connectPlugin(monitor, name, connection) {
+   console.log(monitor, name, connection);
+   if (connection) {
+    this.generalService.confirmDisconnect(name).then((result) => {
+      console.log(result);
+      if (result) {
+        this.pluginsAPI.disconnectPlugin(monitor, this.userID, this.domainID, this.domainUserID, this.token).subscribe((result) => {
+          if (result['RESPONSECODE'] === 1) {
+            this.getAnalyticsInfo();
+          } else {
+            this.ionService.presentToast(result['RESPONSE']);
+          }
+        }, err => {
+          this.ionService.presentToast('Server API Problem');
+        });
+      }
+    })
+   } else {
+     if (monitor === 'google-analytics') {
+       this.generalService.connectGoogleAnalytics(monitor, this.domainID, this.domainUserID, this.userID, this.token).then((result) => {
+         this.getAnalyticsInfo();
+       });
+     }
    }
-   this.generalService.connectGoogleAnalytics().then((result) => {
-     if (result) {
-       this.pluginsStatus.googleAnalytics = true;
-     } 
-   });
  }
 }

@@ -1,3 +1,4 @@
+import { Events } from '@ionic/angular';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { TempService } from './../../../services/temp/temp.service';
@@ -21,9 +22,11 @@ export class SeoPage implements OnInit {
     private cdr: ChangeDetectorRef,
     private tempService: TempService,
     private router: Router,
+    private events: Events
   ) { }
 
   ngOnInit() {
+    this.listenEvents();
     if (this.tempService.dashboardParams) {
       this.getReportDetails();
     } else {
@@ -31,9 +34,14 @@ export class SeoPage implements OnInit {
     }
   }
 
+  listenEvents() {
+    this.events.subscribe('reloadresult', () => {
+      this.getReportDetails();
+    })
+  }
+
   getReportDetails() {
     this.generalSerive.getReportDetails().then((result) => {
-      console.log(result);
       this.manualAlerts = result.seonegative_secore;
       this.reportDetails = result;
       this.cdr.detectChanges();

@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalController, IonInput } from '@ionic/angular';
+import { ModalController, IonInput, NavParams } from '@ionic/angular';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
+import { PluginsService } from 'src/app/serverAPI/plugins/plugins.service';
+import { IongagetService } from 'src/app/services/ionGadgets/iongaget.service';
 
 @Component({
   selector: 'app-google-analytics',
@@ -23,8 +25,10 @@ export class GoogleAnalyticsPage implements OnInit {
   validate_viewID = false;
   constructor(
     private modalCtrl: ModalController,
-    private storage: Storage,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private pluginsAPI: PluginsService,
+    private ionService: IongagetService,
+    private navparams: NavParams
   ) { }
 
   ngOnInit() {
@@ -70,7 +74,21 @@ export class GoogleAnalyticsPage implements OnInit {
 
   connectGoogleAnalytics() {
     if (this.analyticsForm.valid) {
-      this.modalCtrl.dismiss(true);
+      console.log(this.navparams.data);
+      const params = this.navparams.data;
+      this.ionService.showLoading();
+      this.pluginsAPI.connectPlugin(params.monitor, params.userID, params.domainID, params.domainUserID, params.token).subscribe((result) => {
+        console.log(result);
+        this.ionService.closeLoading();
+        if (result['RESPONSECODE'] === 1) {
+          this.modalCtrl.dismiss(true);
+        } else {
+          this.ionService.presentToast(result['RESPONSE']);
+        }
+      }, err => {
+        this.ionService.closeLoading();
+        this.ionService.presentToast('Server API Problem');
+      });      
     }
   }
 }

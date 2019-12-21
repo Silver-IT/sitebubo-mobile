@@ -33,17 +33,17 @@ export class CseoscoreComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) { }
 
+
   ngOnInit() {
-    console.log(this.pageType);
     this.domainName = this.tempService.dashboardParams.domainName;
     this.domainUserID = this.tempService.dashboardParams.domainUserID;
     this.initData();
   }
 
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes.reportDetails) {
       this.seoData = changes.reportDetails.currentValue;
-      console.log(this.seoData);
     }
   }
 
@@ -52,11 +52,6 @@ export class CseoscoreComponent implements OnInit {
       if (user) {
         this.userID = user.id;
         this.token = user.token;
-        if (this.pageType === 2) {
-          // this.getDesktopReports();
-        } else if (this.pageType === 3) {
-          // this.getMobileReports();
-        }
       }
     });
   }

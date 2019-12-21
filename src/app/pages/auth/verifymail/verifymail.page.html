@@ -10,11 +10,16 @@
         <ion-label class='description'>We have sent an email to verify your <br /> email address to complete the signup <br />process
         </ion-label>
       </div>
+      <!-- <div [class]="afterVerified">
+        <ion-label class='header'>Your almost there!</ion-label>
+        <ion-label class='description'>You have verified your email successfully. Please log in to continue Sitebubo.
+        </ion-label>
+      </div> -->
       <div [class]="afterVerified">
           <ion-label class='description'>{{message}}</ion-label>
       </div>
       <ion-button class="red submit" (click)="login()">Log In</ion-button>
-      <ion-label class='resend'>Didn't you receive email? <b (click)='resendVerificationEmail()'>Resend</b></ion-label>
+      <ion-label class='resend' [class]="beforeVerified">Didn't you receive email? <b (click)='resendVerificationEmail()'>Resend</b></ion-label>
     </div>
   </div>
 

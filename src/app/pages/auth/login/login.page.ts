@@ -64,11 +64,11 @@ export class LoginPage implements OnInit {
   }
 
   googleStart() {
-    this.ga.startTrackerWithId('UA-131219006-1').then(() => {
-      this.ga.trackView('Login');
-    }).catch((e) => {
-      console.log('Error starting GoogleAnalytics', e);
-    });
+    // this.ga.startTrackerWithId('UA-131219006-1').then(() => {
+    //   this.ga.trackView('Login');
+    // }).catch((e) => {
+    //   console.log('Error starting GoogleAnalytics', e);
+    // });
   }
   getToken() {
     this.platform.ready().then(() => {

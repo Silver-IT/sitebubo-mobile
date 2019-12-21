@@ -8,6 +8,8 @@ import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 import { GeneralService } from './../../../services/generalComponents/general.service';
 import { DomainService } from './../../../serverAPI/domain/domain.service';
 import { TempService } from './../../../services/temp/temp.service';
+import { AdmobService } from 'src/app/services/admob/admob.service';
+import { AdMobFree } from '@ionic-native/admob-free/ngx';
 
 @Component({
   selector: 'app-domain-list',
@@ -45,12 +47,10 @@ export class DomainListPage implements OnInit {
     private ionService: IongagetService,
     private actionCtrl: ActionSheetController,
     private generalService: GeneralService,
-    private ga: GoogleAnalytics,
-    private events: Events,
     private router: Router,
     private tempService: TempService,
     private cdr: ChangeDetectorRef,
-    private monitorAPI: MonitorService
+    private admobservice: AdmobService
   ) {
 
   }
@@ -62,6 +62,10 @@ export class DomainListPage implements OnInit {
     });
   }
 
+  ionViewWillLeave() {
+    this.admobservice.removeBanner();
+  }
+
   ngOnInit() {
     
   }
@@ -70,6 +74,13 @@ export class DomainListPage implements OnInit {
     await this.storage.get('userInfo').then((user) => {
       this.userID = user.id;
       this.token = user.token;
+      this.storage.get('planInfo').then((info) => {
+        if (info.id  === 1) {
+          this.admobservice.showAdmobBanner().then(async (result) => {
+            console.log(result);
+          });
+        }
+      })
     });
   }
   
@@ -81,10 +92,8 @@ export class DomainListPage implements OnInit {
     this.domainAPI.getDomainList(this.userID, this.token).subscribe((result) => {
       this.showContent = true;
       this.ionService.closeLoading();
-      console.log('Domain List: ', result);
       if (result['RESPONSECODE'] === 1) {
         this.allDomList = result.data;
-        console.log(result.data);
         this.domainCounts = result.domains;
         this.generalService.restDomainInfo(result.domains);
         if (result.data) {
@@ -154,7 +163,6 @@ export class DomainListPage implements OnInit {
           handler: () => {
             this.filterType = 1;
             this.domains = this.allDomList;
-            console.log(this.domains);
             this.title = 'All Sites (' + this.domainCounts.domains + ')';
           },
         },
@@ -163,7 +171,6 @@ export class DomainListPage implements OnInit {
           handler: () => {
             this.filterType = 2;
             this.domains = this.myDomList;
-            console.log(this.domains);
             this.title = 'My Sites (' + this.domainCounts.my_domains + '/' + this.domainCounts.total_domains + ')';
           },
         },
@@ -172,7 +179,6 @@ export class DomainListPage implements OnInit {
           handler: () => {
             this.filterType = 3;
             this.domains = this.invitedDomList;
-            console.log(this.domains);
             this.title = 'Invited Sites (' + this.domainCounts.invited_domains + ')';
           },
         },
@@ -188,7 +194,6 @@ export class DomainListPage implements OnInit {
 
   addDomain(myDomCnt, totalDomCnt) {
     this.generalService.showDomainModal(myDomCnt, totalDomCnt);
-    // this.generalService.showDomainModal();
   }
 
   openDomain(domain_id, domain_name, domain_userID, type) {
@@ -206,7 +211,6 @@ export class DomainListPage implements OnInit {
   deleteDomain(domainName) {
     this.ionService.showLoading();
     this.domainAPI.deleteDomain(domainName, this.userID, this.token).subscribe((result) => {
-      console.log(result);
       this.ionService.closeLoading();
       if (result['RESPONSECODE'] === 1) {
         this.getDomainList();
@@ -228,7 +232,6 @@ export class DomainListPage implements OnInit {
   }
 
   onRenderItems(event) {
-     console.log(`Moving item from ${event.detail.from} to ${event.detail.to}`);
     let item1 = this.domains[event.detail.from];
     let item2 = this.domains[event.detail.to];
     const indexStart = this.allDomList.indexOf(item1);
@@ -239,7 +242,6 @@ export class DomainListPage implements OnInit {
     this.allDomList[indexLast] = temp1;
     event.detail.complete();
      this.reorderDomains().then(() => {
-       console.log(this.allDomList);
        if (this.domains.length > 1) {
          this.saveDomainsOrder().then(() => {
            this.cdr.detectChanges();
@@ -288,14 +290,5 @@ export class DomainListPage implements OnInit {
         }
       });
     });
-  }
-
-  changeImgStatus(index, status) {
-    // const element = document.getElementById('skeleton_' + index);
-    if (status) {
-      // element.style.display = 'none';
-    } else {
-      
-    }
   }
 }

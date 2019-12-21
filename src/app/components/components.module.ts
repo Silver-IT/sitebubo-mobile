@@ -33,6 +33,7 @@ import { DatetimePipe } from '../pipes/datetime/datetime.pipe';
 import { IntparsePipe } from '../pipes/intparse/intparse.pipe';
 import { FloatonePipe } from '../pipes/floatone/floatone.pipe';
 import { SmallcasePipe } from './../pipes/smallcase/smallcase.pipe';
+import { CamelCasePipe } from '../pipes/camelCase/camel-case.pipe';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { SmallcasePipe } from './../pipes/smallcase/smallcase.pipe';
     DatetimePipe,
     IntparsePipe,
     FloatonePipe,
-    SmallcasePipe
+    SmallcasePipe,
+    CamelCasePipe
   ],
   imports: [
     CommonModule,
@@ -93,7 +95,8 @@ import { SmallcasePipe } from './../pipes/smallcase/smallcase.pipe';
     DatetimePipe,
     IntparsePipe,
     FloatonePipe,
-    SmallcasePipe
+    SmallcasePipe,
+    CamelCasePipe
   ]
 })
 export class ComponentsModule { }

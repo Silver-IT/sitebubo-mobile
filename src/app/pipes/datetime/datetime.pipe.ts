@@ -10,7 +10,6 @@ export class DatetimePipe implements PipeTransform {
       return;
     }
     let start = customDate.split(' ');
-    console.log(start);
     let arrayTemp = start[0].split('-');
     let temp = new Date(parseInt(arrayTemp[2]), parseInt(arrayTemp[1])-1, parseInt(arrayTemp[0]));
     let again = temp.toUTCString();
@@ -19,8 +18,6 @@ export class DatetimePipe implements PipeTransform {
     if (start[1]) {
       again = again + ' at ' + start[1];
     }
-    console.log(again);
     return again;
   }
-
 }

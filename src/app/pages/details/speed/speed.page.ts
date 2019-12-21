@@ -25,7 +25,6 @@ export class SpeedPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.reportDetails);
     if (this.tempService.dashboardParams) {
       this.getReportDetails();
     } else {

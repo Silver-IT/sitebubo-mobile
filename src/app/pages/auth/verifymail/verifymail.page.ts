@@ -49,7 +49,7 @@ export class VerifymailPage implements OnInit {
           }
         }, err => {
             console.log(err);
-            this.ga.trackException(err, false);
+            // this.ga.trackException(err, false);
             this.ionService.closeLoading();
         }, () => console.log(''));
       } else {

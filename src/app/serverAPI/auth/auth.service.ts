@@ -76,14 +76,14 @@ export class AuthService extends BaseService{
     return this.sendGetRequest(url);
   }
 
-  resetPassword(email, password, code) {
+  resetPassword(email, password, code): any {
     let url = this.auth_url + 'resetpassword?';
     url += 'email=' + email + '&password=' + password + '&code=' + code;
     console.log(url);
     return this.sendGetRequest(url);
   }
 
-  verifyToken(token) {
+  verifyToken(token): any {
     let url = this.auth_url + 'verifytoken?';
     url += 'token=' + token;
     console.log(url);

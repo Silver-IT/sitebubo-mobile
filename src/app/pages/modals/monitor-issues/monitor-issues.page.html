@@ -1,17 +1,16 @@
 <ion-header>
-    <ion-toolbar mode='ios' class="modal-toolbar issues">
-      <ion-buttons>
-        <ion-title>{{ title }}</ion-title>
-        <ion-button class='close' mode='ios' (click) = 'dismisss()'>
-          <ion-icon class='white-close ' ios="md-close" md="md-close" slot='icon-only'></ion-icon>
-        </ion-button>
-      </ion-buttons>  
-    </ion-toolbar>
-  </ion-header>
-
+  <ion-toolbar mode='ios' class="modal-toolbar issues">
+    <ion-buttons>
+      <ion-title>{{ title }}</ion-title>
+      <ion-button class='close' mode='ios' (click) = 'dismisss()'>
+        <ion-icon class='white-close ' ios="md-close" md="md-close" slot='icon-only'></ion-icon>
+      </ion-button>
+    </ion-buttons>  
+  </ion-toolbar>
+</ion-header>
 <ion-content>
-  <ion-label class='des' *ngIf = 'filterType && showData'>Your domain got those positive factors, for more information see detailed report</ion-label>
-  <ion-label class='des' *ngIf = '!filterType && showData'>Your domain failed with following below test, for more information see detailed report</ion-label>
+  <ion-label class='des' *ngIf = 'filterType && showData'>Your domain got those positive factors, for more information see detailed report.</ion-label>
+  <ion-label class='des' *ngIf = '!filterType && showData'>Your domain failed with following below test, for more information see detailed report.</ion-label>
   <div class="filterType">
       <ion-card class="positive" mode='ios' (click) = 'changeFiterType(1)' [ngClass] = '{ "selected": filterType && showData }'>
         <ion-skeleton-text animated *ngIf = '!showData'></ion-skeleton-text>

@@ -11,7 +11,6 @@ const server_root = 'https://app.sitewiser.com/api/public/';
   providedIn: 'root'
 })
 export class BaseService {
-
   public domain_url = server_root + 'apidomain/';
   public subscription_url = server_root +'apisubscription/';
   public auth_url = server_root + 'apiusers/';

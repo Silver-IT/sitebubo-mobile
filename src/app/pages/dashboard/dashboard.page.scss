@@ -348,6 +348,7 @@ ion-menu {
         ion-label.pluginName {
           padding-left: 20px;
           font-size: 16px;
+          white-space: unset !important;
         }
         ion-button {
           font-size: 15px;

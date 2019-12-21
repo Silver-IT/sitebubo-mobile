@@ -3,12 +3,15 @@ import { Platform, Events } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Storage } from '@ionic/storage';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router } from '@angular/router';
 import { NetworkService } from './services/networkStatus/network.service';
 import { GeneralService } from './services/generalComponents/general.service';
 import { IongagetService } from './services/ionGadgets/iongaget.service';
 import { AuthService } from './serverAPI/auth/auth.service';
 import { StorageService } from './services/storage/storage.service';
+import { Deeplinks } from '@ionic-native/deeplinks/ngx';
+import { FCM } from '@ionic-native/fcm/ngx';
+import { PushNotificationsService } from './services/pushNotifications/push-notifications.service';
 
 @Component({
   selector: 'app-root',
@@ -33,18 +36,22 @@ export class AppComponent {
     private ionService: IongagetService,
     private cdr: ChangeDetectorRef,
     private authAPI: AuthService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private deeplinks: Deeplinks,
+    private fcm: FCM,
+    private pushService: PushNotificationsService
   ) {
     this.listenEvents();
     this.networkService.watchNetworkConnection();
     this.initializeApp();
   }
 
-  initializeApp() {
-    
+  initializeApp() {   
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.listenOutsideChanges();
+      this.listenFCM();
       this.veryifyToken().then((result) => {
         if (result) {
           console.log(result);
@@ -55,11 +62,6 @@ export class AppComponent {
       }).catch((err) => {
         
       });
-    });
-
-    this.platform.resume.subscribe(() => {
-      // this.resetInfo();
-      this.initBranch();
     });
   }
 
@@ -88,8 +90,24 @@ export class AppComponent {
     });
   }
 
-  listenEvents() {
+  listenFCM() {
+    this.fcm.getToken().then(token => {
+      console.log(token);
+    });
+    this.fcm.onTokenRefresh().subscribe(token => {
+      console.log(token);
+    });
+    this.fcm.onNotification().subscribe(data => {
+      console.log(data);
+      if (data.wasTapped) {
+        alert('Tapped:      ' + JSON.stringify(data));
+      } else {
+       alert(JSON.stringify(data));
+      }
+    });
+  }
 
+  listenEvents() {
     this.events.subscribe('denied_token', () => {
       this.ionService.closeLoading();
     });
@@ -122,18 +140,23 @@ export class AppComponent {
 
   }
 
-
-  
-  initBranch() {
-    // alert(this.platform.platforms);
-    if (this.platform.is('cordova')) {
-     
-    } else {
-      this.ionService.showAlert('Invalid Platform', 'Branch works on only devices. Please run this on the valid device');
-    }
-
-    // this.deeplinks
+  listenOutsideChanges() {
+    this.deeplinks.route({
+      '/verifymail': { id: 'verified', code: 'asdkfeicke0329ds3mns' },
+      '/': { params: 'route' }
+    }).subscribe((match) => {
+      if (match['$route']['id'] === 'verified') {
+        this.router.navigate(['verifymail'], {
+          queryParams: {
+            id: 'verified' , code: 'asdkfeicke0329ds3mns'
+          }
+        })
+      }
+    }, (nomatch) => {
+      
+    });
   }
+
   openDomainList() {
     this.router.navigate(['domain-list']);
   }
@@ -144,6 +167,10 @@ export class AppComponent {
 
   openMyProfile() {
     this.generalService.openMyProfile();
+  }
+
+  openNotificationSettings() {
+    this.router.navigate(['notification-setting']);
   }
 
   openFeedback() {
@@ -162,5 +189,4 @@ export class AppComponent {
   ChangePlan() {
     this.router.navigate(['subscription']);
   }
-
 }

@@ -72,8 +72,8 @@
       </div>
     </ion-card>
   </div>
-  <ion-label class="no-result" *ngIf = 'uptimeStatus && downtimeRecord.length === 0 && uptimeStatus?.last_downtime.date'>No down time Results in {{ filterLabel }}</ion-label>
-  <ion-label class="no-result" *ngIf = 'uptimeStatus && downtimeRecord.length === 0 && !uptimeStatus?.last_downtime.date'>No down time Records so far</ion-label>
+  <ion-label class="no-result" *ngIf = 'uptimeStatus && downtimeRecord.length === 0 && uptimeStatus?.last_downtime.date'>No down time results in {{ filterLabel }}</ion-label>
+  <ion-label class="no-result" *ngIf = 'uptimeStatus && downtimeRecord.length === 0 && !uptimeStatus?.last_downtime.date'>No down time records so far</ion-label>
   <ion-fab class='feedback-fab nopadding-top' vertical="bottom" horizontal="start" slot="fixed">
     <ion-fab-button mode='md' class='feedback' (click)='openFeedback()'>
         <ion-icon class='feedback'></ion-icon>

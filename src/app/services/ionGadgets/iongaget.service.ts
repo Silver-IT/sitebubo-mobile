@@ -84,7 +84,6 @@ export class IongagetService {
       cssClass: 'customLoading'
     }).then(a => {
       a.present().then(() => {
-        console.log('presented');
         if (!this.isLoading) {
           a.dismiss().then(() => console.log('abort presenting'));
         }
@@ -94,7 +93,7 @@ export class IongagetService {
 
   async closeLoading() {
     this.isLoading = false;
-    return await this.loadingCtrl.dismiss().then(() => console.log('dismissed'));
+    return await this.loadingCtrl.dismiss().then();
   }
 
   toggleMenu() {

@@ -38,6 +38,7 @@ const routes: Routes = [
   },
   { path: 'notification-list', loadChildren: './pages/modals/notification-list/notification-list.module#NotificationListPageModule' },
   { path: 'google-analytics', loadChildren: './pages/modals/plugins/google-analytics/google-analytics.module#GoogleAnalyticsPageModule' },  { path: 'monitor-issues', loadChildren: './pages/modals/monitor-issues/monitor-issues.module#MonitorIssuesPageModule' },
+  { path: 'notification-setting', loadChildren: './pages/notification-setting/notification-setting.module#NotificationSettingPageModule' },
 
 ];
 

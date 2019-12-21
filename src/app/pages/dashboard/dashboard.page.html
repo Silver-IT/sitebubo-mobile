@@ -51,7 +51,7 @@
       <ion-skeleton-text animated *ngIf='!domainData'  style='height: 120px;'></ion-skeleton-text>
       <ion-card-title *ngIf='domainData'>
         <ion-label>SITES IS </ion-label>
-        <ion-label class='highlighted'>{{ domainData?.security.status }}</ion-label>
+        <ion-label class='highlighted'>{{ domainData?.security.desc }}</ion-label>
       </ion-card-title>
       <ion-card-header *ngIf='domainData'>
         <ion-icon class='d-virusfree'></ion-icon>
@@ -285,38 +285,48 @@
     </ion-header>
     <ion-content>
       <ion-list mode='ios'>
-        <ion-item mode='ios'>
-          <ion-icon class='d-googleAnalytics'></ion-icon>
-          <ion-label class='pluginName'>Google Analytics</ion-label>
-          <ion-button  mode='md' (click)='connectGoogleAnalytics()' [ngClass]='{ "connected" : pluginsStatus.googleAnalytics, "disconnected": !pluginsStatus.googleAnalytics }'>
-            <ion-label *ngIf="!pluginsStatus.googleAnalytics">Connect</ion-label>
-            <ion-label *ngIf="pluginsStatus.googleAnalytics">Disconnect</ion-label>
-          </ion-button>
-        </ion-item>
-        <ion-item mode='ios'>
-          <ion-icon class='d-emailChecker'></ion-icon>
-          <ion-label class='pluginName'>Email Checker</ion-label>
-          <ion-button  mode='md' (click)='changeStyle("emailChecker")' [ngClass]='{ "connected" : pluginsStatus.emailChecker, "disconnected":  !pluginsStatus.emailChecker }'>
-            <ion-label *ngIf="!pluginsStatus.emailChecker">Connect</ion-label>
-            <ion-label *ngIf="pluginsStatus.emailChecker">Disconnect</ion-label>
-          </ion-button>
-        </ion-item>
-        <ion-item mode='ios'>
-          <ion-icon class='d-rankChecker'></ion-icon>
-          <ion-label class='pluginName'>Rank Checker</ion-label>
-          <ion-button mode='md' (click)='changeStyle("rankChecker")' [ngClass]='{ "connected" : pluginsStatus.rankChecker, "disconnected": !pluginsStatus.rankChecker }'>
-            <ion-label *ngIf="!pluginsStatus.rankChecker">Connect</ion-label>
-            <ion-label *ngIf="pluginsStatus.rankChecker">Disconnect</ion-label>
-          </ion-button>
-        </ion-item>
-        <ion-item mode='ios'>
-          <ion-icon class='d-dnsChecker'></ion-icon>
-          <ion-label class='pluginName'>DNS Checker</ion-label>
-          <ion-button mode='md' (click)='changeStyle("dnsChecker")' [ngClass]='{ "connected" : pluginsStatus.dnsChecker, "disconnected": !pluginsStatus.dnsChecker }'>
-            <ion-label *ngIf="!pluginsStatus.dnsChecker">Connect</ion-label>
-            <ion-label *ngIf="pluginsStatus.dnsChecker">Disconnect</ion-label>
-          </ion-button>
-        </ion-item>
+        <ng-container *ngFor="let item of pluginData">
+          <ng-template [ngIf]='item?.name==="google-analytics"'>
+            <ion-item mode='ios' >
+              <ion-icon class='d-googleAnalytics'></ion-icon>
+              <ion-label class='pluginName'>Google Analytics</ion-label>
+              <ion-button  mode='md' (click)='connectPlugin(item.name,"Google Analytics", item.connection)' [ngClass]='{ "connected" : item?.connection, "disconnected": !item?.connection }'>
+                <ion-label *ngIf="!item?.connection">Connect</ion-label>
+                <ion-label *ngIf="item?.connection">Disconnect</ion-label>
+              </ion-button>
+            </ion-item>
+          </ng-template>
+          <ng-template [ngIf]='item?.name==="dns-checker"'>
+            <ion-item mode='ios'>
+              <ion-icon class='d-dnsChecker'></ion-icon>
+              <ion-label class='pluginName'>DNS Checker</ion-label>
+              <ion-button mode='md' (click)='connectPlugin(item.name,"DNS Checker", item.connection)' [ngClass]='{ "connected" : item?.connection, "disconnected": !item?.connection }'>
+                <ion-label *ngIf="!item?.connection">Connect</ion-label>
+                <ion-label *ngIf="item?.connection">Disconnect</ion-label>
+              </ion-button>
+            </ion-item>
+          </ng-template>
+          <ng-template [ngIf]='item?.name==="email-checker"'>
+            <ion-item mode='ios'>
+              <ion-icon class='d-emailChecker'></ion-icon>
+              <ion-label class='pluginName'>Email Checker</ion-label>
+              <ion-button  mode='md' (click)='connectPlugin(item.name,"Email Checker", item.connection)' [ngClass]='{ "connected" : item?.connection, "disconnected":  !item?.connection }'>
+                <ion-label *ngIf="!item?.connection">Connect</ion-label>
+                <ion-label *ngIf="item?.connection">Disconnect</ion-label>
+              </ion-button>
+            </ion-item>
+          </ng-template>
+          <ng-template [ngIf]='item?.name==="rank-checker"'>
+            <ion-item mode='ios'>
+              <ion-icon class='d-rankChecker'></ion-icon>
+              <ion-label class='pluginName'>Rank Checker</ion-label>
+              <ion-button mode='md' (click)='connectPlugin(item.name,"Rank Checker", item.connection)' [ngClass]='{ "connected" : item?.connection, "disconnected": !item?.connection }'>
+                <ion-label *ngIf="!item?.connection">Connect</ion-label>
+                <ion-label *ngIf="item?.connection">Disconnect</ion-label>
+              </ion-button>
+            </ion-item>
+          </ng-template>
+        </ng-container>     
       </ion-list>
     </ion-content>
   </ion-menu>

@@ -57,7 +57,6 @@ export class GeneralService {
     this.storage.get('userInfo').then(user => {
       if (user) {
         this.storage.get('planInfo').then(info => {
-          console.log(user.new_user, info.id);
           if (user.new_user && info.id == 0) {
             this.router.navigate(['subscription'], { replaceUrl: true });
           } else if (user.new_user) {
@@ -281,13 +280,21 @@ export class GeneralService {
     });
   }
 
-  connectGoogleAnalytics(): Promise<any> {
+  connectGoogleAnalytics(monitor, domainID, domainUserID, userID, token): Promise<any> {
     return new Promise(async (resolve, reject) => {
       const modal = await this.modalCtrl.create({
         component: GoogleAnalyticsPage,
+        componentProps: {
+          monitor: monitor,
+          domainID: domainID,
+          domainUserID: domainUserID,
+          userID: userID,
+          token: token
+        },
         cssClass: 'googleAnalyticsModal'
       });
       modal.onDidDismiss().then((result) => {
+        console.log(result.data);
         if (result.data) {
           resolve(true);
         } else {
@@ -339,4 +346,31 @@ export class GeneralService {
       });
     });
   }
+
+  confirmDisconnect(name): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      let result: boolean;
+      const act = await this.actionCtrl.create({
+        header: 'Are you sure to remove ' + name,
+        buttons: [
+          {
+            text: 'Yes',
+            handler: () => {
+              result = true;
+            }
+          },
+          {
+            text: 'No',
+            handler: () => {
+              result = false;
+            }
+          }
+        ]
+      });
+      act.onDidDismiss().then(() => {
+        resolve(result);
+      });
+      await act.present();
+    }) 
+   }
 }

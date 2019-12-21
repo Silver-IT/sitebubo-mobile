@@ -31,33 +31,33 @@ export class DomainService extends BaseService{
     return this.sendGetRequest(url);
   }
 
-  addDomain(comanyName, domainName, userID, token) {
+  addDomain(comanyName, domainName, userID, token): any {
     let url = this.domain_url + 'adddomain?';
     url += 'company_name=' + comanyName + '&domain_name=' + domainName + '&user_id=' + userID;
     url += '&token=' + token;
     return this.sendGetRequest(url);
   }
 
-  updateDomain(id, companyName, domainName, userID, token) {
+  updateDomain(id, companyName, domainName, userID, token): any {
     let url = this.domain_url + 'updatedomain?';
     url += 'id=' + id + '&company_name=' + companyName + '&domain_name=' + domainName + '&user_id=' + userID;
     url += '&token=' + token;
     return this.sendGetRequest(url);
   }
 
-  deleteDomain(domainName, userID, token) {
+  deleteDomain(domainName, userID, token): any {
     let url = this.domain_url + 'deletedomain?';
     url += 'domain_name=' + domainName + '&user_id=' + userID + '&token=' + token;
     return this.sendGetRequest(url);
   }
 
-  validateDomain(domainName, userID, token) {
+  validateDomain(domainName, userID, token): any {
     let url = this.domain_url + 'domainvalidate?';
     url += 'domain_name=' + domainName + '&user_id=' + userID + '&token=' + token;
     return this.sendGetRequest(url);
   }
 
-  checkDomainCount(subscriptionID, userID, token) {
+  checkDomainCount(subscriptionID, userID, token): any {
     let url = this.domain_url + 'checkdomainlist?';
     url += 'subscription_id=' + subscriptionID + '&user_id=' + userID + '&token=' + token;
     return this.sendGetRequest(url);
@@ -70,13 +70,13 @@ export class DomainService extends BaseService{
     return this.sendGetRequest(url);
   }
 
-  reorderDomains(domainIDs, userID, token) {
+  reorderDomains(domainIDs, userID, token): any {
     let url = this.domain_url + 'updatedomainorders?';
     url += 'domains=' + domainIDs + '&user_id=' + userID + '&token=' + token;
     return this.sendGetRequest(url);
   }
 
-  updateMonitorOrders(data) {
+  updateMonitorOrders(data): any {
     let url = this.auth_url + 'updatemonitororders'
     return this.sendPostRequest(url, data);
   }

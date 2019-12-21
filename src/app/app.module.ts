@@ -8,6 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 // plugins
 import { Network } from '@ionic-native/network/ngx';
@@ -18,7 +19,8 @@ import { FCM } from '@ionic-native/fcm/ngx';
 import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
 import { AppRate } from '@ionic-native/app-rate/ngx';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
-// import { Deeplinks } from '@ionic-native/deeplinks/ngx';
+import { Deeplinks } from '@ionic-native/deeplinks/ngx';
+import { AdMobFree } from '@ionic-native/admob-free/ngx';
 // http
 import { HttpClientModule, HttpResponse } from '@angular/common/http';
 // modals
@@ -36,17 +38,17 @@ import { InviteUserPageModule } from './pages/modals/invite-user/invite-user.mod
 import { NotificationListPageModule } from './pages/modals/notification-list/notification-list.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GoogleAnalyticsPageModule } from './pages/modals/plugins/google-analytics/google-analytics.module';
-MonitorIssuesPageModule
 import { MonitorIssuesPageModule } from './pages/modals/monitor-issues/monitor-issues.module';
 // popover
 import { AllDoneComponent } from './components/popover/all-done/all-done.component';
+import { NotificationPopComponent } from './components/popover/notification-pop/notification-pop.component';
 
 
 
-
+const config: SocketIoConfig = { url: 'https://socket.sitebubo.com', options: { transports: ['websocket'] } };
 
 @NgModule({
-  declarations: [AppComponent, AllDoneComponent],
+  declarations: [AppComponent, AllDoneComponent, NotificationPopComponent],
   entryComponents: [ AllDoneComponent ],
   imports: [
     BrowserModule,
@@ -69,6 +71,7 @@ import { AllDoneComponent } from './components/popover/all-done/all-done.compone
     NotificationListPageModule,
     GoogleAnalyticsPageModule,
     MonitorIssuesPageModule,
+    SocketIoModule.forRoot(config),
     IonicStorageModule.forRoot(),
   ],
   providers: [
@@ -82,7 +85,8 @@ import { AllDoneComponent } from './components/popover/all-done/all-done.compone
     AppRate,
     Keyboard,
     HttpResponse,
-    
+    Deeplinks,
+    AdMobFree,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

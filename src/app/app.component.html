@@ -3,7 +3,7 @@
   <!-- <ion-split-pane > -->
     <ion-menu #menu type="overlay" [swipeGesture] = 'showMenu && !newUser' menuId='totalMenu'>
     <!-- <ion-menu #menu type="overlay"> -->
-      <ion-header class='menu-header'>
+      <ion-header class='menu-header' mode='ios'>
         <div class='logo'>
           <img src="assets/icons/whitelogo.svg" alt="">
         </div>
@@ -29,6 +29,12 @@
             <ion-item (click)='openMembership()'>
               <ion-icon class='menu-membership' slot='start'></ion-icon>
               <ion-label>Membership</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide='false'>
+            <ion-item (click)='openNotificationSettings()'>
+              <ion-icon class='menu-notifcation' slot='start'></ion-icon>
+              <ion-label>Notifications</ion-label>
             </ion-item>
           </ion-menu-toggle>
           <ion-menu-toggle auto-hide='false'>

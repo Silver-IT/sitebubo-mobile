@@ -1,7 +1,5 @@
 <ion-card mode='ios' *ngIf = 'speedData'>
-  <ion-label class='header'>
-    Lighthoust analysis is the current page on an emulated mobile network. Values are estimated and may vary.
-  </ion-label>
+  <ion-label class='header'>Lighthouse analysis is the current page on an emulated mobile network. Values are estimated and may vary.</ion-label>
   <ion-list mode='ios'>
     <ion-item *ngFor="let item of speedData?.primary">
         <ion-label class="title">{{ item.description }}</ion-label>

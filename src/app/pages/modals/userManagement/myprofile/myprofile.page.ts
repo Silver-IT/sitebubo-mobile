@@ -62,9 +62,9 @@ export class MyprofilePage implements OnInit {
   }
 
   startGoogle() {
-    this.ga.startTrackerWithId('UA-131219006-1').then(() => {
-        this.ga.trackView('Profile');
-    }).catch(e => console.log('Error starting GoogleAnalytics', e));
+    // this.ga.startTrackerWithId('UA-131219006-1').then(() => {
+    //     this.ga.trackView('Profile');
+    // }).catch(e => console.log('Error starting GoogleAnalytics', e));
   }
 
   ngAfterViewInit() {

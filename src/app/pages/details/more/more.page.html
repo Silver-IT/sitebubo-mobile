@@ -1,14 +1,22 @@
-<ion-header class='underHeader' *ngIf = 'pageType === 2'>
-  <ion-segment mode='md' [value]='pageType'>
+<ion-header class='underHeader' *ngIf='pageType !== 0'>
+  <ion-segment mode='md' [value]='pageType' *ngIf='pageType === 2'>
     <ion-segment-button mode='md' value = '2' chkecked>
       <ion-label>
         BROKEN LINKS
         <div class="submenu-badge" *ngIf='brokenlinksCount'>{{ brokenlinksCount }}</div>
       </ion-label>
     </ion-segment-button>
-    <!-- <ion-segment-button mode='md' value = '2' (click) = 'changePageType(2)'>
-      <ion-label>DOMAIN EXPIRY</ion-label>
-    </ion-segment-button> -->
+    <ion-segment-button mode='md' [disabled]='true'>
+    </ion-segment-button>
+    <ion-segment-button mode='md' [disabled]='true'>
+    </ion-segment-button>
+  </ion-segment>
+  <ion-segment mode='md' [value]='pageType' *ngIf='pageType === 1'>
+    <ion-segment-button mode='md' value = '1' chkecked>
+      <ion-label>
+        DOMAIN EXPIRY
+      </ion-label>
+    </ion-segment-button>
     <ion-segment-button mode='md' [disabled]='true'>
     </ion-segment-button>
     <ion-segment-button mode='md' [disabled]='true'>

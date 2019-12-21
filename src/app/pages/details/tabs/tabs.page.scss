@@ -45,7 +45,7 @@ ion-tab-bar {
           background-image: url('../../../../assets/icons/tabs/tab-seo.png');
         }
         &.t-more {
-          background-image: url('../../../../assets/icons/tabs/t-more.png');
+          background-image: url('../../../../assets/icons/tabs/tab_more.png');
         }
       }
       ion-label {
@@ -55,6 +55,7 @@ ion-tab-bar {
       }
       &.tab-selected {
         ion-icon {
+          animation: bounce-in-top 1.5s both;
           &.t-uptime {
             background-image: url('../../../../assets/icons/tabs/tab-activeuptime.png') !important;
           }
@@ -68,7 +69,7 @@ ion-tab-bar {
             background-image: url('../../../../assets/icons/tabs/tab-activeseo.png') !important;
           }
           &.t-more {
-            background-image: url('../../../../assets/icons/tabs/t-moreActive.png') !important;
+            background-image: url('../../../../assets/icons/tabs/tab_activemore.png') !important;
           }
         }
         ion-label {
