@@ -24,9 +24,9 @@ export class PluginsService extends BaseService {
      return this.sendGetRequest(url);  
    }
 
-   connectPlugin(monitor, userID, domainID, domainUserID, token): any {
+   connectPlugin(monitor, userID, domainID, domainUserID, token, keys): any {
     let url = this.domain_url + 'connectplugin?';
-     url += 'monitor=' + monitor +  '&user_id=' + userID + '&domain_id=' + domainID +  '&domain_user_id=' + domainUserID + '&token=' + token;
+     url += 'monitor=' + monitor +  '&user_id=' + userID + '&domain_id=' + domainID +  '&domain_user_id=' + domainUserID + '&token=' + token + '&keys=' + keys;
      return this.sendGetRequest(url);  
    }
 

@@ -6,6 +6,17 @@ $menu-footer: 70px;
 $modal-header: 50px;
 $under-header: 50px;
 
+ion-popover.pushPop {
+  div.popover-content {
+      top: 10px !important;
+      left: 0 !important;
+      right: 0 !important;
+      margin: auto !important;
+      width: 90% !important;
+      // transform: translate(-50%, -50%) !important;
+  }
+}
+
 ion-header {
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -453,4 +464,5 @@ mat-expansion-panel {
 ion-skeleton-text {
   margin: 0 !important;
 }
+
 

@@ -44,6 +44,7 @@ export class AppComponent {
     this.listenEvents();
     this.networkService.watchNetworkConnection();
     this.initializeApp();
+    // this.pushService.launchpopover(1);
   }
 
   initializeApp() {   
@@ -51,7 +52,11 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.listenOutsideChanges();
-      this.listenFCM();
+      this.storage.get('userInfo').then((user) => {
+        if (user) {
+          this.pushService.listenFCM();
+        }
+      });
       this.veryifyToken().then((result) => {
         if (result) {
           console.log(result);
@@ -90,23 +95,6 @@ export class AppComponent {
     });
   }
 
-  listenFCM() {
-    this.fcm.getToken().then(token => {
-      console.log(token);
-    });
-    this.fcm.onTokenRefresh().subscribe(token => {
-      console.log(token);
-    });
-    this.fcm.onNotification().subscribe(data => {
-      console.log(data);
-      if (data.wasTapped) {
-        alert('Tapped:      ' + JSON.stringify(data));
-      } else {
-       alert(JSON.stringify(data));
-      }
-    });
-  }
-
   listenEvents() {
     this.events.subscribe('denied_token', () => {
       this.ionService.closeLoading();
@@ -118,6 +106,7 @@ export class AppComponent {
       this.newUser = user.new_user;
       this.storage.set('userInfo', user);
       this.cdr.detectChanges();
+      this.pushService.listenFCM();
     });
     
     this.events.subscribe('planInfo_set', (info) => {

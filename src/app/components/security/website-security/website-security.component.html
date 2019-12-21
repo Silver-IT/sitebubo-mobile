@@ -5,7 +5,7 @@
   </ion-card-header>
   <ion-card-content>
     <ion-icon class="d-virusfree" *ngIf = 'securityData?.status === "VIRUS FREE"'></ion-icon>
-    <ion-icon class="d-siteDown" *ngIf = 'securityData?.status === "UNSECURE"'></ion-icon>
+    <ion-icon class="d-virusdetected" *ngIf = 'securityData?.status === "UNSECURE"'></ion-icon>
   </ion-card-content>
 </ion-card>
 <ion-card mode='ios' *ngIf = 'securityData'>

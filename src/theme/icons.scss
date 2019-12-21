@@ -150,7 +150,7 @@ ion-icon{
   }
   &.d-fullReport {
     font-size: 45px !important;
-    background-image: url('assets/icons/dashboard/fullreport_icon.svg');
+    background-image: url('assets/icons/dashboard/fullReort.gif');
   }
   &.d-notificationBell {
     background-size: contain !important;
@@ -187,7 +187,11 @@ ion-icon{
   }
   &.d-virusfree {
     font-size: 75px !important;
-    background-image: url('assets/icons/dashboard/security.gif');
+    background-image: url('assets/icons/dashboard/security_secure.gif');
+  }
+  &.d-virusdetected {
+    font-size: 75px !important;
+    background-image: url('assets/icons/dashboard/security_notsecure.gif');
   }
   &.d-visitorRate {
     font-size: 45px !important;

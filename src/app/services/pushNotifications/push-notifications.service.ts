@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { TempService } from '../temp/temp.service';
 import { PopoverController } from '@ionic/angular';
+import { NotificationPopComponent } from 'src/app/components/popover/notification-pop/notification-pop.component';
+import { FCM } from '@ionic-native/fcm/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,8 @@ export class PushNotificationsService {
   constructor(
     private router: Router,
     private tempService: TempService,
-    private popover: PopoverController
+    private popover: PopoverController,
+    private fcm: FCM
   ) { }
 
   treatNotificationEvents(data) {
@@ -21,7 +24,6 @@ export class PushNotificationsService {
         this.router.navigate(['tabs/uptime']);
       }
       case "security": {
-        alert('security');
         data.pageType = 1;
         this.tempService.saveDashboradParams(data, this.tempService.filterType).then((result) => {
           if (result) {
@@ -94,5 +96,38 @@ export class PushNotificationsService {
 
   launchNotification() {
     
+  }
+
+  async launchpopover(push) {
+    const pop = await this.popover.create({
+      component: NotificationPopComponent,
+      componentProps: {
+        pushData: JSON.stringify(push)
+      },
+      cssClass: 'pushPop',
+      mode: 'ios'
+    });
+    await pop.present();
+  }
+
+  listenFCM() {
+    this.fcm.subscribeToTopic('all');
+    this.fcm.getToken().then(token => {
+      console.log(token);
+    });
+    this.fcm.onTokenRefresh().subscribe(token => {
+      console.log(token);
+    });
+    this.fcm.onNotification().subscribe(data => {
+      if (data.wasTapped) {
+        // this.launchpopover(data);
+      } else {
+       this.launchpopover(data);
+      }
+    });
+  }
+
+  unlistenFCM() {
+    this.fcm.unsubscribeFromTopic('all');
   }
 }

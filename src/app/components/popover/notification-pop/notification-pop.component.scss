@@ -1,0 +1,16 @@
+
+div.content {
+  padding: 20px 10px;
+  ion-label {
+    display: block;
+    text-align: center;
+    &.title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    &.description {
+      font-size: 16px;
+      margin-top: 15px;
+    }
+  }
+}

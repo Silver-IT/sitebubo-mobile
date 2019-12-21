@@ -16,6 +16,7 @@ export class GoogleAnalyticsPage implements OnInit {
   readyToSubmit = false;
   email = '';
   viewID = '';
+  errorMessage: string;
   validation_messages = {
     viewID: [
       { type: 'required', message: 'View ID is required' },
@@ -23,6 +24,7 @@ export class GoogleAnalyticsPage implements OnInit {
     ]
   }
   validate_viewID = false;
+  extraError: boolean = false;
   constructor(
     private modalCtrl: ModalController,
     private formBuilder: FormBuilder,
@@ -41,6 +43,7 @@ export class GoogleAnalyticsPage implements OnInit {
 
   ngAfterViewInit() {
     this.viewIDInput.ionFocus.subscribe(() => {
+      this.extraError = false;
       this.validate_viewID = false;
     });
     this.viewIDInput.ionBlur.subscribe(() => {
@@ -77,13 +80,22 @@ export class GoogleAnalyticsPage implements OnInit {
       console.log(this.navparams.data);
       const params = this.navparams.data;
       this.ionService.showLoading();
-      this.pluginsAPI.connectPlugin(params.monitor, params.userID, params.domainID, params.domainUserID, params.token).subscribe((result) => {
+      const keys = {
+        name: 'view-id',
+        value: this.viewID
+      };
+      let temp = [];
+      temp.push(keys);
+      this.pluginsAPI.connectPlugin(params.monitor, params.userID, params.domainID, params.domainUserID, params.token, JSON.stringify(temp)).subscribe((result) => {
         console.log(result);
         this.ionService.closeLoading();
         if (result['RESPONSECODE'] === 1) {
           this.modalCtrl.dismiss(true);
         } else {
-          this.ionService.presentToast(result['RESPONSE']);
+          this.extraError = true;
+          this.readyToSubmit = false;
+          this.errorMessage = result['RESPONSE'];
+          // this.ionService.presentToast(result['RESPONSE']);
         }
       }, err => {
         this.ionService.closeLoading();

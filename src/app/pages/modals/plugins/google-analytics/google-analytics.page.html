@@ -38,6 +38,14 @@
             </div>
           </ng-container>
         </div>
+        <div class="validation-errors" *ngIf='extraError'>
+          <ng-container>
+            <div class="error-message">
+              <ion-icon class='error'></ion-icon>
+              <ion-label>{{ errorMessage }}</ion-label>
+            </div>
+          </ng-container>
+        </div>
       </div>
     </ion-list>
 

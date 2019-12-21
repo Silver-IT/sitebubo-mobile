@@ -21,10 +21,9 @@ export class SecurityPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    alert('security page');
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params.notification) {
-        alert(JSON.stringify(this.tempService.dashboardParams));
+        // alert(JSON.stringify(this.tempService.dashboardParams));
         this.pageType = this.tempService.dashboardParams.pageType;
       } else {
         this.pageType = 1;
@@ -43,7 +42,6 @@ export class SecurityPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    alert('security VIEW page');
   }
   
   openFeedback() {

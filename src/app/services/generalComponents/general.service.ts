@@ -23,7 +23,8 @@ import { MonitorService } from './../../serverAPI/monitor/monitor.service';
 import { NotificationService } from './../../serverAPI/notification/notification.service';
 import { TempService } from '../temp/temp.service';
 import { MonitorIssuesPage } from './../../pages/modals/monitor-issues/monitor-issues.page';
-import { reject } from 'q';
+import { PushNotificationsService } from '../pushNotifications/push-notifications.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +44,8 @@ export class GeneralService {
     private actionCtrl: ActionSheetController,
     private notificationAPI: NotificationService,
     private tempService: TempService,
-    private monitorAPI: MonitorService
+    private monitorAPI: MonitorService,
+    private pushService: PushNotificationsService
   ) { }
 
   async openMyProfile() {
@@ -109,11 +111,12 @@ export class GeneralService {
   logOut() {
     this.tempService.filterType = 0;
     this.storage.clear();
-    this.router.navigate(['welcome'], { replaceUrl: true });
     this.fb.logout().then( res => {
     }).catch(e => {
       console.log('Error logout from Facebook', e);
     });
+    this.pushService.unlistenFCM();
+    this.router.navigate(['welcome'], { replaceUrl: true });
   }
 
   async openTermsAndConditions(params) {
@@ -331,7 +334,7 @@ export class GeneralService {
   }
 
   getReportDetails(): Promise<any> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       this.storage.get('userInfo').then((user) => {
         this.monitorAPI.getSeoReport(this.tempService.dashboardParams.domainName, this.tempService.dashboardParams.domainUserID, user.id, user.token)
         .subscribe((result) => {

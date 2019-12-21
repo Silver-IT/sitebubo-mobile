@@ -48,10 +48,8 @@ export class NotificationSettingPage implements OnInit {
   getNotificationSettings(userID, token) {
     this.notifcationAPI.getNotificationSetting(userID, token).subscribe((result) => {
       if (result['RESPONSECODE'] === 1) {
-        console.log(result);
         this.bydomainSetting = result.data.domains;
         this.generalSetting = result.data.general;
-        console.log(this.bydomainSetting);
       } else {
         this.ionService.presentToast(result['RESPONSE']);
       }
@@ -92,17 +90,16 @@ export class NotificationSettingPage implements OnInit {
     const value = $event.detail.checked;
     item.notification[key] = value;
     console.log(item);
-    this.changeObjectToArray(item.notification).then(res => {
-      this.notifcationAPI.saveDomainPushPermission(this.userID, this.token, item.id, JSON.stringify(res)).subscribe((result) => {
-        if (result['RESPONSECODE'] === 1) {
-          console.log(result);
-        } else {
-          this.ionService.presentToast(result['RESPONSE']);
-        }
-      }, err => {
-        this.ionService.presentToast('Server API Problem');
-      });
-    });
+    // this.changeObjectToArray(item.notification).then(res => {
+    //   this.notifcationAPI.saveDomainPushPermission(this.userID, this.token, item.id, JSON.stringify(res)).subscribe((result) => {
+    //     if (result['RESPONSECODE'] === 1) {
+    //     } else {
+    //       this.ionService.presentToast(result['RESPONSE']);
+    //     }
+    //   }, err => {
+    //     this.ionService.presentToast('Server API Problem');
+    //   });
+    // });
   }
 
   switchpage(event) {

@@ -49,7 +49,7 @@ const config: SocketIoConfig = { url: 'https://socket.sitebubo.com', options: { 
 
 @NgModule({
   declarations: [AppComponent, AllDoneComponent, NotificationPopComponent],
-  entryComponents: [ AllDoneComponent ],
+  entryComponents: [ AllDoneComponent, NotificationPopComponent ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),

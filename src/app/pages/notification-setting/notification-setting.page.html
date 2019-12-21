@@ -41,7 +41,7 @@
               <ion-list mode='ios'>
                 <ion-item lines='none' *ngFor = 'let noti of item.notification | keyvalue'>
                   <ion-label>{{ noti.key | camelCase}}</ion-label>
-                  <ion-toggle #domains mode='ios' (ionChange)='listenDomainMonitors(item, noti.key, $event)' [checked]="noti.value" slot='end'></ion-toggle>
+                  <ion-toggle mode='ios' (ionChange)='listenDomainMonitors(item, noti.key, $event)' [checked]="noti.value" slot='end'></ion-toggle>
                 </ion-item>
               </ion-list>
             </mat-panel-description>

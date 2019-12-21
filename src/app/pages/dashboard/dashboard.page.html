@@ -54,7 +54,8 @@
         <ion-label class='highlighted'>{{ domainData?.security.desc }}</ion-label>
       </ion-card-title>
       <ion-card-header *ngIf='domainData'>
-        <ion-icon class='d-virusfree'></ion-icon>
+        <ion-icon class='d-virusfree' *ngIf='domainData?.security.status === "SECURE"'></ion-icon>
+        <ion-icon class='d-virusdetected' *ngIf='domainData?.security.status !== "SECURE"'></ion-icon>
       </ion-card-header>
       <ion-card-content *ngIf='domainData'>
         <ion-label>Last Checked</ion-label>

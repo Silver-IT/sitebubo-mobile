@@ -12,7 +12,6 @@ export class CamelCasePipe implements PipeTransform {
       if (element) {
         let one = element.substr(0,1).toUpperCase() + element.substr(1) + ' ';
         temp += one;
-        console.log(temp);
       }
     });
     return temp;
