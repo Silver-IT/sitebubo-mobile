@@ -8,6 +8,7 @@ import { IongagetService } from './../../../services/ionGadgets/iongaget.service
 import { DomainService } from './../../../serverAPI/domain/domain.service';
 import { AdmobService } from 'src/app/services/admob/admob.service';
 import { SocketService } from 'src/app/services/socket/socket.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 
@@ -66,11 +67,11 @@ export class DomainScanPage implements OnInit {
           if (params) {
             const parameter = {
               user_id: this.userID,
-              domain_name: this.tempService.dashboardParams.domainName
+              domain_name: this.tempService.dashboardParams.domainName,
+              domain_id: this.tempService.dashboardParams.domainID
             };
             if (params.action === 'addDomain') {
               this.domainName = params.domainName;
-              this.generateReport();
               this.startWebSocket(parameter, 'generate');
             } else if (params.action === 'manual-scan') {
               this.startWebSocket(parameter, 'manual');
@@ -82,15 +83,15 @@ export class DomainScanPage implements OnInit {
   }
 
   startWebSocket(parameter, action) {
-    this.socket.websiteScan(parameter).then((res) => {
-      if (res) {
+    // this.socket.websiteScan(parameter).then((res) => {
+    //   if (res) {
         if (action === 'generate') {
           this.generateReport();
         } else if (action === 'manual') {
           this.manualScan();
         }
-      }
-    });
+    //   }
+    // });
   }
 
   generateReport() {

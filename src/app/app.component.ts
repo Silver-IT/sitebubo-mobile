@@ -12,6 +12,7 @@ import { StorageService } from './services/storage/storage.service';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 import { FCM } from '@ionic-native/fcm/ngx';
 import { PushNotificationsService } from './services/pushNotifications/push-notifications.service';
+// import { SocketService } from './services/socket/socket.service';
 
 @Component({
   selector: 'app-root',
@@ -39,18 +40,20 @@ export class AppComponent {
     private storageService: StorageService,
     private deeplinks: Deeplinks,
     private fcm: FCM,
-    private pushService: PushNotificationsService
+    private pushService: PushNotificationsService,
+    // private socket: SocketService
   ) {
     this.listenEvents();
     this.networkService.watchNetworkConnection();
     this.initializeApp();
-    // this.pushService.launchpopover(1);
+    // this.socket.testSocket();
   }
 
   initializeApp() {   
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
       this.listenOutsideChanges();
       this.storage.get('userInfo').then((user) => {
         if (user) {

@@ -56,10 +56,16 @@ export class DomainListPage implements OnInit {
   }
 
   async ionViewWillEnter() {
-    this.showContent = false;
-    await this.initData().then(async () => {
-      await this.getDomainList();
-    });
+    this.storage.get('planInfo').then((info) => {
+      if (info.id  === 1) {
+        this.admobservice.showAdmobBanner().then(async (result) => {
+          this.initData();    
+        });
+      } else {
+        this.initData();
+      }
+    })
+    
   }
 
   ionViewWillLeave() {
@@ -74,13 +80,8 @@ export class DomainListPage implements OnInit {
     await this.storage.get('userInfo').then((user) => {
       this.userID = user.id;
       this.token = user.token;
-      this.storage.get('planInfo').then((info) => {
-        if (info.id  === 1) {
-          this.admobservice.showAdmobBanner().then(async (result) => {
-            console.log(result);
-          });
-        }
-      })
+      this.showContent = false;
+      this.getDomainList();
     });
   }
   

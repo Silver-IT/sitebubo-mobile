@@ -122,7 +122,7 @@ export class PushNotificationsService {
       if (data.wasTapped) {
         // this.launchpopover(data);
       } else {
-       this.launchpopover(data);
+      //  this.launchpopover(data);
       }
     });
   }
