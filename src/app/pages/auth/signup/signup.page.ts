@@ -13,7 +13,7 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { AuthService } from './../../../serverAPI/auth/auth.service';
 import { IongagetService } from './../../../services/ionGadgets/iongaget.service';
 import { GeneralService } from './../../../services/generalComponents/general.service';
-
+import { StorageService } from 'src/app/services/storage/storage.service';
 
 
 @Component({
@@ -25,7 +25,7 @@ export class SignupPage implements OnInit {
   fname = '';
   email = '';
   pwd = '';
-  deviceID = 'ezjsu38';
+  deviceID: string;
   ischeckedPol = false;
   ischeckedTerm = false;
   showPolError = false;
@@ -71,7 +71,8 @@ export class SignupPage implements OnInit {
     public formBuilder: FormBuilder,
     private authService: AuthService,
     private generalService: GeneralService,
-    private ionService: IongagetService
+    private ionService: IongagetService,
+    private storageSerivce: StorageService
   ) { }
 
   ngOnInit() {
@@ -121,19 +122,23 @@ export class SignupPage implements OnInit {
     this.platform.ready().then(() => {
       this.fcm.subscribeToTopic('all');
       this.fcm.getToken().then(token => {
+        this.deviceID = token;
         if (token.split(':').length > 1) {
-          this.deviceID = token.split(':')[0];
+          // this.deviceID = token.split(':')[0];
+          // this.DeviceType = 'I';
         } else {
-          this.deviceID = token.split(':')[0];
+          // this.deviceID = token.split(':')[0];
+          // this.DeviceType = 'A';
         }
       });
       this.fcm.onTokenRefresh().subscribe(token => {
-
+        this.deviceID = token;
         if (token.split(':').length > 1) {
-          this.deviceID = token.split(':')[0];
-          console.log(token);
+          // this.deviceID = token.split(':')[0];
+          // this.DeviceType = 'I';
         } else {
-          this.deviceID = token.split(':')[0];
+          // this.deviceID = token.split(':')[0];
+          // this.DeviceType = 'A';
         }
       });
     });
@@ -246,21 +251,21 @@ export class SignupPage implements OnInit {
     this.checkTermsAndPolicy().then(result => {
       if (result) {
         this.facebookReady = true;
-        this.fb.logout().then((res) => {
-          this.fb.login(['public_profile', 'user_friends', 'email']).then((res) => {
-            if (res.status === 'connected') {
-              this.getUserDetail(res.authResponse.userID);
-            } else {
-              this.ionService.showAlert('Facebook Error', 'Not Connected');
+        this.fb.getLoginStatus().then((res) => {
+          if (res.status === 'connected') {
+            this.getUserDetail(res.authResponse.userID);
+          } else {
+            this.fb.login(['public_profile', 'email']).then((result) => {
+              if (result.status === 'connected' ) {
+                this.getUserDetail(result.authResponse.userID);
+              } else {
+                this.ionService.showAlert('Facebook Error', 'Not Connected');
+                this.facebookReady = false;
+              }
+            }).catch(err => {
               this.facebookReady = false;
-            }
-          })
-          .catch(e => {
-            this.facebookReady = false;
-            this.ionService.presentToast(JSON.stringify(e));
-          });
-        }).catch(err => {
-          this.ionService.presentToast(JSON.stringify(err));
+            });
+          }
         });
       }
     })
@@ -283,11 +288,6 @@ export class SignupPage implements OnInit {
   }
 
   facebookSignUp(email, name) {
-    // this.ga.trackEvent('Signup', 'Signup User', name + email, 0).then(() => {
-    // }).catch(err => {
-    //   this.ionService.presentToast(JSON.stringify(err));
-    //   this.facebookReady = false;
-    // });
     this.authService.facebookSignUp(email, name, this.deviceID).subscribe(async (result) => {
       this.facebookReady = true;
       console.log(result);
@@ -318,15 +318,11 @@ export class SignupPage implements OnInit {
           };
           this.router.navigate(['verifymail'], navprams);
         } else {
-          user.email = email;
-          this.storage.set('userInfo', user).then(() => {
-            this.events.publish('userInfo_set', user);
+          this.storageSerivce.setStorage(user).then((result) => {
+            if (result) {
+              this.generalService.defineInitialRoutering();
+            }
           });
-          if (user.isNewUser === true) {
-            this.router.navigate(['subscription'], { replaceUrl: true });
-          } else {
-            this.router.navigate(['domain-list'], { replaceUrl: true });
-          }
         }
       } else {
         this.ionService.showAlert('Sign In by Facebook Failed', user.RESPOSNE);

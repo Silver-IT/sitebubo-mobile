@@ -7,13 +7,15 @@
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
-    <allow-intent href="http://app.sitewiser.com/*" />
+    <allow-intent href="http://app.sitebubo.com/*" />
+    <allow-intent href="http://socket.sitebubo.com/*" />
     <allow-intent href="tel:*" />
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <allow-navigation href="http://*/*" />
-    <allow-navigation href="http://app.sitewiser.com/*" />
+    <allow-navigation href="https://app.sitebubo.com/*" />
+    <allow-navigation href="https://socket.sitebubo.com/*" />
     <allow-navigation href="https://*/*" />
     <preference name="ScrollEnabled" value="false" />
     <preference name="android-minSdkVersion" value="19" />

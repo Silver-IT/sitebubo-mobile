@@ -45,7 +45,8 @@ import { NotificationPopComponent } from './components/popover/notification-pop/
 
 
 
-const config: SocketIoConfig = { url: 'https://socket.sitebubo.com', options: { transports: ['websocket'] } };
+// const config: SocketIoConfig = { url: 'http://localhost:1111', options: {} };
+const config: SocketIoConfig = { url: 'https://socket.sitebubo.com', options: {} };
 
 @NgModule({
   declarations: [AppComponent, AllDoneComponent, NotificationPopComponent],

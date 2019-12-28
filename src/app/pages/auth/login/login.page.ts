@@ -21,9 +21,10 @@ export class LoginPage implements OnInit {
   loading: any;
   email = '';
   pwd = '';
-  deviceID = 'wegse3244';
+  // deviceID: string;
+  deviceID = 'fDqyHoxmcp0:APA91bGoSvzXrsGraeN1OshrlgF7ZUuX62vCFvgneX2znZFvYLK21Km9sM0sWd8VaOKgIFCXA8Y2XbkmAnBf--OoJ9oIFL7wMw46g1dffvab6eT0PLiM0v8JbuQH4-vAFM3D9jlZFGcz';
   APNStoken = '';
-  DeviceType = '';
+  DeviceType: string;
   readyForSubmit = false;
   facebookReady = false;
   invalidEmail = false;
@@ -74,70 +75,27 @@ export class LoginPage implements OnInit {
     this.platform.ready().then(() => {
       this.fcm.subscribeToTopic('all');
       this.fcm.getToken().then(token => {
+        this.deviceID = token;
         if (token.split(':').length > 1) {
-          this.deviceID = token.split(':')[0];
+          // this.deviceID = token.split(':')[0];
+          this.DeviceType = 'I';
         } else {
-          this.deviceID = token.split(':')[0];
+          // this.deviceID = token.split(':')[0];
+          this.DeviceType = 'A';
         }
       });
       this.fcm.onTokenRefresh().subscribe(token => {
-
+        this.deviceID = token;
         if (token.split(':').length > 1) {
-          this.deviceID = token.split(':')[0];
-          console.log(token);
+          // this.deviceID = token.split(':')[0];
+          this.DeviceType = 'I';
         } else {
-          this.deviceID = token.split(':')[0];
+          // this.deviceID = token.split(':')[0];
+          this.DeviceType = 'A';
         }
       });
     });
   }
-  // getToken() {
-  //   this.platform.ready().then(() => {
-  //     // Notifications
-  //     this.fcm.subscribeToTopic('all');
-  //     this.fcm.getToken().then(token => {
-  //       if (token.split(':').length > 1) {
-  //         this.storage.set('token', token.split(':')[0]);
-  //         this.storage.set('APNStoken', token.split(':')[1]);
-  //         this.storage.set('DeviceType', 'I');
-  //         this.deviceID = token.split(':')[0];
-  //         this.APNStoken = token.split(':')[1];
-  //         this.DeviceType = 'I';
-  //       } else {
-  //         this.storage.set('token', token.split(':')[0]);
-  //         this.storage.set('APNStoken', '');
-  //         this.storage.set('DeviceType', 'A');
-  //         this.deviceID = token.split(':')[0];
-  //         this.APNStoken = '';
-  //         this.DeviceType = 'A';
-  //       }
-  //     });
-  //     this.fcm.onTokenRefresh().subscribe(token => {
-  //       // this.storage.set('token',token);
-  //       // this.token = token;
-  //       if (token.split(':').length > 1) {
-  //         this.storage.set('token', token.split(':')[0]);
-  //         this.storage.set('APNStoken', token.split(':')[1]);
-  //         this.storage.set('DeviceType', 'I');
-  //         this.deviceID = token.split(':')[0];
-  //         this.APNStoken = token.split(':')[1];
-  //         this.DeviceType = 'I';
-  //         console.log(token);
-  //         // alert(token.split(':')[0]);
-  //         // alert(token.split(':')[1]);
-  //       } else {
-  //         this.storage.set('token', token.split(':')[0]);
-  //         this.storage.set('APNStoken', '');
-  //         this.storage.set('DeviceType', 'A');
-  //         this.deviceID = token.split(':')[0];
-  //         this.APNStoken = '';
-  //         this.DeviceType = 'A';
-  //       }
-  //       console.log(token);
-  //     });
-  //     // end notifications.
-  //   });
-  // }
 
   setHeaderAnimation() {
     this.keyboard.onKeyboardWillShow().subscribe(() => {
@@ -192,9 +150,11 @@ export class LoginPage implements OnInit {
   openForgot() {
     this.generalService.openForgotPassword();
   }
+
   DoSignIn() {
     this.readyForSubmit = true;
     const password = Md5.hashStr(this.pwd);
+    console.log(this.deviceID);
     this.authService.login(this.email, password , this.deviceID, this.DeviceType)
     .subscribe((result) => {
       console.log(result);
@@ -239,19 +199,21 @@ export class LoginPage implements OnInit {
   logInFB() {
     this.validate_email = false;
     this.validate_password = false;
-    this.fb.logout().then((res) => {   
-      this.fb.login(['public_profile', 'email']).then((result) => {
-        if (result.status === 'connected' ) {
-          this.getUserDetail(result.authResponse.userID);
-        } else {
-          this.ionGagets.showAlert('Facebook Error', 'Not Connected');
+    this.fb.getLoginStatus().then((res) => {
+      if (res.status === 'connected') {
+        this.getUserDetail(res.authResponse.userID);
+      } else {
+        this.fb.login(['public_profile', 'email']).then((result) => {
+          if (result.status === 'connected' ) {
+            this.getUserDetail(result.authResponse.userID);
+          } else {
+            this.ionGagets.showAlert('Facebook Error', 'Not Connected');
+            this.facebookReady = false;
+          }
+        }).catch(err => {
           this.facebookReady = false;
-        }
-      }).catch(err => {
-        this.facebookReady = false;
-      });
-    }).catch(err => {
-      this.ionGagets.presentToast('Error occured while getting rid of facebook');
+        });
+      }
     });
   }
 

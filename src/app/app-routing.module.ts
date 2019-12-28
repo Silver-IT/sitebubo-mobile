@@ -31,15 +31,15 @@ const routes: Routes = [
   { path: 'cancel-membership', loadChildren: './pages/membershipManagement/cancel-membership/cancel-membership.module#CancelMembershipPageModule' },
   { path: 'all-done', loadChildren: './pages/modals/all-done/all-done.module#AllDonePageModule' },
   { path: 'invite-user', loadChildren: './pages/modals/invite-user/invite-user.module#InviteUserPageModule' },
+  { path: 'notification-list', loadChildren: './pages/modals/notification-list/notification-list.module#NotificationListPageModule' },
+  { path: 'google-analytics', loadChildren: './pages/modals/plugins/google-analytics/google-analytics.module#GoogleAnalyticsPageModule' },
+  { path: 'monitor-issues', loadChildren: './pages/modals/monitor-issues/monitor-issues.module#MonitorIssuesPageModule' },
+  { path: 'notification-setting', loadChildren: './pages/notification-setting/notification-setting.module#NotificationSettingPageModule' },
   {
     path: '',
     loadChildren: './pages/details/tabs/tabs.module#TabsPageModule'
-    // loadChildren: () => import('./pages/details/tabs/tabs.module').then(m => m.TabsPageModule)
   },
-  { path: 'notification-list', loadChildren: './pages/modals/notification-list/notification-list.module#NotificationListPageModule' },
-  { path: 'google-analytics', loadChildren: './pages/modals/plugins/google-analytics/google-analytics.module#GoogleAnalyticsPageModule' },  { path: 'monitor-issues', loadChildren: './pages/modals/monitor-issues/monitor-issues.module#MonitorIssuesPageModule' },
-  { path: 'notification-setting', loadChildren: './pages/notification-setting/notification-setting.module#NotificationSettingPageModule' },
-
+  
 ];
 
 @NgModule({

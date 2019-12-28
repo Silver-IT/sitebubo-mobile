@@ -471,4 +471,27 @@ ion-slides {
   }
 }
 
+ div.special {
+   display: flex;
+   align-self: center;
+   justify-content: center;
+   line-height: 1.5;
+  .check {
+    width: 25px;
+    height: 20px;
+    padding-left: 15px;
+    path {
+     fill: none;
+     stroke: white;
+     stroke-miterlimit: 10;
+     stroke-width: 25px;
+     stroke-dasharray: 500;
+     stroke-dashoffset: 500;
+     animation: draw 1s linear forwards 1s;
+     
+    }   
+  }
+}    
+
+
 

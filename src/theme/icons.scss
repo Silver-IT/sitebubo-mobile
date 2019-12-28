@@ -175,7 +175,8 @@ ion-icon{
   }
   &.d-siteDown {
     font-size: 75px !important;
-    background-image: url('assets/icons/dashboard/sitedown.gif');
+    background-image: url('assets/icons/dashboard/siteup.gif');
+    transform: rotate(180deg);
   }
   &.n-report {
     // font-size: 75px !important;

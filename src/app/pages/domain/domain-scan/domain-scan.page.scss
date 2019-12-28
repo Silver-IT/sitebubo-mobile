@@ -1,80 +1,64 @@
 ion-content {
-  --background: transparent;
-  width: 100% ;
-  height: 100% ;
-  background-size: 100% 100% !important;
-  background-image: url('../../../../assets/imgs/background.png');
-  background-repeat: no-repeat;
-  div.completed {
-    width: 100%;
-    height: 25%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    img {
-      width: 55px;
-    }
-    ion-label {
-      font-size: 22px;
-    }
-  }
-  div.img {
-    height: 35%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    img {
-      height: 90%;
-    }
-  }
-  div.process {
-    height: 40%;
-    width: 100%;
-    padding-top: 30px;
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
-    // flex-direction: column;
-    display: block;
-    color: white;
-    img {
-      display: block;
-      width: 70px;
-      margin: auto;
-    }
-    ion-label {
-      font-size: 16px;
-      display: block;
-      text-align: center;
-    }
-  }
+	--background: transparent;
+	width: 100%;
+	height: 100%;
+	background-size: 100% 100% !important;
+	background-image: url("../../../../assets/imgs/background.png");
+	background-repeat: no-repeat;
+	div.completed {
+		width: 100%;
+		height: 25%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: white;
+		img {
+			width: 55px;
+		}
+		ion-label {
+			font-size: 22px;
+		}
+	}
+	div.img {
+		height: 30%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		align-content: center;
+		img {
+			height: 90%;
+		}
+	}
 
-  ion-slides.process {
-    height: 40%;
-    width: 100%;
-    margin-top: 20px;
-    display: flex;
+	div.results {
+		height: calc(45% - 48px);
+		display: flex;
+		flex-direction: column;
     justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    // display: block;
-    color: white;
-    img {
-      display: block;
-      width: 70px;
-      margin: auto;
+    
+
+    svg {
+      overflow: visible;
     }
-    ion-slide {
-      font-size: 19px;
-      font-weight: bold;
-      display: block;
-      text-align: center;
+
+    @keyframes draw {
+      from {
+        stroke-linecap: round;
+      }
+      to {
+        stroke-linecap: round;
+        stroke-dashoffset: 0;
+      }
     }
-    .highlight {
-      font-size: 15px;
-      color: rgb(224, 224, 224);
-    }
+	}
+
+	div.footer {
+		height: 48px;
+		width: 90%;
+		display: block;
+		margin: auto;
+		color: white;
+		text-align: center;
+		font-size: 18px;
   }
 }

@@ -23,7 +23,7 @@ export class AuthService extends BaseService{
   login(email, password, deviceID, deviceName): any {
     let url = this.auth_url + 'login?';
     url += 'email=' + email + '&password=' + password;
-    url += '&device_id=' + deviceID + '&device_name=A';
+    url += '&device_id=' + deviceID + '&device_name=' + deviceName;
     console.log(url);
     return this.sendGetRequest(url);
   }

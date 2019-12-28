@@ -7,13 +7,19 @@
   <div class="img">
     <img src= 'assets/imgs/scanning.svg' />
   </div>
-  <!-- <div class="process">
-    <img src="assets/icons/loading.gif" alt="">
-    <ion-label>{{ percentage }}% completed ...</ion-label>
-  </div> -->
-  <ion-slides #slides mode="ios" class='process' [options]='slideOpts'>
-    <ion-slide #individuals *ngFor='let item of pushes'>{{ item }}</ion-slide>
-  </ion-slides>
+  <div #results class="results"></div>
+  <div class="footer">
+    <div *ngIf='status.started && !status.process' mode='ios'>
+      <ion-label>{{ tempResult?.monitor }} {{ tempResult?.status }}</ion-label>
+    </div>
+    <div #temp class='process' mode='ios' *ngIf='status.process'>
+      <ion-label>{{ tempResult?.monitor }} </ion-label>
+      <ion-label class='fade-in-right' *ngIf="tempResult.status === 'Started'"> Connected</ion-label>
+      <ion-label class='fade-in-right' *ngIf="tempResult.status === 'in Progress'"> {{ tempResult?.status }} ... </ion-label>
+      <ion-label class='fade-in-right' *ngIf="tempResult.status === 'Finished'"> {{ tempResult?.status }}</ion-label>
+      <!-- <ion-label class='fade-in-right' *ngIf = 'tempResult?.result'> ... {{ tempResult?.result }}</ion-label> -->
+    </div>
+  </div>
 </ion-content>
 
 
