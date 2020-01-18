@@ -1,79 +1,78 @@
 <ion-content>
-  <div class='content'>
-    <div class = 'logo' id='logo'>
+  <div class="content">
+    <div class = "logo" id="logo">
       <img src="assets/imgs/sub_logo.png" alt="">
     </div>
-    <div class='email-login' id='login'>
-      <form class="custom-body"  [formGroup]="validate_signinform" (ngSubmit)="onSigninSubmit()">
-        <ion-label class='pageName'>Log In</ion-label>
-        <ion-list mode ='ios'>
-          <ion-item lines='none' [disabled]='readyForSubmit || facebookReady' mode='ios' class='item-input' [ngClass]="{'error-input': validate_email && (validate_signinform.get('email').hasError('pattern')) }">
-            <ion-icon class='email' slot='start'></ion-icon>
-            <ion-input  mode='ios' type='email' minlength='6' [(ngModel)]="email" placeholder='Email Address' formControlName="email" name="email" (ionBlur)='setEmailValidation(true)' (ionFocus)='setEmailValidation(false)'></ion-input>
+    <div class="email-login" id="login">
+      <form class="custom-body"  [formGroup]="validateSigninform" (ngSubmit)="onSigninSubmit()">
+        <ion-label class="pageName">Log In</ion-label>
+        <ion-list mode ="ios">
+          <ion-item lines="none" [disabled]="readyForSubmit || facebookReady" mode="ios" class="item-input" [ngClass]="{'error-input': validateEmail && (validateSigninform.get('email').hasError('pattern')) }">
+            <ion-icon class="email" slot="start"></ion-icon>
+            <ion-input  mode="ios" type="email" minlength="6" [(ngModel)]="email" placeholder="Email Address" formControlName="email" name="email" (ionBlur)="setEmailValidation(true)" (ionFocus)="setEmailValidation(false)"></ion-input>
          </ion-item>
           
-          <div class="validation-errors" *ngIf='validate_email'>
-            <ng-container *ngFor="let validation of validation_messages.email">
+          <div class="validation-errors" *ngIf="validateEmail">
+            <ng-container *ngFor="let validation of validationMessages.email">
               <div class="error-message"
-                *ngIf="validate_signinform.get('email').hasError(validation.type)">
-                <ion-icon class='error'></ion-icon>
+                *ngIf="validateSigninform.get('email').hasError(validation.type)">
+                <ion-icon class="error"></ion-icon>
                 <ion-label>{{ validation.message }}</ion-label>
               </div>
             </ng-container>
           </div>
-          <div class="validation-errors" *ngIf='invalidEmail'>
+          <div class="validation-errors" *ngIf="invalidEmail">
             <ng-container>
               <div class="error-message">
-                <ion-icon class='error'></ion-icon>
+                <ion-icon class="error"></ion-icon>
                 <ion-label>{{ extraError }}</ion-label>
               </div>
             </ng-container>
           </div>
           
-          <ion-item [disabled]='readyForSubmit || facebookReady' mode='md' class='item-input' [ngClass]="{ 'error-input': validate_password && ((validate_signinform.get('password').hasError('pattern') || validate_signinform.get('password').hasError('minlength'))) }">
-            <ion-icon class='password' slot='start'></ion-icon>
-            <ion-input mode='md' type='password' [(ngModel)]="pwd" placeholder='Password' formControlName="password" name="password" (ionBlur)='setPasswordValidation(true)' (ionFocus)='setPasswordValidation(false)' ></ion-input>
+          <ion-item [disabled]="readyForSubmit || facebookReady" mode="md" class="item-input" [ngClass]="{ 'error-input': validatePassword && ((validateSigninform.get('password').hasError('pattern') || validateSigninform.get('password').hasError('minlength'))) }">
+            <ion-icon class="password" slot="start"></ion-icon>
+            <ion-input mode="md" type="password" [(ngModel)]="pwd" placeholder="Password" formControlName="password" name="password" (ionBlur)="setPasswordValidation(true)" (ionFocus)="setPasswordValidation(false)" ></ion-input>
           </ion-item>
-          <div class="validation-errors" *ngIf='validate_password'>
-            <ng-container *ngFor="let validation of validation_messages.password">
+          <div class="validation-errors" *ngIf="validatePassword">
+            <ng-container *ngFor="let validation of validationMessages.password">
               <div class="error-message"
-                *ngIf="validate_signinform.get('password').hasError(validation.type)">
-                <ion-icon class='error'></ion-icon>
+                *ngIf="validateSigninform.get('password').hasError(validation.type)">
+                <ion-icon class="error"></ion-icon>
                 <ion-label>{{ validation.message }}</ion-label>
               </div>
             </ng-container>
           </div>
 
-          <div class="validation-errors" *ngIf='invalidPassword'>
+          <div class="validation-errors" *ngIf="invalidPassword">
             <ng-container>
               <div class="error-message">
-                <ion-icon class='error'></ion-icon>
+                <ion-icon class="error"></ion-icon>
                 <ion-label>Invalid Password</ion-label>
               </div>
             </ng-container>
           </div>
-
         </ion-list>
-        <ion-button mode='md' class='red login' size='large' type='submit' [disabled]='readyForSubmit || facebookReady'>
-            <ion-spinner name="lines-small" *ngIf='readyForSubmit'></ion-spinner>
-            <ion-label *ngIf='!readyForSubmit'>Log In</ion-label>
+        <ion-button mode="md" class="red login" size="large" type="submit" [disabled]="readyForSubmit || facebookReady">
+            <ion-spinner name="lines-small" *ngIf="readyForSubmit"></ion-spinner>
+            <ion-label *ngIf="!readyForSubmit">Log In</ion-label>
           </ion-button>
       </form>
-      <div class='social-login'>
-        <div class='line'>
-          <div class='each left'></div>
+      <div class="social-login">
+        <div class="line">
+          <div class="each left"></div>
           <ion-label>OR CONNECT WITH</ion-label>
-          <div class='each right'></div>
+          <div class="each right"></div>
         </div>
-        <ion-button [disabled]='readyForSubmit || facebookReady' mode='md' class='facebook' size='default' (click)="logInFB()">
-            <ion-spinner name="lines-small" *ngIf='facebookReady'></ion-spinner>
-            <ion-icon class="logo-facebook" slot='start'></ion-icon>
-            <ion-label *ngIf='!facebookReady'>Facebook</ion-label>
+        <ion-button [disabled]="readyForSubmit || facebookReady" mode="md" class="facebook" size="default" (click)="logInFB()">
+            <ion-spinner name="lines-small" *ngIf="facebookReady"></ion-spinner>
+            <ion-icon class="logo-facebook" slot="start"></ion-icon>
+            <ion-label *ngIf="!facebookReady">Facebook</ion-label>
         </ion-button>
       </div>    
-      <div class='accident'>
-        <ion-label (click)='openForgot()'>Forgot your password?</ion-label>
-        <ion-label (click)='openSignup()'>Don't have an account? <b> Create</b></ion-label>
+      <div class="accident">
+        <ion-label (click)="openForgot()">Forgot your password?</ion-label>
+        <ion-label (click)="openSignup()">Don"t have an account? <b> Create</b></ion-label>
       </div>
     </div>
   </div>

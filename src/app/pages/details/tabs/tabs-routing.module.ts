@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
+
 import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     component: TabsPage,
     children: [
       {
@@ -54,6 +55,11 @@ const routes: Routes = [
             path: '',
             loadChildren: () =>
               import('../more/more.module').then(m => m.MorePageModule)
+          },
+          {
+            path: 'domain',
+            loadChildren: () => 
+              import('../../domain/domain-list/domain-list.module').then(m => m.DomainListPageModule)
           }
         ]
       },
@@ -64,15 +70,10 @@ const routes: Routes = [
       // }
     ]
   },
-  // {
-  //   path: '',
-  //   redirectTo: '/tabs/uptime',
-  //   pathMatch: 'full'
-  // }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class TabsPageRoutingModule {}

@@ -1,26 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { AddDomainPage } from './add-domain.page';
+import { AddDomainPageRoutingModule } from './add-domain-routing.module';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: AddDomainPage
-  }
-];
+import { AddDomainPage } from './add-domain.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
     ReactiveFormsModule,
-    RouterModule.forChild(routes)
+    IonicModule,
+    AddDomainPageRoutingModule
   ],
   declarations: [AddDomainPage]
 })

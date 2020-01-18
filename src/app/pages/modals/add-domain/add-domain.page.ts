@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { ModalController, LoadingController, IonInput } from '@ionic/angular';
+import { ModalController, IonInput } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
-import { DomainService } from './../../../serverAPI/domain/domain.service';
-import { IongagetService } from './../../../services/ionGadgets/iongaget.service';
+import { Router } from '@angular/router';
+import { DomainApiService } from 'src/app/apis/domain/domain-api.service';
+import { IongadgetService } from 'src/app/services/ionGadgets/iongadget.service';
 
 @Component({
   selector: 'app-add-domain',
@@ -13,19 +12,16 @@ import { IongagetService } from './../../../services/ionGadgets/iongaget.service
   styleUrls: ['./add-domain.page.scss'],
 })
 export class AddDomainPage implements OnInit {
-  @ViewChild('urlInput', { static: false }) urlInput: IonInput
+  @ViewChild('urlInput', { static: false }) urlInput: IonInput;
   extraError: string;
   userID: any;
-  loading: any;
   token: any;
   domname = '';
   compname = '';
   duringSubmit = false;
   readyToSubmit = false;
-  // tslint:disable-next-line: variable-name
-  domain_addForm: FormGroup;
-  // tslint:disable-next-line: variable-name
-  validation_messages = {
+  domainAddForm: FormGroup;
+  validationMessages = {
     domainUrl: [
       { type: 'required', message: 'Domain Url is required' },
       { type: 'pattern', message: 'Invalid Domain' }
@@ -35,37 +31,32 @@ export class AddDomainPage implements OnInit {
       { type: 'minlength', message: 'Must be at least 3 characters long.' },
     ],
   };
-  // tslint:disable-next-line: variable-name
-  validate_domainUrl = false;
-  // tslint:disable-next-line: variable-name
-  validate_domainName = false;
+  validateDomainUrl = false;
+  validateDomainName = false;
   duplicatedDomain = false;
   constructor(
     public formBuilder: FormBuilder,
     private modalCtrl: ModalController,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private ga: GoogleAnalytics,
     private storage: Storage,
-    private loadingCtrl: LoadingController,
-    private domainAPI: DomainService,
-    private ionService: IongagetService
+    private domainAPI: DomainApiService,
+    private ionService: IongadgetService
   ) { }
 
   ngOnInit() {
-    this.initForm()
+    this.initForm();
     this.storage.get('userInfo').then((user) => {
       this.userID = user.id;
       this.token = user.token;
     });
   }
 
-  ionViewDidEnter(){
+  ionViewDidEnter() {
     this.urlInput.setFocus();
   }
 
   initForm() {
-    this.domain_addForm = this.formBuilder.group({
+    this.domainAddForm = this.formBuilder.group({
       domainUrl: new FormControl('', Validators.compose([
         Validators.required,
         Validators.pattern('(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[.]+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]')
@@ -82,41 +73,36 @@ export class AddDomainPage implements OnInit {
   }
 
   setDomainUrlValidation(event) {
-    this.validate_domainUrl = event;
+    this.validateDomainUrl = event;
     if (event === false) {
       this.duplicatedDomain = false;
     }
   }
 
   setDomainNameValidation(event) {
-    this.validate_domainName = event;
+    this.validateDomainName = event;
     if (event === false) {
       this.duplicatedDomain = false;
     }
   }
 
   ValidateDomain() {
-    this.validate_domainUrl = true;
-    this.validate_domainName = true;
-    // tslint:disable-next-line: no-unused-expression
-    this.domain_addForm.get('domainUrl').touched;
-    // tslint:disable-next-line: no-unused-expression
-    this.domain_addForm.get('domainName').touched;
-    if (this.domain_addForm.valid) {
+    this.validateDomainUrl = true;
+    this.validateDomainName = true;
+    if (this.domainAddForm.valid) {
       this.ionService.showLoading();
-      let domname = 'www.' + this.domname;
+      const domname = 'www.' + this.domname;
       this.domainAPI.validateDomain(domname, this.userID, this.token).subscribe((result) => {
-        console.log('validation: ', result);
-        if (result['RESPONSECODE'] === 1) {
+        if (result.RESPONSECODE === 1) {
           this.addDomain(domname);
         } else  {
           this.ionService.closeLoading();
-          if (result['RESPONSE'] === 'Not Valid Domain') {
-            this.extraError = "The domain doesn't exist";
+          if (result.RESPONSE === 'Not Valid Domain') {
+            this.extraError = 'The domain doesn\'t exist';
             this.duplicatedDomain = true;
             this.readyToSubmit = false;
           } else {
-            this.ionService.showAlert('Invalid Domain', result['RESPONSE']);
+            this.ionService.showAlert('Invalid Domain', result.RESPONSE);
           }
         }
       }, err => {
@@ -127,7 +113,7 @@ export class AddDomainPage implements OnInit {
   }
 
   detectChangesInForm() {
-    if (this.domain_addForm.valid) {
+    if (this.domainAddForm.valid) {
       this.readyToSubmit = true;
     } else {
       this.readyToSubmit = false;
@@ -136,23 +122,22 @@ export class AddDomainPage implements OnInit {
 
   addDomain(domname) {
     this.domainAPI.addDomain(this.compname, domname, this.userID, this.token).subscribe((result) => {
-      console.log('Adding Domain: ', result);
       this.ionService.closeLoading();
-      if (result['RESPONSECODE'] === 1) {
+      if (result.RESPONSECODE === 1) {
+        console.log(result);
         this.modalCtrl.dismiss();
-        this.router.navigate(['domain-scan'], { queryParams: { action: 'addDomain', domainName: this.domname } });
-      } else if (result['RESPONSE'] === 'Domain Name Already Exists') {
+        // return;
+        this.router.navigate(['domain-scan'], { queryParams: { action: 'addDomain', domainName: this.domname, domain_id: result.id } });
+      } else if (result.RESPONSE === 'Domain Name Already Exists') {
         this.extraError = 'This domain name already exists';
         this.duplicatedDomain = true;
         this.readyToSubmit = false;
       } else {
-        this.ionService.showAlert('Adding Domain Failed', result['RESPONSE']);
+        this.ionService.showAlert('Adding Domain Failed', result.RESPONSE);
       }
     }, err => {
       this.ionService.closeLoading();
       this.ionService.showAlert('Adding Domain Failed', 'Server API Problem');
     });
   }
-
-
 }

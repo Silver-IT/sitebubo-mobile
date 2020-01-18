@@ -1,25 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
-
 import { IonicModule } from '@ionic/angular';
-
+import { DomainScanPageRoutingModule } from './domain-scan-routing.module';
 import { DomainScanPage } from './domain-scan.page';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: DomainScanPage
-  }
-];
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    ComponentsModule,
+    DomainScanPageRoutingModule
   ],
   declarations: [DomainScanPage]
 })

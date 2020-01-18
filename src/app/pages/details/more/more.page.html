@@ -1,22 +1,56 @@
-<ion-header class='underHeader'>
-  <ion-segment mode='md' [value]='pageType'>
-    <ion-segment-button mode='md' value = '1' (click) = 'changePageType(1)' chkecked>
-      <ion-label>Broken Links</ion-label>
+<ion-header class="underHeader" *ngIf="pageType !== 0">
+  <ion-segment class="single" mode="md" [value]="pageType" *ngIf="pageType === 2">
+    <ion-segment-button mode="md" value = "2">
+      <ion-label>
+        BROKEN LINKS
+        <div class="submenu-badge" *ngIf="brokenlinksCount">{{ brokenlinksCount }}</div>
+      </ion-label>
     </ion-segment-button>
-    <ion-segment-button mode='md' value = '2' (click) = 'changePageType(2)'>
-      <ion-label>Domain Expire</ion-label>
+    <ion-segment-button mode="md" [disabled]="true">
     </ion-segment-button>
-    <ion-segment-button mode='md' [disabled]='true'>
+    <ion-segment-button mode="md" [disabled]="true">
+    </ion-segment-button>
+  </ion-segment>
+  <ion-segment class="single" mode="md" [value]="pageType" *ngIf="pageType === 1">
+    <ion-segment-button mode="md" value = "1">
+      <ion-label>
+        DOMAIN EXPIRY
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="md" [disabled]="true">
+    </ion-segment-button>
+    <ion-segment-button mode="md" [disabled]="true">
+    </ion-segment-button>
+  </ion-segment>
+  <ion-segment class="multi" mode="md" [value]="detailedPage" *ngIf="pageType === 3" (ionChange)="changeGoogleAnalyticsType($event)">
+    <ion-segment-button mode="md" value="conversion">
+      <ion-label>
+        CONVERSION
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="md" value="visitors">
+      <ion-label>
+        VISITORS
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="md" value="acquistion">
+      <ion-label>
+        ACQUISTION
+      </ion-label>
     </ion-segment-button>
   </ion-segment>
 </ion-header>
 
-<ion-content [ngSwitch]='pageType'>
-  <app-cbroken-links *ngSwitchCase='1'></app-cbroken-links>
-  <app-cdomain-expire *ngSwitchCase='2'></app-cdomain-expire>
-  <ion-fab class='feedback-fab'vertical="bottom" horizontal="start" slot="fixed">
-    <ion-fab-button mode='md' class='feedback' (click)='openFeedback()'>
-        <ion-icon class='feedback'></ion-icon>
+<ion-content>
+  <app-cmore-options *ngIf="pageType === 0"></app-cmore-options>
+  <app-cbroken-links *ngIf="pageType === 2"></app-cbroken-links>
+  <app-cdomain-expire *ngIf="pageType === 1"></app-cdomain-expire>
+  <app-cgoogle-conversion *ngIf="pageType === 3 && detailedPage === 'conversion'"></app-cgoogle-conversion>
+  <app-cgoogle-visitors *ngIf="pageType === 3 && detailedPage === 'visitors'"></app-cgoogle-visitors>
+  <app-cgoogle-acquistion *ngIf="pageType === 3 && detailedPage === 'acquistion'"></app-cgoogle-acquistion>
+  <ion-fab class="feedback-fab" vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button mode="md" class="feedback" (click)="openFeedback()">
+        <ion-icon class="feedback"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

@@ -1,0 +1,66 @@
+<div class="secondary">
+  <ng-container *ngFor="let item of orders">
+    <ng-template [ngIf] = "item === 'google-analytics-conversion-rate'">
+      <ion-card id="google-analytics-conversion-rate" class="conversion-rate" (click)="jumpToPage('conversion')">
+        <ion-row class="white-row">
+          <ion-col size="2">
+            <ion-icon class="d-conversionRate"></ion-icon>
+          </ion-col>
+          <ion-col size="7">
+            <ion-label class="heavy-font">CONVERSION RATE</ion-label>
+            <ion-label class="conversion-rate" counto [countFrom] = "0" [duration]="1" [countTo]="dashboard?.analytics?.conversion" [step]="10" (countoChange)="countos.conversion = $event">{{ countos.conversion |intparse }}%</ion-label>
+          </ion-col>
+          <ion-col size="3" class="last-checked">
+            <ion-label>Last Checked</ion-label>
+            <ion-label class="highlighted">{{ dashboard?.analytics?.last_checked }}</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </ng-template>
+    <ng-template [ngIf] = "item === 'google-analytics-visitors'">
+      <ion-card  id="google-analytics-visitors" class="visitors" (click)="jumpToPage('visitors')">
+        <ion-row class="white-row">
+          <ion-col size="2">
+            <ion-icon class="d-visitorRate"></ion-icon>
+          </ion-col>
+          <ion-col size="7">
+            <ion-label class="heavy-font">VISITORS THIS MONTH</ion-label>
+            <ion-label class="visitors-cnt" counto [countFrom] = "0" [duration]="1" [countTo]="dashboard['google-analytics-visitors']['visitors']" [step]="10" (countoChange)="countos.visitors = $event">{{ countos.visitors | intparse }}</ion-label>
+          </ion-col>
+          <ion-col size="3" class="last-checked">
+            <ion-label>Last Checked</ion-label>
+            <ion-label class="highlighted">{{ dashboard["google-analytics-visitors"]["last_checked"] | smallCase }}</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </ng-template>
+    <ng-template [ngIf] = "item === 'broken-links'">
+      <ion-card id="broken-links" class="broken-links" (click)="jumpToPage('link')">
+        <ion-row>
+          <ion-col size="7">
+            <ion-label class="big-font more">BROKEN LINKS</ion-label>
+          </ion-col>
+          <ion-col size="3">
+            <ion-badge  counto [countFrom] = "0" [duration]="1" [countTo]="dashboard['broken-links']['count']" [step]="10" (countoChange)="countos.brokens = $event">{{ countos.brokens | intparse }}</ion-badge>
+          </ion-col>
+          <ion-col size="2">
+            <ion-icon class="d-brokenlink"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </ng-template>
+    <ng-template [ngIf]="item === 'domain-expiry'">
+      <ion-card id="domain-expire" class="domain-expire" (click)="jumpToPage('expire')">
+        <ion-row>
+          <ion-col size="10">
+            <ion-label  class="big-font more">DOMAIN EXPIRY</ion-label>
+            <ion-label class="small-font more">{{ dashboard ? dashboard["domain-expiry"]["expiry"] : 0 }} Days</ion-label>
+          </ion-col>
+          <ion-col size="2">
+            <ion-icon class="d-domainExpire"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </ng-template>
+  </ng-container>
+</div>

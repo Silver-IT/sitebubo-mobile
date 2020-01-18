@@ -1,8 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { MonitorService } from './../../../serverAPI/monitor/monitor.service';
 import { Storage } from '@ionic/storage';
-import { IongagetService } from './../../../services/ionGadgets/iongaget.service';
 import { TempService } from './../../../services/temp/temp.service';
+import { IongadgetService } from 'src/app/services/ionGadgets/iongadget.service';
+import { MonitorApiService } from 'src/app/apis/monitor/monitor-api.service';
+
 @Component({
   selector: 'app-cbroken-links',
   templateUrl: './cbroken-links.component.html',
@@ -15,9 +16,9 @@ export class CbrokenLinksComponent implements OnInit {
   domainUserID: number;
   brokenLinks = [];
   constructor(
-    private monitorAPI: MonitorService,
+    private monitorAPI: MonitorApiService,
     private storage: Storage,
-    private ionService: IongagetService,
+    private ionService: IongadgetService,
     private tempService: TempService,
     private cdr: ChangeDetectorRef
   ) { }
@@ -42,15 +43,15 @@ export class CbrokenLinksComponent implements OnInit {
     this.ionService.showLoading();
     this.monitorAPI.getBrokenLinkReport(this.domainName, this.domainUserID, this.userID, this.token).subscribe((result) => {
       this.ionService.closeLoading();
-      if (result['RESPONSECODE'] === 1) {
+      if (result.RESPONSECODE === 1) {
         this.brokenLinks = result.data;
         console.log(result.data);
         this.cdr.detectChanges();
       } else {
-        if (result['RESPONSE'] === 'No Broken Links') {
+        if (result.RESPONSE === 'No Broken Links') {
           this.brokenLinks = null;
         } else {
-          this.ionService.presentToast(result['RESPONSE']);
+          this.ionService.presentToast(result.RESPONSE);
         }
       }
     }, err => {
@@ -59,5 +60,3 @@ export class CbrokenLinksComponent implements OnInit {
     });
   }
 }
-
-

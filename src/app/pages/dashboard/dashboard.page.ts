@@ -1,21 +1,25 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild, ChangeDetectorRef, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, ViewChildren, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { IonMenu, MenuController, NavController, ActionSheetController } from '@ionic/angular';
-import { IongagetService } from './../../services/ionGadgets/iongaget.service';
 import { GeneralService } from './../../services/generalComponents/general.service';
-import { UserService } from './../../serverAPI/user/user.service';
-import { DomainService } from './../../serverAPI/domain/domain.service';
 import { TempService } from './../../services/temp/temp.service';
-import { MonitorService } from './../../serverAPI/monitor/monitor.service';
+import { AdmobService } from 'src/app/services/admob/admob.service';
+import { SocketService } from 'src/app/services/socket/socket.service';
+import { IongadgetService } from 'src/app/services/ionGadgets/iongadget.service';
+import { PluginsApiService } from 'src/app/apis/plugins/plugins-api.service';
+import { MonitorApiService } from 'src/app/apis/monitor/monitor-api.service';
+import { DomainApiService } from 'src/app/apis/domain/domain-api.service';
+import { UserApiService } from 'src/app/apis/user/user-api.service';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
   styleUrls: ['./dashboard.page.scss'],
 })
-export class DashboardPage implements OnInit {
+export class DashboardPage implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('userSetting', { static: false }) userMenu: IonMenu;
   @ViewChild('monitorSetting', { static: false }) monitorMenu: IonMenu;
   @ViewChildren('group') group: HTMLElement;
@@ -28,39 +32,55 @@ export class DashboardPage implements OnInit {
   domainUserID: number;
   domainID: number;
   invitedUserList = [];
+  invitableUsers: number;
   invitedErroMessage: string;
   notifications = [];
-  pluginsStatus = {
-    googleAnalytics: false,
-    emailChecker: true,
-    rankChecker: false,
-    dnsChecker: false
-  }
+  countos = {
+    seo: 0,
+    conversion: 0,
+    visitors: 0,
+    speed: 0.0,
+    brokens: 0
+  };
+  pluginData = [];
   fullReport: string;
   unreadCount: number;
   constructor(
     private storage: Storage,
     private router: Router,
-    private domainAPI: DomainService,
-    private ionService: IongagetService,
+    private domainAPI: DomainApiService,
+    private ionService: IongadgetService,
     private menuCtrl: MenuController,
     private navCtrl: NavController,
-    private userAPI: UserService,
+    private userAPI: UserApiService,
     private generalService: GeneralService,
     private actionCtrl: ActionSheetController,
     private cdr: ChangeDetectorRef,
     private tempService: TempService,
-    private monitorAPI: MonitorService
+    private monitorAPI: MonitorApiService,
+    private admobservice: AdmobService,
+    private pluginsAPI: PluginsApiService,
+    private socketService: SocketService,
+    private iab: InAppBrowser
   ) { }
 
-  ngOnInit() {
-    this.initData();
+  ngOnInit() {}
+
+  ngOnDestroy() {
+    this.socketService.removeAllDashboardHandlers(this.domainName);
   }
 
   ngAfterViewInit() {
     this.userMenu.ionWillOpen.subscribe(() => {
       this.getInvitedUserList();
     });
+    this.monitorMenu.ionWillOpen.subscribe(() => {
+      this.getAnalyticsInfo();
+    });
+  }
+
+  ionViewWillEnter() {
+    this.initData();
   }
 
   initData() {
@@ -74,8 +94,9 @@ export class DashboardPage implements OnInit {
           if (user) {
             this.userID = user.id;
             this.token = user.token;
-            this.getDomainDetails(this.domainName, this.domainUserID);
-            this.getNotifications(this.domainName, this.domainUserID);
+            this.defineAdmob();
+            this.getDomainDetails();
+            this.getNotifications();
           } else {
             this.router.navigate(['welcome'], { replaceUrl: true });
           }
@@ -85,37 +106,43 @@ export class DashboardPage implements OnInit {
       }
   }
 
-  getDomainDetails(domainName, domainUserID) {
-    // this.ionService.showLoading();
-    this.domainAPI.detailedDomain(domainName, domainUserID, this.userID, this.token).subscribe((result) => {
+  defineAdmob() {
+    this.storage.get('planInfo').then((info) => {
+      if (info.id === 1) {
+        this.admobservice.showAdmobBanner();
+      }
+    });
+  }
+
+  getDomainDetails() {
+    this.domainAPI.detailedDomain(this.domainName, this.domainUserID, this.userID, this.token).subscribe((result) => {
       console.log(result);
-      // this.ionService.closeLoading();
-      if(result['RESPONSECODE'] === 1) {
-        result.data['seo-score']['seoscore'] = parseInt(result.data['seo-score']['seoscore']);
+      if (result.RESPONSECODE === 1) {
+        result.data['seo-score'].seoscore = parseInt(result.data['seo-score'].seoscore, 10);
         this.domainData = result.data;
         this.orders = result.data['monitor-orders'];
         this.cdr.detectChanges();
-        console.log(this.orders);
-        // this.orderCards(result.data['monitor-orders']);
-        this.fullReport = result.data['full-report']['fullreport'];
+        this.fullReport = result.data['full-report'].fullreport;
+        this.tempService.saveBrokenLinksCount(result.data['broken-links'].count);
+        // Socket Setting
+        this.socketService.defineDashboardEvents(this.domainName, this.domainData);
       } else {
-        this.ionService.presentToast(result['RESPONSE']);
+        this.ionService.presentToast(result.RESPONSE);
       }
     }, err => {
-      // this.ionService.closeLoading();
       this.ionService.presentToast('Fetching Domain Data Failed');
     });
   }
 
-  getNotifications(domainName, domainUserID) {
-    this.generalService.getNotifications(domainName, domainUserID, this.userID, this.token).then((result) => {
+  getNotifications() {
+    this.generalService.getNotifications(this.domainName, this.domainUserID, this.userID, this.token).then((result) => {
       console.log(result);
       if (result) {
         this.notifications = result.notifications;
         this.countUnreadCounts().then(async (count) => {
           await this.tempService.saveUnreadCount(count).then((res) => {
             this.unreadCount = count;
-          })
+          });
         });
         this.cdr.detectChanges();
       } else {
@@ -142,8 +169,8 @@ export class DashboardPage implements OnInit {
   openNotificationModal() {
       this.generalService.openNotifications(this.notifications, 0).then((result) => {
         if (result) {
-          this.generalService.updateNotifications(this.domainName, this.userID, this.token).then((result) => {
-            if (result) {
+          this.generalService.updateNotifications(this.domainName, this.userID, this.token).then((res) => {
+            if (res) {
               this.unreadCount = 0;
               this.cdr.detectChanges();
             }
@@ -154,17 +181,34 @@ export class DashboardPage implements OnInit {
     });
   }
 
+  getAnalyticsInfo() {
+    this.pluginsAPI.listplugins(this.userID, this.domainUserID, this.domainID, this.token).subscribe((result) => {
+      console.log(result);
+      if (result.RESPONSECODE === 1) {
+        this.pluginData = result.data.plugins;
+      } else {
+        this.ionService.presentToast('No Result from Server');
+      }
+    }, err => {
+      this.ionService.presentToast('Server API Erroron Google Analytics');
+    });
+  }
+
   getInvitedUserList() {
     this.userAPI.listeInvitedUser(this.domainName, this.userID, this.token).subscribe((result) => {
       console.log(result);
-      if (result['RESPONSECODE'] === 1) {
-        this.invitedUserList = result.data;
+      if (result.RESPONSECODE === 1) {
+        if (result.data) {
+          this.invitedUserList = result.data;
+        }
+        this.invitableUsers = result['invitable-users'];
+        this.cdr.detectChanges();
       } else {
-        if (result['RESPONSE'] === 'There is no user added') {
-          this.invitedUserList = [];
+        if (result.RESPONSE === 'There is no user added') {
+          this.invitableUsers = result['invitable-users'];
           this.invitedErroMessage = 'There are no users added';
         } else {
-          this.ionService.presentToast(result['RESPONSE']);
+          this.ionService.presentToast(result.RESPONSE);
         }
       }
     });
@@ -185,7 +229,7 @@ export class DashboardPage implements OnInit {
 
   async deleteUser(inviteID, inviteName ) {
     const action = await this.actionCtrl.create({
-      header: 'Are you sure to disallow ' + inviteName + ' to view '  + this.domainName,
+      header: 'Are you sure you want to remove this member?',
       buttons: [
         {
           text: 'Yes',
@@ -195,19 +239,19 @@ export class DashboardPage implements OnInit {
             this.userAPI.deleteInviteUser(inviteID, this.userID, this.token).subscribe((result) => {
               // console.log(result);
               this.ionService.closeLoading();
-              if (result['RESPONSECODE'] === 1) {
+              if (result.RESPONSECODE === 1) {
                 this.getInvitedUserList();
                 this.ionService.presentToast('Member successfully removed');
-                this.cdr.detectChanges();                                
+                this.cdr.detectChanges();
               } else {
-                this.ionService.presentToast(result['REPONSE']);
+                this.ionService.presentToast(result.REPONSE);
               }
             }, err => {
               this.ionService.closeLoading();
               this.ionService.presentToast('Error occured while deleting the invited user');
             });
           }
-        }, 
+        },
         {
           text: 'No',
           icon: 'close',
@@ -221,10 +265,10 @@ export class DashboardPage implements OnInit {
   resendInvitation(email) {
     this.userAPI.resendInvitationEmail(email, this.domainName, this.domainUserID, this.userID, this.token).subscribe((result) => {
       console.log(result);
-      if (result['RESPONSECODE'] === 1) {
+      if (result.RESPONSECODE === 1) {
         this.ionService.presentToast('Resent invitation email successfully');
       } else {
-        this.ionService.presentToast(result['RESPONSE'])
+        this.ionService.presentToast(result.RESPONSE);
       }
     }, err => {
       this.ionService.presentToast('Error from server API');
@@ -249,9 +293,10 @@ export class DashboardPage implements OnInit {
     this.closeAllMenu();
   }
 
-  ionViewWillLeave(){
+  ionViewWillLeave() {
     this.monitorMenu.disabled = true;
     this.menuCtrl.enable(true, 'totalMenu');
+    this.admobservice.removeBanner();
   }
 
   closeAllMenu(): Promise<any> {
@@ -264,8 +309,9 @@ export class DashboardPage implements OnInit {
   }
 
   openFullReport() {
-    console.log(this.fullReport);
-    window.open(this.fullReport, '_blank');
+    // console.log(this.fullReport);
+    this.iab.create(this.fullReport, '_blank', 'closebuttoncaption=back');
+    // window.open(this.fullReport, '_blank');
   }
 
   dismissUserSetting() {
@@ -280,48 +326,47 @@ export class DashboardPage implements OnInit {
     this.navCtrl.back();
   }
 
-  changeStyle(plugIn) {
-    this.pluginsStatus[plugIn] = !this.pluginsStatus[plugIn];
-  }
-
   jumpToTabs(page) {
-    if (page === 'expire' || page === 'link') {
-      this.router.navigate(['tabs/more'], { queryParams: {
-        pageName: page
-      } });
-    } else {
-      this.router.navigate(['tabs/' + page]);
-    }
+    console.log(this.domainData);
+    this.tempService.saveDashboardData(this.domainData).then((result) => {
+      if (result) {
+        if (page === 'expire' || page === 'link') {
+          this.router.navigate(['tabs/more'], { queryParams: {
+            pageName: page
+          } });
+        } else if (page === 'conversion' || page === 'visitors') {
+          this.router.navigate(['tabs/more'], { queryParams: {
+            pageName: 'analytics',
+            detailedPage: page
+          } });
+        } else {
+          this.router.navigate(['tabs/' + page]);
+        }
+      }
+    });
   }
 
   onRenderItems(event) {
-    console.log(event.detail.from, event.detail.to);
-    let temp1 = this.orders[event.detail.from];
-    let temp2 = this.orders[event.detail.to];
+    const temp1 = this.orders[event.detail.from];
+    const temp2 = this.orders[event.detail.to];
     this.orders[event.detail.to] = temp1;
     this.orders[event.detail.from] = temp2;
-    console.log(this.orders);
-    // let draggedItem = this.orders.splice(event.detail.from,1)[0];
-    // console.log(draggedItem);
-    // this.orders.splice(event.detail.to,0,draggedItem);
-    // this.orderCards(this.orders);
     event.detail.complete();
     this.updateCardOrders().then((result) => {
       if (result) {
-        // console.log(result);
       }
     }).catch(err => {
-    })
+    });
   }
 
   updateCardOrders() {
     return new Promise((resolve, reject) => {
       this.monitorAPI.updateMonitorOrders(JSON.stringify(this.orders), this.domainID, this.userID, this.token).subscribe((result) => {
         console.log(result);
-        if (result['RESPONSECODE'] === 1) {
+        if (result.RESPONSECODE === 1) {
           resolve(true);
-        } else {  
-          this.ionService.presentToast(result['RESPONSE']);
+        } else {
+          this.ionService.presentToast(result.RESPONSE);
           reject(false);
         }
       }, err => {
@@ -333,34 +378,52 @@ export class DashboardPage implements OnInit {
 
  updateReportInfo(event, id, username) {
     console.log(event.detail.checked);
-    let email_report: number;
+    let emailReport: number;
     if (event.detail.checked) {
-      email_report = 1;
+      emailReport = 1;
     } else {
-      email_report = 0;
+      emailReport = 0;
     }
-    this.userAPI.updateInvitedUser(email_report, id, this.userID, this.token).subscribe((result) => {
-      if (result['RESPONSECODE'] === 1) {
-        if (email_report) {
-          this.ionService.presentToast("You have activated " + username + "'s report");
+    this.userAPI.updateInvitedUser(emailReport, id, this.userID, this.token).subscribe((result) => {
+      if (result.RESPONSECODE === 1) {
+        if (emailReport) {
+          this.ionService.presentToast('You have activated ' + username + '\'s report');
         } else {
-          this.ionService.presentToast("You have deactivated " + username + "'s report");
+          this.ionService.presentToast('You have deactivated ' + username + '\'seport');
         }
       } else {
-        this.ionService.presentToast("Error occured while changing " + username + "'s report");
+        this.ionService.presentToast('Error occured while changing ' + username + '\'s report');
       }
     });
- }
+  }
 
- connectGoogleAnalytics() {
-   if (this.pluginsStatus.googleAnalytics) {
-    this.pluginsStatus.googleAnalytics = false;
-    return;
-   }
-   this.generalService.connectGoogleAnalytics().then((result) => {
-     if (result) {
-       this.pluginsStatus.googleAnalytics = true;
-     } 
-   });
- }
+  connectPlugin(monitor, name, connection) {
+    if (connection) {
+      this.generalService.confirmDisconnect(name).then((result) => {
+        console.log(result);
+        if (result) {
+          this.pluginsAPI.disconnectPlugin(monitor, this.userID, this.domainID, this.domainUserID, this.token).subscribe((res) => {
+            if (res.RESPONSECODE === 1) {
+              if (monitor === 'google-analytics') {
+                this.ionService.presentToast('Google Analytics monitor has been disconnected');
+                this.getAnalyticsInfo();
+                this.getDomainDetails();
+              }
+            } else {
+              this.ionService.presentToast(res.RESPONSE);
+            }
+          }, err => {
+            this.ionService.presentToast('Server API Problem');
+          });
+        }
+      });
+    } else {
+      if (monitor === 'google-analytics') {
+        this.generalService.connectGoogleAnalytics(monitor, this.domainID, this.domainUserID, this.userID, this.token).then((result) => {
+          this.getAnalyticsInfo();
+          this.getDomainDetails();
+        });
+      }
+    }
+  }
 }

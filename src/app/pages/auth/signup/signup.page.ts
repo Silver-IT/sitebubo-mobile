@@ -1,20 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform, Events } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router, NavigationExtras } from '@angular/router';
 import { Md5 } from 'ts-md5/dist/md5';
-import { Storage } from '@ionic/storage';
 // plugins
 import { Facebook } from '@ionic-native/facebook/ngx';
 import { FCM } from '@ionic-native/fcm/ngx';
-import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
 // services
-import { AuthService } from './../../../serverAPI/auth/auth.service';
-import { IongagetService } from './../../../services/ionGadgets/iongaget.service';
 import { GeneralService } from './../../../services/generalComponents/general.service';
-
-
+import { StorageService } from 'src/app/services/storage/storage.service';
+import { IongadgetService } from 'src/app/services/ionGadgets/iongadget.service';
+import { AuthApiService } from 'src/app/apis/auth/auth-api.service';
 
 @Component({
   selector: 'app-signup',
@@ -25,7 +21,8 @@ export class SignupPage implements OnInit {
   fname = '';
   email = '';
   pwd = '';
-  deviceID = 'ezjsu38';
+  deviceID: string;
+  deviceType: string;
   ischeckedPol = false;
   ischeckedTerm = false;
   showPolError = false;
@@ -34,11 +31,9 @@ export class SignupPage implements OnInit {
   readyForSubmit = false;
   facebookReady = false;
   duplicatedEmail = false;
-  // tslint:disable-next-line: variable-name
-  validate_signupform: FormGroup;
+  validateSignupform: FormGroup;
   errorMessage = '';
-  // tslint:disable-next-line: variable-name
-  validation_messages = {
+  validationMessages = {
     fullname: [
       { type: 'required', message: 'Full Name is required' },
       { type: 'minlength', message: 'Full Name must be at least 6 characters long.' }
@@ -50,39 +45,31 @@ export class SignupPage implements OnInit {
     password: [
       { type: 'required', message: 'Password is required.' },
       { type: 'minlength', message: 'Password must be at least 6 characters long.' },
-      // { type: 'pattern', message: 'Your password must contain at least one uppercase, one lowercase, and one number.' }
     ]
   };
-  // tslint:disable-next-line: variable-name
-  validate_fullname = false;
-   // tslint:disable-next-line: variable-name
-  validate_email = false;
-  // tslint:disable-next-line: variable-name
-  validate_password = false;
+  validateFullname = false;
+  validateEmail = false;
+  validatePassword = false;
   constructor(
-    private keyboard: Keyboard,
-    private platform: Platform,
     private fb: Facebook,
-    private ga: GoogleAnalytics,
-    private fcm: FCM,
-    private storage: Storage,
+    private formBuilder: FormBuilder,
+    private platform: Platform,
     private router: Router,
-    private events: Events,
-    public formBuilder: FormBuilder,
-    private authService: AuthService,
+    private fcm: FCM,
+    private authAPI: AuthApiService,
+    private ionService: IongadgetService,
     private generalService: GeneralService,
-    private ionService: IongagetService
+    private storageService: StorageService
   ) { }
 
   ngOnInit() {
     this.initForm();
     this.setHeaderAnimation();
-    this.googleStart();
     this.getToken();
   }
 
   initForm() {
-    this.validate_signupform = this.formBuilder.group({
+    this.validateSignupform = this.formBuilder.group({
       fullname: new FormControl('', Validators.compose([
         Validators.required,
         Validators.minLength(6)
@@ -99,66 +86,60 @@ export class SignupPage implements OnInit {
   }
 
   setHeaderAnimation() {
-    this.keyboard.onKeyboardWillShow().subscribe(() => {
-      document.getElementById('logo').style.display = 'none';
-      document.getElementById('signup').style.minHeight = '100vh';
-    });
-    this.keyboard.onKeyboardWillHide().subscribe(() => {
-      document.getElementById('logo').style.display = 'flex';
-      document.getElementById('signup').style.minHeight = '82vh';
-    });
-  }
-
-  googleStart() {
-    this.ga.startTrackerWithId('UA-131219006-1').then(() => {
-      this.ga.trackView('Menu');
-    }).catch(e => {
-      console.log('Error starting GoogleAnalytics', e);
-    });
+    // this.keyboard.onKeyboardWillShow().subscribe(() => {
+    //   document.getElementById('logo').style.display = 'none';
+    //   document.getElementById('signup').style.minHeight = '100vh';
+    // });
+    // this.keyboard.onKeyboardWillHide().subscribe(() => {
+    //   document.getElementById('logo').style.display = 'flex';
+    //   document.getElementById('signup').style.minHeight = '82vh';
+    // });
   }
 
   getToken() {
     this.platform.ready().then(() => {
       this.fcm.subscribeToTopic('all');
       this.fcm.getToken().then(token => {
+        this.deviceID = token;
         if (token.split(':').length > 1) {
-          this.deviceID = token.split(':')[0];
+          this.deviceType = 'I';
         } else {
           this.deviceID = token.split(':')[0];
+          this.deviceType = 'A';
         }
       });
       this.fcm.onTokenRefresh().subscribe(token => {
-
+        this.deviceID = token;
         if (token.split(':').length > 1) {
           this.deviceID = token.split(':')[0];
-          console.log(token);
+          this.deviceType = 'I';
         } else {
           this.deviceID = token.split(':')[0];
+          this.deviceType = 'A';
         }
       });
     });
   }
 
   validateForm() {
-    this.validate_fullname = true;
-    this.validate_email = true;
-    this.validate_password = true;
+    this.validateFullname = true;
+    this.validateEmail = true;
+    this.validatePassword = true;
     this.checkTermsAndPolicy().then(result => {
       console.log(result);
-      if (this.validate_signupform.invalid) {
+      if (this.validateSignupform.invalid) {
         return;
       }
-      if(result) { 
+      if (result) {
         this.signUpWithEmail();
       }
-    })
+    });
   }
 
   signUpWithEmail() {
     this.readyForSubmit = true;
-    this.ga.trackEvent('Signup', 'Signup User', this.fname + this.email, 0).then(() => { });
     const password = Md5.hashStr(this.pwd);
-    this.authService.signup(this.email, password, this.fname, this.deviceID ).subscribe((result) => {
+    this.authAPI.signup(this.email, password, this.fname, this.deviceID ).subscribe((result) => {
       if (result.RESPONSECODE === 1) {
         this.readyForSubmit = false;
         const navprams: NavigationExtras = {
@@ -166,7 +147,7 @@ export class SignupPage implements OnInit {
             userID: result.id
           }
         };
-        this.router.navigate(['verifymail'], navprams);
+        this.router.navigate(['verifyemail'], navprams);
       } else if (result.RESPONSE === 'Email Already Exists') {
         this.readyForSubmit = false;
         this.duplicatedEmail = true;
@@ -181,18 +162,18 @@ export class SignupPage implements OnInit {
   }
 
   setEmailValidation(event) {
-    this.validate_email = event;
-    if(event === false) {
+    this.validateEmail = event;
+    if (event === false) {
       this.duplicatedEmail = false;
     }
   }
 
   setPasswordValidation(event) {
-    this.validate_password = event;
+    this.validatePassword = event;
   }
 
   setFullnameValidation(event) {
-    this.validate_fullname = event;
+    this.validateFullname = event;
   }
 
   btnchkPol() {
@@ -220,7 +201,7 @@ export class SignupPage implements OnInit {
 
   checkTermsAndPolicy() {
     return new Promise((resolve, reject) => {
-      let checked = true; 
+      let checked = true;
       if (this.ischeckedPol === false) {
         document.getElementById('privacy').classList.add('check-alert');
         checked = false;
@@ -229,41 +210,48 @@ export class SignupPage implements OnInit {
         document.getElementById('terms').classList.add('check-alert');
         checked = false;
       }
-      
+
       const objTimeout = setTimeout(() => {
         document.getElementById('privacy').classList.remove('check-alert');
         document.getElementById('terms').classList.remove('check-alert');
         clearTimeout(objTimeout);
       }, 3000);
       resolve(checked);
-    })
+    });
   }
 
   signUpwithFB() {
-    this.validate_fullname = false;
-    this.validate_email = false;
-    this.validate_password = false;
+    this.validateFullname = false;
+    this.validateEmail = false;
+    this.validatePassword = false;
     this.checkTermsAndPolicy().then(result => {
       if (result) {
         this.facebookReady = true;
-        this.fb.logout().then((res) => {
-          this.fb.login(['public_profile', 'user_friends', 'email']).then((res) => {
-            if (res.status === 'connected') {
-              this.getUserDetail(res.authResponse.userID);
-            } else {
-              this.ionService.showAlert('Facebook Error', 'Not Connected');
-              this.facebookReady = false;
-            }
-          })
-          .catch(e => {
-            this.facebookReady = false;
-            this.ionService.presentToast(JSON.stringify(e));
-          });
-        }).catch(err => {
-          this.ionService.presentToast(JSON.stringify(err));
+        this.fb.getLoginStatus().then((res) => {
+          if (res.status === 'connected') {
+            // this.getUserDetail(res.authResponse.userID);
+            this.fb.logout().then(() => {
+              this.signUpFBStep2();
+            });
+          } else {
+            this.signUpFBStep2();
+          }
         });
       }
-    })
+    });
+  }
+
+  signUpFBStep2() {
+    this.fb.login(['public_profile', 'email']).then((result) => {
+      if (result.status === 'connected' ) {
+        this.getUserDetail(result.authResponse.userID);
+      } else {
+        this.ionService.presentToast('Facebook Error');
+        this.facebookReady = false;
+      }
+    }).catch(err => {
+      this.facebookReady = false;
+    });
   }
 
   getUserDetail(fbUserID) {
@@ -273,7 +261,7 @@ export class SignupPage implements OnInit {
         const name = result.name;
         this.facebookSignUp(email, name);
       } else {
-        this.ionService.showAlert('Error while Fetching Facebook Credentials', 'Your account might not be valid enough');
+        this.ionService.presentToast('Error while Fetching Facebook Credentials');
         this.facebookReady = false;
       }
     }).catch((err) => {
@@ -283,21 +271,16 @@ export class SignupPage implements OnInit {
   }
 
   facebookSignUp(email, name) {
-    this.ga.trackEvent('Signup', 'Signup User', name + email, 0).then(() => {
-    }).catch(err => {
-      this.ionService.presentToast(JSON.stringify(err));
-      this.facebookReady = false;
-    });
-    this.authService.facebookSignUp(email, name, this.deviceID).subscribe(async (result) => {
+    this.authAPI.facebookSignUp(email, name, this.deviceID).subscribe(async (result) => {
       this.facebookReady = true;
       console.log(result);
-      if (result['RESPONSECODE'] === 1) {
+      if (result.RESPONSECODE === 1) {
         this.facebookSignIn(email);
-      } else if (result['RESPONSE'] === 'Email Already Exists') {
+      } else if (result.RESPONSE === 'Email Already Exists') {
         this.facebookSignIn(email);
       } else {
         this.facebookReady = false;
-        this.ionService.presentToast( result['RESPONSE']);
+        this.ionService.presentToast( result.RESPONSE);
       }
     }, err => {
       this.facebookReady = false;
@@ -306,27 +289,23 @@ export class SignupPage implements OnInit {
   }
 
   facebookSignIn(email) {
-    this.authService.facebookLogIn(email, this.deviceID).subscribe((user)=> {
+    this.authAPI.facebookLogIn(email, this.deviceID).subscribe((user) => {
       console.log(user);
       this.facebookReady = false;
-      if (user['RESPONSECODE'] === 1) {
-        if (user.isVerify === '0') {  
+      if (user.RESPONSECODE === 1) {
+        if (user.isVerify === '0') {
           const navprams: NavigationExtras = {
             queryParams: {
               userID: user.id
             }
           };
-          this.router.navigate(['verifymail'], navprams);
+          this.router.navigate(['verifyemail'], navprams);
         } else {
-          user.email = email;
-          this.storage.set('userInfo', user).then(() => {
-            this.events.publish('userInfo_set', user);
+          this.storageService.setStorage(user).then((result) => {
+            if (result) {
+              this.generalService.defineInitialRoutering();
+            }
           });
-          if (user.isNewUser === true) {
-            this.router.navigate(['subscription'], { replaceUrl: true });
-          } else {
-            this.router.navigate(['domain-list'], { replaceUrl: true });
-          }
         }
       } else {
         this.ionService.showAlert('Sign In by Facebook Failed', user.RESPOSNE);
@@ -336,5 +315,4 @@ export class SignupPage implements OnInit {
       this.ionService.showAlert('Sign In by Facebook Failed', 'Server API Problem');
     });
   }
-
 }

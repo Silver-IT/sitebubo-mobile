@@ -1,18 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { AddSitePage } from './add-site.page';
+import { AddSitePageRoutingModule } from './add-site-routing.module';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: AddSitePage
-  }
-];
+import { AddSitePage } from './add-site.page';
 
 @NgModule({
   imports: [
@@ -20,7 +14,7 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    AddSitePageRoutingModule
   ],
   declarations: [AddSitePage]
 })

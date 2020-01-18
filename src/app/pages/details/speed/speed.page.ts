@@ -3,7 +3,6 @@ import { GeneralService } from './../../../services/generalComponents/general.se
 import { TempService } from './../../../services/temp/temp.service';
 import { Router } from '@angular/router';
 import { IonSlides} from '@ionic/angular';
-
 @Component({
   selector: 'app-speed',
   templateUrl: './speed.page.html',
@@ -21,11 +20,10 @@ export class SpeedPage implements OnInit {
     private generalSerive: GeneralService,
     private tempService: TempService,
     private router: Router,
-    private cdr: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
-    console.log(this.reportDetails);
     if (this.tempService.dashboardParams) {
       this.getReportDetails();
     } else {
@@ -44,10 +42,11 @@ export class SpeedPage implements OnInit {
   }
 
   switchPages(event) {
+    // tslint:disable-next-line: radix
     this.pageType = parseInt(event.target.value);
     this.cdr.detectChanges();
   }
-  
+
   openFeedback() {
     this.generalSerive.openFeedback();
   }

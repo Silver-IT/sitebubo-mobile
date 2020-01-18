@@ -1,0 +1,14 @@
+ion-header {
+  ion-toolbar {
+    ion-button {
+      position: absolute;
+      z-index: 1;
+      &.menu {
+        right: 0;
+      }
+      &.back {
+        left: 0;
+      }
+    }
+  }
+}

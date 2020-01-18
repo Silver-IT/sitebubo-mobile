@@ -1,24 +1,27 @@
 <ion-content>
   <div class="completed">
-    <img src= 'assets/icons/logoAlone.svg' />
-    <ion-label *ngIf='completed'><b>Web Scan </b>is completed</ion-label>
-    <ion-label *ngIf='!completed'><b>Web Scan </b>is in Process</ion-label>
+    <img src= "assets/icons/logoAlone.svg" />
+    <ion-label *ngIf="completed"><b>Web Scan </b>is completed</ion-label>
+    <ion-label *ngIf="!completed"><b>Web Scan </b>is in Progress</ion-label>
+  </div>
+  <ion-label class="domain_name">{{ domainName }}</ion-label>
+  <div #results class="results"></div>
+  <div class="footer">
+    <div *ngIf="status.started && !status.process" mode="ios">
+      <ion-label>{{ tempResult?.monitor }} {{ tempResult?.status }}</ion-label>
+    </div>
+    <div #temp class="process" mode="ios" *ngIf="status.process">
+      <ion-label>{{ tempResult?.monitor }} </ion-label>
+      <ion-label class="fade-in-right" *ngIf="tempResult.status === 'Started'"> Connected</ion-label>
+      <ion-label class="fade-in-right" *ngIf="tempResult.status === 'in Progress'"> {{ tempResult?.status }} ... </ion-label>
+      <ion-label class="fade-in-right" *ngIf="tempResult.status === 'Finished'"> {{ tempResult?.status }}</ion-label>
+    </div>
   </div>
   <div class="img">
-    <img src= 'assets/imgs/represent.png' />
+    <img src= "assets/imgs/scanning.svg" />
   </div>
-  <div class="process">
-    <img src="assets/icons/loading.gif" alt="">
-    <ion-label>{{ percentage }}% completed ...</ion-label>
+  <div class="status">
+    <ion-label class="progress-status">{{ progresShow | intparse }}% Done</ion-label>
+    <ion-progress-bar color="success" [value]="percentage"></ion-progress-bar>
   </div>
 </ion-content>
-<script>(function (i, s, o, g, r, a, m) {
-  i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-    (i[r].q = i[r].q || []).push(arguments)
-  }, i[r].l = 1 * new Date(); a = s.createElement(o),
-    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-  })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-
-  ga('create', 'UA-131219006-1', 'auto');
-  ga('send', 'pageview');</script>
-

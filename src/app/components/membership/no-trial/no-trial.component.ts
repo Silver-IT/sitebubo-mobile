@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-no-trial',
@@ -9,15 +10,14 @@ import { Router } from '@angular/router';
 export class NoTrialComponent implements OnInit {
   @Input() details: any;
   constructor(
-    private router: Router
+    private router: Router,
+    private iab: InAppBrowser
   ) { }
 
-  ngOnInit() {
-    console.log(this.details);
-  }
+  ngOnInit() {}
 
   changePlan() {
-    this.router.navigate(['subscription']);
+    this.router.navigate(['plans']);
   }
 
   cancelMemebership() {
@@ -25,7 +25,6 @@ export class NoTrialComponent implements OnInit {
   }
 
   openInvoice() {
-    window.open(this.details.invoice_pdf, '_blank');
+    this.iab.create(this.details.invoice_pdf, '_blank', 'closebuttoncaption=back');
   }
-
 }

@@ -9,7 +9,7 @@ import { ModalController, NavParams } from '@ionic/angular';
 export class NotificationListPage implements OnInit {
   notifications = [];
   showData = [];
-  filterType : number;
+  filterType: number;
   constructor(
     private modalCtrl: ModalController,
     private navParams: NavParams
@@ -17,7 +17,6 @@ export class NotificationListPage implements OnInit {
 
   ngOnInit() {
     this.notifications = this.navParams.get('notifications');
-    console.log(this.notifications);
     this.filterType = 2;
     this.defineShowData().then((result) => {
       this.showData = result;
@@ -25,7 +24,7 @@ export class NotificationListPage implements OnInit {
   }
 
   changeFilterType(event) {
-    this.filterType = parseInt(event.target.value);
+    this.filterType = parseInt(event.target.value, 10);
     this.defineShowData().then((result) => {
       this.showData = result;
     });
@@ -39,14 +38,14 @@ export class NotificationListPage implements OnInit {
       } else if (this.filterType === 2) {
         this.notifications.forEach(element => {
           if (element.view) {
-            console.log(element.view); 
+            console.log(element.view);
             showData.push(element);
           }
         });
       } else {
         this.notifications.forEach(element => {
           if (!element.view) {
-            console.log(element.view);  
+            console.log(element.view);
             showData.push(element);
           }
         });
@@ -58,10 +57,4 @@ export class NotificationListPage implements OnInit {
   dismiss() {
     this.modalCtrl.dismiss();
   }
-
-  onExpand(index) {
-    const ele = document.getElementById('mat_' + index);
-    ele.classList.remove('red');
-  }
-
 }

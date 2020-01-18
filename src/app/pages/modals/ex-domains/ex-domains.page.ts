@@ -1,13 +1,9 @@
-import { Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalController, NavParams } from '@ionic/angular';
-import { SubscriptionsService } from './../../../serverAPI/subscriptions/subscriptions.service';
-import { IongagetService } from './../../../services/ionGadgets/iongaget.service';
-import { DomainService } from './../../../serverAPI/domain/domain.service';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ModalController, NavParams, IonButton } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import { ThrowStmt } from '@angular/compiler';
+import { IongadgetService } from 'src/app/services/ionGadgets/iongadget.service';
+import { DomainApiService } from 'src/app/apis/domain/domain-api.service';
 
-Storage
 @Component({
   selector: 'app-ex-domains',
   templateUrl: './ex-domains.page.html',
@@ -25,15 +21,13 @@ export class ExDomainsPage implements OnInit {
   deleteIndexes = [];
   feedback = '';
   daysLeft: number;
-  @ViewChild('downgrade', { static: false }) downgrade: HTMLElement;
-  @ViewChild('confirm', { static: false }) confirm: HTMLElement;
+  @ViewChild('downgrade', { static: false }) downgrade: IonButton;
+  @ViewChild('confirm', { static: false }) confirm: ElementRef<any>;
   constructor(
     private modalCtrl: ModalController,
-    private subscriptionAPI: SubscriptionsService,
-    private ionService: IongagetService,
-    private domainAPI: DomainService,
+    private ionService: IongadgetService,
+    private domainAPI: DomainApiService,
     private storage: Storage,
-    private router: Router,
     private navParams: NavParams
   ) { }
 
@@ -57,7 +51,7 @@ export class ExDomainsPage implements OnInit {
     });
     this.storage.get('planInfo').then((info) => {
       this.daysLeft = info.days_left;
-    })
+    });
     this.currentPlan = this.navParams.get('currentPlan');
     this.newPlan = this.navParams.get('selectedPlan');
     this.allowedCnt = this.navParams.get('allowedCnt');
@@ -73,9 +67,9 @@ export class ExDomainsPage implements OnInit {
       this.storage.get('userInfo').then((user) => {
         this.domainAPI.getDomainList(user.id, user.token).subscribe((result) => {
           this.ionService.closeLoading();
-          if (result['RESPONSECODE'] === 1) {
+          if (result.RESPONSECODE === 1) {
             if (result.data) {
-              let temp = []; let final = [];
+              let temp = []; const final = [];
               temp = result.data;
               temp.forEach((element) => {
                 if (element.user_id === user.id) {
@@ -85,7 +79,7 @@ export class ExDomainsPage implements OnInit {
               resolve(final);
             }
           } else {
-              this.ionService.presentToast(result['RESPONSE']);
+              this.ionService.presentToast(result.RESPONSE);
               reject(null);
           }
         }, err => {
@@ -94,7 +88,7 @@ export class ExDomainsPage implements OnInit {
           reject(err);
         });
       });
-    })
+    });
   }
 
   getValues(index, event) {
@@ -120,7 +114,7 @@ export class ExDomainsPage implements OnInit {
         const params = {
           domains: result,
           feedback: this.feedback
-        }
+        };
         this.modalCtrl.dismiss(params, 'success');
       }
     });
@@ -128,11 +122,11 @@ export class ExDomainsPage implements OnInit {
 
   sunUpDomains(): any {
     return new Promise((resolve, reject) => {
-      let temp = [];
+      const temp = [];
       if (this.domains) {
         this.domains.forEach(element => {
           if (!element.checked) {
-            temp.push(element.domain_name)
+            temp.push(element.domain_name);
           }
         });
       }
@@ -141,19 +135,22 @@ export class ExDomainsPage implements OnInit {
   }
 
   changeStyle(event) {
-    console.log(this.confirm, this.downgrade);
+    console.log(this.downgrade);
     if (event) {
+      // tslint:disable-next-line: no-string-literal
       this.downgrade['el'].classList.remove('downgrade-enter');
+      // tslint:disable-next-line: no-string-literal
       this.downgrade['el'].classList.add('downgrade-exit');
-      this.confirm['nativeElement'].classList.add('downgrade-enter');
-      this.confirm['nativeElement'].classList.remove('downgrade-exit');
-      this.confirm['nativeElement'].classList.remove('hide');
+      this.confirm.nativeElement.classList.add('downgrade-enter');
+      this.confirm.nativeElement.classList.remove('downgrade-exit');
+      this.confirm.nativeElement.classList.remove('hide');
     } else  {
-      this.confirm['nativeElement'].classList.remove('downgrade-enter');
-      this.confirm['nativeElement'].classList.add('downgrade-exit');
+      this.confirm.nativeElement.classList.remove('downgrade-enter');
+      this.confirm.nativeElement.classList.add('downgrade-exit');
+      // tslint:disable-next-line: no-string-literal
       this.downgrade['el'].classList.remove('downgrade-exit');
+      // tslint:disable-next-line: no-string-literal
       this.downgrade['el'].classList.add('downgrade-enter');
     }
   }
-
 }

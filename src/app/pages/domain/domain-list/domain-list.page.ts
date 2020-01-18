@@ -1,13 +1,12 @@
-import { MonitorService } from './../../../serverAPI/monitor/monitor.service';
 import { Router } from '@angular/router';
-import { Component, OnInit, ViewChild, ViewChildren, ChangeDetectorRef } from '@angular/core';
-import { IongagetService } from './../../../services/ionGadgets/iongaget.service';
-import { ActionSheetController, Events } from '@ionic/angular';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ActionSheetController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 import { GeneralService } from './../../../services/generalComponents/general.service';
-import { DomainService } from './../../../serverAPI/domain/domain.service';
 import { TempService } from './../../../services/temp/temp.service';
+import { AdmobService } from 'src/app/services/admob/admob.service';
+import { IongadgetService } from 'src/app/services/ionGadgets/iongadget.service';
+import { DomainApiService } from 'src/app/apis/domain/domain-api.service';
 
 @Component({
   selector: 'app-domain-list',
@@ -15,64 +14,64 @@ import { TempService } from './../../../services/temp/temp.service';
   styleUrls: ['./domain-list.page.scss'],
 })
 export class DomainListPage implements OnInit {
-  @ViewChild('group', { static: false }) group: HTMLElement;
-  @ViewChildren('reorder') reorders;
-  @ViewChildren('cards') cards;
   title: any;
   token: any;
   userID: any;
   domainCounts: any;
   domains = [];
-  loading: any;
   allDomList = [];
   myDomList = [];
   invitedDomList = [];
   filterType = 0;
   showContent: boolean;
   noResult = 'hidden';
-  pressInterval = 0;
-  reorderable = false;
-  targetElement: HTMLElement;
-  reorderElement: HTMLElement;
   orders = [];
   press = {
     duration: 0,
     started: false
-  }
+  };
   constructor(
     private storage: Storage,
-    private domainAPI: DomainService,
-    private ionService: IongagetService,
+    private domainAPI: DomainApiService,
+    private ionService: IongadgetService,
     private actionCtrl: ActionSheetController,
     private generalService: GeneralService,
-    private ga: GoogleAnalytics,
-    private events: Events,
     private router: Router,
     private tempService: TempService,
     private cdr: ChangeDetectorRef,
-    private monitorAPI: MonitorService
+    private admobservice: AdmobService
   ) {
 
   }
 
   async ionViewWillEnter() {
-    this.showContent = false;
-    await this.initData().then(async () => {
-      await this.getDomainList();
+    this.storage.get('planInfo').then((info) => {
+      if (info.id  === 1) {
+        this.admobservice.showAdmobBanner().then(async (result) => {
+        });
+        this.initData();
+      } else {
+        this.initData();
+      }
     });
   }
 
+  ionViewWillLeave() {
+    this.admobservice.removeBanner();
+  }
+
   ngOnInit() {
-    
   }
 
   async initData() {
     await this.storage.get('userInfo').then((user) => {
       this.userID = user.id;
       this.token = user.token;
+      this.showContent = false;
+      this.getDomainList();
     });
   }
-  
+
   getDomainList() {
     this.ionService.showLoading();
     this.myDomList = [];
@@ -81,10 +80,9 @@ export class DomainListPage implements OnInit {
     this.domainAPI.getDomainList(this.userID, this.token).subscribe((result) => {
       this.showContent = true;
       this.ionService.closeLoading();
-      console.log('Domain List: ', result);
-      if (result['RESPONSECODE'] === 1) {
-        this.allDomList = result.data;
+      if (result.RESPONSECODE === 1) {
         console.log(result.data);
+        this.allDomList = result.data;
         this.domainCounts = result.domains;
         this.generalService.restDomainInfo(result.domains);
         if (result.data) {
@@ -96,14 +94,14 @@ export class DomainListPage implements OnInit {
               element.type = 'invited';
               this.invitedDomList.push(element);
             }
-          });          
+          });
         }
         this.defineShow();
 
       } else {
           this.ionService.presentToast('Something went wrong with Server');
           this.filterType = 1;
-          this.domains = []; 
+          this.domains = [];
       }
     }, err => {
       this.ionService.closeLoading();
@@ -154,7 +152,6 @@ export class DomainListPage implements OnInit {
           handler: () => {
             this.filterType = 1;
             this.domains = this.allDomList;
-            console.log(this.domains);
             this.title = 'All Sites (' + this.domainCounts.domains + ')';
           },
         },
@@ -163,7 +160,6 @@ export class DomainListPage implements OnInit {
           handler: () => {
             this.filterType = 2;
             this.domains = this.myDomList;
-            console.log(this.domains);
             this.title = 'My Sites (' + this.domainCounts.my_domains + '/' + this.domainCounts.total_domains + ')';
           },
         },
@@ -172,7 +168,6 @@ export class DomainListPage implements OnInit {
           handler: () => {
             this.filterType = 3;
             this.domains = this.invitedDomList;
-            console.log(this.domains);
             this.title = 'Invited Sites (' + this.domainCounts.invited_domains + ')';
           },
         },
@@ -182,36 +177,40 @@ export class DomainListPage implements OnInit {
         }
       ],
     });
-
     await action.present();
   }
 
   addDomain(myDomCnt, totalDomCnt) {
     this.generalService.showDomainModal(myDomCnt, totalDomCnt);
-    // this.generalService.showDomainModal();
   }
 
-  openDomain(domain_id, domain_name, domain_userID, type) {
-    let params = {
-      domainID: domain_id,
-      domainName: domain_name,
-      domainUserID: domain_userID,
-      type: type
-    };
-    this.tempService.saveDashboradParams(params, this.filterType).then(() => {
-      this.router.navigate(['dashboard']);
-    });
+  openDomain(domainId, domName, domUserID, possession, scannedBoolean) {
+    if (scannedBoolean) {
+      const params = {
+        domainID: domainId,
+        domainName: domName,
+        domainUserID: domUserID,
+        type: possession
+      };
+      this.tempService.saveDashboradParams(params, this.filterType).then(() => {
+        this.router.navigate(['dashboard']);
+      });
+    } else {
+      const message = domName + ' is not scanned yet.';
+      this.ionService.presentToast(message);
+    }
   }
 
   deleteDomain(domainName) {
     this.ionService.showLoading();
     this.domainAPI.deleteDomain(domainName, this.userID, this.token).subscribe((result) => {
-      console.log(result);
       this.ionService.closeLoading();
-      if (result['RESPONSECODE'] === 1) {
+      if (result.RESPONSECODE === 1) {
+        const message = 'The domain ' + domainName + ' has been removed';
+        this.ionService.presentToast(message);
         this.getDomainList();
       } else {
-        this.ionService.presentToast(result['RESPONSE']);
+        this.ionService.presentToast(result.RESPONSE);
       }
     }, err => {
       this.ionService.closeLoading();
@@ -228,9 +227,8 @@ export class DomainListPage implements OnInit {
   }
 
   onRenderItems(event) {
-     console.log(`Moving item from ${event.detail.from} to ${event.detail.to}`);
-    let item1 = this.domains[event.detail.from];
-    let item2 = this.domains[event.detail.to];
+    const item1 = this.domains[event.detail.from];
+    const item2 = this.domains[event.detail.to];
     const indexStart = this.allDomList.indexOf(item1);
     const indexLast = this.allDomList.indexOf(item2);
     const temp1 = this.allDomList[indexStart];
@@ -238,8 +236,7 @@ export class DomainListPage implements OnInit {
     this.allDomList[indexStart] = temp2;
     this.allDomList[indexLast] = temp1;
     event.detail.complete();
-     this.reorderDomains().then(() => {
-       console.log(this.allDomList);
+    this.reorderDomains().then(() => {
        if (this.domains.length > 1) {
          this.saveDomainsOrder().then(() => {
            this.cdr.detectChanges();
@@ -247,13 +244,13 @@ export class DomainListPage implements OnInit {
            this.ionService.presentToast('Error occured while reordering');
          });
        }
-     });
+    });
   }
 
   reorderDomains(): Promise<any> {
     return new Promise((resolve, reject) => {
-      let mytemp = [];
-      let invitedtemp = [];
+      const mytemp = [];
+      const invitedtemp = [];
       this.allDomList.forEach((element) => {
         if (element.user_id === this.userID) {
           mytemp.push(element);
@@ -276,26 +273,17 @@ export class DomainListPage implements OnInit {
 
   saveDomainsOrder(): Promise<any> {
     return new Promise((resolve, reject) => {
-      let temp = [];
+      const temp = [];
       this.allDomList.forEach((element) => {
         temp.push({id: element.id});
       });
       this.domainAPI.reorderDomains(JSON.stringify(temp), this.userID, this.token).subscribe((result) => {
-        if (result['RESPONSECODE'] === 1) {
+        if (result.RESPONSECODE === 1) {
           resolve(true);
         } else {
           reject(false);
         }
       });
     });
-  }
-
-  changeImgStatus(index, status) {
-    // const element = document.getElementById('skeleton_' + index);
-    if (status) {
-      // element.style.display = 'none';
-    } else {
-      
-    }
   }
 }

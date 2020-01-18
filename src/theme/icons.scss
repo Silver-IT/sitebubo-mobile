@@ -70,6 +70,10 @@ ion-icon{
     font-size: 22px !important;
     background-image: url('assets/icons/membership.svg');
   }
+  &.menu-notifcation {
+    font-size: 22px !important;
+    background-image: url('assets/icons/menu-notification.png');
+  }
   &.menu-feedback {
     font-size: 22px !important;
     background-image: url('assets/icons/feedback-1.svg');
@@ -134,19 +138,19 @@ ion-icon{
   }
   &.d-brokenlink {
     font-size: 45px !important;
-    background-image: url('assets/icons/dashboard/brokenlink_icon.svg');
+    background-image: url('assets/icons/dashboard/brokenlink.gif');
   }
   &.d-conversionRate {
     font-size: 45px !important;
-    background-image: url('assets/icons/dashboard/conversion_rate.svg');
+    background-image: url('assets/icons/dashboard/conversion.gif');
   }
   &.d-domainExpire {
     font-size: 45px !important;
-    background-image: url('assets/icons/dashboard/domainexpire_icon.svg');
+    background-image: url('assets/icons/dashboard/domainexpire.gif');
   }
   &.d-fullReport {
     font-size: 45px !important;
-    background-image: url('assets/icons/dashboard/fullreport_icon.svg');
+    background-image: url('assets/icons/dashboard/fullReort.gif');
   }
   &.d-notificationBell {
     background-size: contain !important;
@@ -155,7 +159,7 @@ ion-icon{
   } 
   &.d-seo {
     font-size: 45px !important;
-    background-image: url('assets/icons/dashboard/seo_icon.svg');
+    background-image: url('assets/icons/dashboard/seo.gif');
   }
   &.d-settings {
     font-size: 30px !important;
@@ -163,19 +167,20 @@ ion-icon{
   }
   &.d-siteScore {
     font-size: 45px !important;
-    background-image: url('assets/icons/dashboard/sitescore_icon.svg');
+    background-image: url('assets/icons/dashboard/sitespeed.gif');
   } 
   &.d-siteUp {
     font-size: 75px !important;
-    background-image: url('assets/icons/dashboard/siteup.svg');
+    background-image: url('assets/icons/dashboard/siteup.gif');
   }
   &.d-siteDown {
     font-size: 75px !important;
-    background-image: url('assets/icons/dashboard/downtime.svg');
+    background-image: url('assets/icons/dashboard/siteup.gif');
+    transform: rotate(180deg);
   }
   &.n-report {
     // font-size: 75px !important;
-    background-image: url('assets/icons/report_icon.png');
+    background-image: url('assets/icons/notifcation_report.png');
   }
   &.d-userSetting {
     font-size: 22px !important;
@@ -183,11 +188,15 @@ ion-icon{
   }
   &.d-virusfree {
     font-size: 75px !important;
-    background-image: url('assets/icons/dashboard/virusfree.svg');
+    background-image: url('assets/icons/dashboard/security_secure.gif');
+  }
+  &.d-virusdetected {
+    font-size: 75px !important;
+    background-image: url('assets/icons/dashboard/security_notsecure.gif');
   }
   &.d-visitorRate {
     font-size: 45px !important;
-    background-image: url('assets/icons/dashboard/visitor_rate.svg');
+    background-image: url('assets/icons/dashboard/visitors.gif');
   }
   &.activeUser {
     font-size: 45px;
@@ -240,12 +249,20 @@ ion-icon{
     border-radius: 50%;
     background-color: #58df4a;
   }
+  &.m-down {
+    font-size: 20px;
+    background-image: url('assets/icons/dashboard/sitedown_icon.png');
+  }
+  &.m-up {
+    font-size: 20px;
+    background-image: url('assets/icons/dashboard/siteup_icon.png');
+  }
   &.positive-icon {
-    font-size: 23px;
+    font-size: 22px;
     background-image: url('assets/icons/dashboard/monitorSettings/positiveIcon.svg');
   }
   &.negative-icon {
-    font-size: 23px;
+    font-size: 22px;
     background-image: url('assets/icons/dashboard/monitorSettings/negativeIcon.svg');
   }
   &.factor-activated {
@@ -271,5 +288,12 @@ ion-icon{
   &.expire-safe {
     font-size: 100px !important; 
     background-image: url('assets/icons/dashboard/monitorSettings/expireSafe.png');
+  }
+  &.youtube {
+    font-size: 80px;
+    display: block;
+    margin: auto;
+    padding-top: 20px;
+    color: red;
   }
 }

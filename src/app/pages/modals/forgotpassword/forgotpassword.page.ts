@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController, IonInput } from '@ionic/angular';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Storage } from '@ionic/storage';
-import { IongagetService } from './../../../services/ionGadgets/iongaget.service';
-import { AuthService } from './../../../serverAPI/auth/auth.service';
-import { CheckEmailPage } from '../check-email/check-email.page';
-// import { GeneralService } from './../../../services/generalComponents/general.service';
+import { IongadgetService } from 'src/app/services/ionGadgets/iongadget.service';
+import { AuthApiService } from 'src/app/apis/auth/auth-api.service';
+// import { CheckEmailPage } from '../check-email/check-email.page';
 
 @Component({
   selector: 'app-forgotpassword',
@@ -28,10 +26,8 @@ export class ForgotpasswordPage implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private modalCtrl: ModalController,
-    private storage: Storage,
-    private ionService: IongagetService,
-    private authService: AuthService,
-    // private generalService: GeneralService
+    private ionService: IongadgetService,
+    private authService: AuthApiService,
   ) { }
 
   ngOnInit() {
@@ -76,28 +72,29 @@ export class ForgotpasswordPage implements OnInit {
     this.ionService.showLoading();
     this.authService.forgotPassword(this.email).subscribe((result) => {
       this.ionService.closeLoading();
-      if (result['RESPONSECODE'] ===  1) {
+      if (result.RESPONSECODE ===  1) {
+
         this.modalCtrl.dismiss().then(() => {
-          this.openCheckEmail();
+          // this.openCheckEmail();
+          this.ionService.presentToast('Password reset email sent successfully. Check your email to reset your password.');
         });
       } else {
-        this.ionService.showAlert('Failed Sending ResetPassword Email', result['RESPONSE']);
+        this.ionService.presentToast('Failed sending reset password email');
       }
     }, err => {
       this.ionService.closeLoading();
-      this.ionService.showAlert('Failed Sending ResetPassword Email', 'Server API Problem');
+      this.ionService.presentToast('Server API Problem');
     });
   }
 
-  async openCheckEmail() {
-    const check = await this.modalCtrl.create({
-      component: CheckEmailPage
-    });
-    return await check.present();
-  }
+  // async openCheckEmail() {
+  //   const check = await this.modalCtrl.create({
+  //     component: CheckEmailPage
+  //   });
+  //   return await check.present();
+  // }
 
   dismiss() {
     this.modalCtrl.dismiss();
   }
-
 }

@@ -1,21 +1,21 @@
-<ion-card *ngIf = 'brokenLinks' mode='ios'>
-    <ion-list mode = 'ios'>
-        <mat-accordion >
-          <mat-expansion-panel *ngFor="let item of brokenLinks">
-            <mat-expansion-panel-header [collapsedHeight]="'65px'" [expandedHeight]="'65px'">
-              <ion-item lines= 'none' mode='ios'>
-                  <ion-icon class="brokenLink"></ion-icon>
-                  <div class="submenu-badge">{{ item.brokens.length }}</div>
-                  <ion-label>{{ item.link }}</ion-label>
-              </ion-item>
-            </mat-expansion-panel-header>
-            <mat-panel-description >
-              <ion-label *ngFor="let link of item.brokens">{{ link }}</ion-label>
-            </mat-panel-description>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </ion-list>
+<ion-card *ngIf = "brokenLinks" mode="ios">
+  <ion-list mode = "ios">
+      <mat-accordion >
+        <mat-expansion-panel *ngFor="let item of brokenLinks">
+          <mat-expansion-panel-header [collapsedHeight]="'80px'" [expandedHeight]="'80px'">
+            <ion-item lines= "none" mode="ios">
+                <ion-icon class="brokenLink"></ion-icon>
+                <div class="submenu-badge">{{ item.brokens.length }}</div>
+                <ion-label>{{ item.link }}</ion-label>
+            </ion-item>
+          </mat-expansion-panel-header>
+          <mat-panel-description >
+            <ion-label *ngFor="let link of item.brokens">{{ link }}</ion-label>
+          </mat-panel-description>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </ion-list>
 </ion-card>
-<ion-label class="no-links" *ngIf = '!brokenLinks'>
-  No broken links found from <b>{{ domainName }}</b>
+<ion-label class="no-links" *ngIf = "!brokenLinks">
+No broken links found from <b>{{ domainName }}</b>
 </ion-label>

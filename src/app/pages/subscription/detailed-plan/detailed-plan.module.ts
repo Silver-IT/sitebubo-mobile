@@ -1,25 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { DetailedPlanPage } from './detailed-plan.page';
+import { DetailedPlanPageRoutingModule } from './detailed-plan-routing.module';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: DetailedPlanPage
-  }
-];
+import { DetailedPlanPage } from './detailed-plan.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    DetailedPlanPageRoutingModule
   ],
   declarations: [DetailedPlanPage]
 })

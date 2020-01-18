@@ -1,0 +1,46 @@
+<ion-card mode="ios">
+  <ion-label class="date">Start Date: {{ visitorsDetails?.start_date | datetime }}</ion-label>
+  <ion-label class="date">End Date: {{ visitorsDetails?.end_date | datetime }}</ion-label>
+  <ion-list mode="ios">
+    <ion-item>
+      <ion-icon ios="md-person" md="md-person" slot="start"></ion-icon>
+      <ion-label class="title">Users</ion-label>
+      <ion-label class="value">{{ visitorsDetails?.users }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon ios="md-person-add" md="md-person-add" slot="start"></ion-icon>
+      <ion-label class="title">New Users</ion-label>
+      <ion-label class="value">{{ visitorsDetails?.newusers }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon class="active-session" ios="ios-chatbubbles" md="ios-chatbubbles" slot="start"></ion-icon>
+      <ion-label class="title">Sessions</ion-label>
+      <ion-label class="value">{{ visitorsDetails?.sessions }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon class="deactive-session" ios="ios-chatbubbles" md="ios-chatbubbles" slot="start"></ion-icon>
+      <ion-label class="title">No. Sessions per User</ion-label>
+      <ion-label class="value">{{ visitorsDetails?.sessionsperuser }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon ios="md-eye" md="md-eye" slot="start"></ion-icon>
+      <ion-label class="title">Page Views</ion-label>
+      <ion-label class="value">{{ visitorsDetails?.pageviews }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon ios="ios-albums" md="ios-albums" slot="start"></ion-icon>
+      <ion-label class="title">Pages/Session</ion-label>
+      <ion-label class="value">{{ visitorsDetails?.pageviewspersession }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon ios="ios-timer" md="ios-timer" slot="start"></ion-icon>
+      <ion-label class="title">Avg.Session Duration</ion-label>
+      <ion-label class="value">{{ visitorsDetails?.avgsessionduration }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon ios="md-pulse" md="md-pulse" slot="start"></ion-icon>
+      <ion-label class="title">Bounce Rate</ion-label>
+      <ion-label class="value">{{ visitorsDetails?.bouncerate }}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-card>

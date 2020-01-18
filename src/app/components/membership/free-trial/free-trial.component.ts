@@ -1,6 +1,5 @@
-import { Router } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-free-trial',
   templateUrl: './free-trial.component.html',
@@ -8,17 +7,15 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class FreeTrialComponent implements OnInit {
   @Input() details: any;
-  @Input() newUser: any; 
+  @Input() newUser: any;
   constructor(
     private router: Router
-  ) { 
-  }
-  
-  ngOnInit() {
-  }
+  ) { }
+
+  ngOnInit() {}
 
   getback() {
-    this.router.navigate(['subscription'], { queryParams: {
+    this.router.navigate(['plans'], { queryParams: {
       newUser: true
     } });
   }
@@ -28,11 +25,10 @@ export class FreeTrialComponent implements OnInit {
   }
 
   upgrade() {
-    this.router.navigate(['subscription']);
+    this.router.navigate(['plans']);
   }
 
   cancelMembership() {
     this.router.navigate(['cancel-membership']);
   }
-
 }

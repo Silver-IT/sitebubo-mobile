@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
-import { LoadingController, NavController, Events, Platform, ModalController } from '@ionic/angular';
+import { NavController, Platform, ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import { IongagetService } from './../../../services/ionGadgets/iongaget.service';
+import { IongadgetService } from './../../../services/ionGadgets/iongadget.service';
 import { GeneralService } from './../../../services/generalComponents/general.service';
-import { SubscriptionsService } from './../../../serverAPI/subscriptions/subscriptions.service';
 import { ExDomainsPage } from './../../modals/ex-domains/ex-domains.page';
 import { PaypalService } from './../../../services/paypal/paypal.service';
-import { TransactionService } from './../../../serverAPI/transaction/transaction.service';
+import { SubscriptionApiService } from 'src/app/apis/subscription/subscription-api.service';
 
 @Component({
   selector: 'app-detailed-plan',
@@ -32,20 +30,16 @@ export class DetailedPlanPage implements OnInit {
   showbtn = false;
   firstPay: boolean;
   constructor(
-    private iap: InAppPurchase,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private storage: Storage,
-    private loadingCtrl: LoadingController,
-    private ionService: IongagetService,
+    private ionService: IongadgetService,
     private generalSerivce: GeneralService,
-    private subscriptionAPI: SubscriptionsService,
+    private subscriptionAPI: SubscriptionApiService,
     private navCtrl: NavController,
-    private events: Events,
     private platform: Platform,
     private modalCtrl: ModalController,
-    private paypal: PaypalService,
-    private transactionAPI: TransactionService
+    private paypal: PaypalService
   ) {
   }
 
@@ -61,7 +55,7 @@ export class DetailedPlanPage implements OnInit {
     });
   }
 
-  getPlanID() { 
+  getPlanID() {
     this.activatedRoute.queryParams.subscribe((result) => {
       console.log(result);
       if (result) {
@@ -103,7 +97,7 @@ export class DetailedPlanPage implements OnInit {
         this.daysLeft = info.daysleft;
         this.currentPlanName = info.name;
         this.currentPlanID = info.id;
-        if (parseInt(this.planID) !== info.id) {
+        if (parseInt(this.planID, 10) !== info.id) {
           this.showbtn = true;
         }
       });
@@ -116,8 +110,8 @@ export class DetailedPlanPage implements OnInit {
         console.log(result);
         if (result.RESPONSECODE === 1) {
           this.ionService.closeLoading();
-          this.details = result.data['details'];
-          this.firstPay = result.data['need_to_pay'];
+          this.details = result.data.details;
+          this.firstPay = result.data.need_to_pay;
           this.getCurrentSubscription();
           console.log(result.data);
         } else {
@@ -134,7 +128,17 @@ export class DetailedPlanPage implements OnInit {
   }
 
   continuePlan() {
-    if (parseInt(this.planID) < this.currentPlanID) {
+    console.log(this.currentPlanID);
+    if (this.isNewUser && parseInt(this.planID, 10) === 1) {
+      this.gotoFreePlan().then((res) => {
+        if (res) {
+          this.router.navigate(['subscription-welcome'],  { queryParams: {
+            isNewUser: this.isNewUser,
+            planID: 1
+          }});
+        }
+      });
+    } else if (parseInt(this.planID, 10) < this.currentPlanID) {
       this.checkExDomainList();
     } else {
       this.gotoPaypal();
@@ -144,10 +148,10 @@ export class DetailedPlanPage implements OnInit {
   gotoFreePlan() {
     return new Promise((resolve, reject) => {
       this.subscriptionAPI.activatefreesubscription( this.planID, this.userID, this.token).subscribe((result) => {
-        if (result['RESPONSECODE'] === 1) {
+        if (result.RESPONSECODE === 1) {
           resolve(true);
         } else {
-          this.ionService.presentToast(result['RESPONSE']);
+          this.ionService.presentToast(result.RESPONSE);
           reject(false);
         }
       }, err => {
@@ -165,11 +169,8 @@ export class DetailedPlanPage implements OnInit {
         allowedCnt: this.details.noofdomain,
         reason: false
       },
-      // backdropDismiss: false
     });
     exDomain.onDidDismiss().then((result) => {
-      // console.log(result);
-      // return;
       if (result.role === 'success') {
         this.gotoPaypal(result.data);
       }
@@ -179,12 +180,12 @@ export class DetailedPlanPage implements OnInit {
 
 
   gotoPaypal(downgradeData = null) {
-    if(parseInt(this.planID) === 1) {
+    if (parseInt(this.planID, 10) === 1) {
       this.ionService.showLoading();
       this.gotoFreePlan().then((result) => {
         this.ionService.closeLoading();
         if (result) {
-          this.downgradeDomains(downgradeData).then(result => {
+          this.downgradeDomains(downgradeData).then(res => {
             this.router.navigate(['subscription-welcome'],  { queryParams: {
               isNewUser: this.isNewUser,
               planID: 1,
@@ -195,17 +196,16 @@ export class DetailedPlanPage implements OnInit {
          this.ionService.closeLoading();
        });
     } else {
-      this.paypal.payNow(this.userID, parseInt(this.planID), this.token, this.freeTrial).then((result) => {
+      this.paypal.payNow(this.userID, parseInt(this.planID, 10), this.token, this.freeTrial).then((result) => {
         if (result === 'success') {
-          // alert(JSON.stringify(downgradeData));
-          if(downgradeData !== null) {
-            this.downgradeDomains(downgradeData).then(result => {
+          if (downgradeData !== null) {
+            this.downgradeDomains(downgradeData).then(res => {
               this.ionService.closeLoading();
-              if (result) {
+              if (res) {
                 const params: NavigationExtras = {
                   queryParams: {
                     isNewUser: this.isNewUser,
-                    planID: parseInt(this.planID),
+                    planID: parseInt(this.planID, 10),
                     isFreeTrial: this.freeTrial,
                     firstPay: this.firstPay
                   }
@@ -220,22 +220,21 @@ export class DetailedPlanPage implements OnInit {
             const params: NavigationExtras = {
               queryParams: {
                 isNewUser: this.isNewUser,
-                planID: parseInt(this.planID),
+                planID: parseInt(this.planID, 10),
                 isFreeTrial: this.freeTrial,
                 firstPay: this.firstPay
               }
             };
             this.router.navigate(['subscription-welcome'], params);
           }
-          
         } else if (result === 'pending') {
-          const message = 'Already you have one subscriptions is pending. So please wait untill status need to update. Then we can change the subscription';
+          let message = 'Already you have one subscriptions is pending.';
+          message += 'So please wait untill status need to update. Then we can change the subscription';
           this.ionService.presentToast(message);
         } else if (result === 'free-trial-failed') {
           const message = 'You are not able to use free trial. There will be something wrong. Please contact support.';
           this.ionService.presentToast(message);
-        }
-         else if (result === 'cancelled') {
+        } else if (result === 'cancelled') {
           this.ionService.presentToast('Subscription Activation Failed. Please try again');
         } else {
           const message = 'Payment Connection Failed. Please try again';
@@ -247,29 +246,24 @@ export class DetailedPlanPage implements OnInit {
     }
   }
 
-
   downgradeDomains(downgradeData) {
     this.ionService.showLoading();
     return new Promise((resolve, reject) => {
       this.subscriptionAPI.downgradePlan(downgradeData.domains, this.userID, this.token, downgradeData.feedback).subscribe((result) => {
-        this.ionService.closeLoading();  
+        this.ionService.closeLoading();
         console.log(result);
-          if (result['RESPONSECODE'] === 1) {
-            resolve(true);
-          } else {
-            this.ionService.presentToast(result['RESPONSE']);  
-            reject(false);
-          }
-        }, err => {
-          this.ionService.closeLoading();  
+        if (result.RESPONSECODE === 1) {
+          resolve(true);
+        } else {
+          this.ionService.presentToast(result.RESPONSE);
+          reject(false);
+        }
+      }, err => {
+          this.ionService.closeLoading();
           this.ionService.presentToast('Somthing might be wrong');
           reject(false);
         });
     });
-  }
-  // payment on iphones
-  gotoInAppPurchase() {
-
   }
 
   goback() {

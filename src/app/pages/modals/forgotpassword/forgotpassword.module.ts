@@ -1,18 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ForgotpasswordPage } from './forgotpassword.page';
+import { ForgotpasswordPageRoutingModule } from './forgotpassword-routing.module';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: ForgotpasswordPage
-  }
-];
+import { ForgotpasswordPage } from './forgotpassword.page';
 
 @NgModule({
   imports: [
@@ -20,7 +14,7 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    ForgotpasswordPageRoutingModule
   ],
   declarations: [ForgotpasswordPage]
 })

@@ -1,26 +1,26 @@
 import { IonInput, ModalController, NavParams } from '@ionic/angular';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
-import { UserService } from './../../../serverAPI/user/user.service';
-import { IongagetService } from './../../../services/ionGadgets/iongaget.service';
+import { UserApiService } from 'src/app/apis/user/user-api.service';
+import { IongadgetService } from 'src/app/services/ionGadgets/iongadget.service';
 
 @Component({
   selector: 'app-invite-user',
   templateUrl: './invite-user.page.html',
   styleUrls: ['./invite-user.page.scss'],
 })
-export class InviteUserPage implements OnInit {
+export class InviteUserPage implements OnInit, AfterViewInit {
   @ViewChild('emailInput', { static: false }) emailInput: IonInput;
   email = '';
   addInvitedUserForm: FormGroup;
-  validation_messages = {
+  validationMessages = {
     email : [
       { type: 'required', message: 'Email is required.' },
       { type: 'pattern', message: 'Please enter a valid email.' }
     ]
-  }
-  validate_email: boolean = false;
+  };
+  validateEmail = false;
   readyToSubmit = false;
   invalidEmail = false;
   extraError = '';
@@ -31,8 +31,8 @@ export class InviteUserPage implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private modalCtrl: ModalController,
-    private ionService: IongagetService,
-    private userAPI: UserService,
+    private ionService: IongadgetService,
+    private userAPI: UserApiService,
     private storage: Storage,
     private navParams: NavParams
   ) { }
@@ -45,12 +45,12 @@ export class InviteUserPage implements OnInit {
 
   ngAfterViewInit() {
     this.emailInput.ionBlur.subscribe(() => {
-      this.validate_email = true;
+      this.validateEmail = true;
     });
     this.emailInput.ionFocus.subscribe(() => {
       this.invalidEmail = false;
       this.extraError = '';
-      this.validate_email = false;
+      this.validateEmail = false;
     });
     this.emailInput.ionChange.subscribe(() => {
       this.watchChange();
@@ -58,7 +58,7 @@ export class InviteUserPage implements OnInit {
 
     setTimeout(() => {
       this.emailInput.setFocus();
-    }, 200)
+    }, 200);
   }
 
 
@@ -82,20 +82,20 @@ export class InviteUserPage implements OnInit {
   addInvitedUser() {
     this.storage.get('userInfo').then((user) => {
       this.ionService.showLoading();
-      let email_report: number;
+      let emailReport: number;
       if (this.reportChecked) {
-        email_report = 1;
+        emailReport = 1;
       } else {
-        email_report = 0;
+        emailReport = 0;
       }
-      this.userAPI.addInvitedUser(this.domainName, this.email, email_report, user.id, this.domainUserID, user.token).subscribe((result) => {
+      this.userAPI.addInvitedUser(this.domainName, this.email, emailReport, user.id, this.domainUserID, user.token).subscribe((result) => {
         console.log(result);
         this.ionService.closeLoading();
-        if (result['RESPONSECODE'] === 1) {
+        if (result.RESPONSECODE === 1) {
           this.modalCtrl.dismiss(true);
         } else  {
           this.invalidEmail = true;
-          this.extraError = result['RESPONSE'];
+          this.extraError = result.RESPONSE;
         }
       }, err => {
         this.ionService.closeLoading();
@@ -107,5 +107,4 @@ export class InviteUserPage implements OnInit {
   dismiss() {
     this.modalCtrl.dismiss(false);
   }
-
 }

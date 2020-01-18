@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { GeneralService } from './../../../services/generalComponents/general.service';
 import { TempService } from './../../../services/temp/temp.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { IonSlides } from '@ionic/angular';
 
 @Component({
@@ -10,38 +10,30 @@ import { IonSlides } from '@ionic/angular';
   styleUrls: ['./security.page.scss'],
 })
 export class SecurityPage implements OnInit {
-  slideOpts = {
-    loop: true,
-    slidesPerView: 3,
-    centeredSlides: true,
-    slideToClickedSlide: true
-  }
   pageType: number;
   @ViewChild('slides', { static: false }) slides: IonSlides;
   constructor(
     private generalSerive: GeneralService,
     private tempService: TempService,
-    private router: Router,
-    private cdr: ChangeDetectorRef
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-    
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (params.notification) {
+        this.pageType = this.tempService.dashboardParams.pageType;
+      } else {
+        this.pageType = 1;
+      }
+    });
   }
-  
-  ionViewWillEnter() {
 
-  }
-  
   openFeedback() {
     this.generalSerive.openFeedback();
   }
 
   switchPages(event) {
-    this.slides.getActiveIndex().then(result => {
-      console.log(result);
-      this.pageType = result%3;
-      this.cdr.detectChanges();
-    })
+    // tslint:disable-next-line: radix
+    this.pageType = parseInt(event.target.value);
   }
 }

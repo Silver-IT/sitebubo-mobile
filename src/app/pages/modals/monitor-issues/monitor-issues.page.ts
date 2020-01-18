@@ -1,9 +1,9 @@
 import { ModalController, NavParams } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
-import { IongagetService } from './../../../services/ionGadgets/iongaget.service';
-import { MonitorService } from './../../../serverAPI/monitor/monitor.service';
 import { TempService } from './../../../services/temp/temp.service';
 import { Storage } from '@ionic/storage';
+import { IongadgetService } from 'src/app/services/ionGadgets/iongadget.service';
+import { MonitorApiService } from 'src/app/apis/monitor/monitor-api.service';
 
 @Component({
   selector: 'app-monitor-issues',
@@ -13,7 +13,7 @@ import { Storage } from '@ionic/storage';
 export class MonitorIssuesPage implements OnInit {
   userID: number;
   token: string;
-  filterType = 1;
+  filterType: number;
   positiveData = [];
   negativeData = [];
   showData: any;
@@ -21,8 +21,8 @@ export class MonitorIssuesPage implements OnInit {
   title: string;
   constructor(
     private tempService: TempService,
-    private monitorAPI: MonitorService,
-    private ionService: IongagetService,
+    private monitorAPI: MonitorApiService,
+    private ionService: IongadgetService,
     private storage: Storage,
     private modalCtrl: ModalController,
     private navParams: NavParams
@@ -33,31 +33,34 @@ export class MonitorIssuesPage implements OnInit {
       this.userID =  user.id;
       this.token = user.token;
       this.filterType = this.navParams.get('factor');
+      console.log(this.filterType);
       this.reportName = this.navParams.get('reportName');
       if (this.reportName === 'seo') {
         this.getSeoIssues();
-        this.title = 'Issues'
-      } else if (this.reportName === 'desktop'){
+        this.title = 'Issues';
+      } else if (this.reportName === 'desktop') {
         this.getDesktopIssues();
-        this.title = 'Google Desktop Score';
+        this.title = 'Desktop Score';
       } else {
         this.getMobileIssues();
-        this.title = 'Google Mobile Score';
+        this.title = 'Mobile Score';
       }
     });
   }
 
   getDesktopIssues() {
-    this.monitorAPI.getDesktopReport(this.tempService.dashboardParams.domainName, this.tempService.dashboardParams.domainUserID, this.userID, this.token).subscribe((result) => {
-      if (result['RESPONSECODE'] === 1) {
-        this.seperateData(result.data.desktopreport).then((result) => {
-          console.log(result);
-          this.positiveData = result.positive;
-          this.negativeData = result.negative;
+    this.monitorAPI
+    .getDesktopReport(this.tempService.dashboardParams.domainName, this.tempService.dashboardParams.domainUserID, this.userID, this.token)
+    .subscribe((result) => {
+      if (result.RESPONSECODE === 1) {
+        this.seperateData(result.data.desktopreport).then((res) => {
+          console.log(res);
+          this.positiveData = res.positive;
+          this.negativeData = res.negative;
           this.decideShowData();
         });
       } else {
-        this.ionService.presentToast(result['RESPONSE']);
+        this.ionService.presentToast(result.RESPONSE);
       }
     }, err => {
       this.ionService.presentToast('Error from server API');
@@ -65,16 +68,18 @@ export class MonitorIssuesPage implements OnInit {
   }
 
   getMobileIssues() {
-    this.monitorAPI.getMobileReport(this.tempService.dashboardParams.domainName, this.tempService.dashboardParams.domainUserID, this.userID, this.token).subscribe((result) => {
-      if (result['RESPONSECODE'] === 1) {
-        this.seperateData(result.data.mobilereport).then((result) => {
-          console.log(result);
-          this.positiveData = result.positive;
-          this.negativeData = result.negative;
+    this.monitorAPI.
+    getMobileReport(this.tempService.dashboardParams.domainName, this.tempService.dashboardParams.domainUserID, this.userID, this.token)
+    .subscribe((result) => {
+      if (result.RESPONSECODE === 1) {
+        this.seperateData(result.data.mobilereport).then((res) => {
+          console.log(res);
+          this.positiveData = res.positive;
+          this.negativeData = res.negative;
           this.decideShowData();
         });
       } else {
-        this.ionService.presentToast(result['RESPONSE']);
+        this.ionService.presentToast(result.RESPONSE);
       }
     }, err => {
       this.ionService.presentToast('Error from server API');
@@ -82,16 +87,18 @@ export class MonitorIssuesPage implements OnInit {
   }
 
   getSeoIssues() {
-    this.monitorAPI.getIssuesRport(this.tempService.dashboardParams.domainName, this.tempService.dashboardParams.domainUserID, this.userID, this.token).subscribe((result) => {
-      if (result['RESPONSECODE'] === 1) {
-        this.seperateData(result.data.manualreport).then((result) => {
-          console.log(result);
-          this.positiveData = result.positive;
-          this.negativeData = result.negative;
+    this.monitorAPI
+    .getIssuesRport(this.tempService.dashboardParams.domainName, this.tempService.dashboardParams.domainUserID, this.userID, this.token)
+    .subscribe((result) => {
+      if (result.RESPONSECODE === 1) {
+        this.seperateData(result.data.manualreport).then((res) => {
+          console.log(res);
+          this.positiveData = res.positive;
+          this.negativeData = res.negative;
           this.decideShowData();
         });
       } else {
-        this.ionService.presentToast(result['RESPONSE']);
+        this.ionService.presentToast(result.RESPONSE);
       }
     }, err => {
       this.ionService.presentToast('Error from server API');
@@ -101,7 +108,7 @@ export class MonitorIssuesPage implements OnInit {
   seperateData(data): Promise<any> {
     return new Promise((resolve, reject) => {
       let temp = [];
-      let result = {
+      const result = {
         negative: [],
         positive: []
       };

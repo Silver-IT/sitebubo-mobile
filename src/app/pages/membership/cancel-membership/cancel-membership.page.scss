@@ -1,0 +1,77 @@
+ion-header {
+  ion-title {
+    text-align: center;
+    font-size: 17px;
+  }
+  ion-button.back {
+    position: absolute;
+    left: 0;
+  }
+}
+ion-content {
+  .extra {
+    background-color: #DCDCDC;
+    border-radius: 5px;
+  }
+  ion-label {
+    display: block;
+    text-align: center;
+    &.sorry {
+      font-size: 22px;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    &.days-left {
+      padding: 10px 30px;
+      font-size: 16px;
+    }
+    &.expire {
+      margin-top: 40px;
+      margin-bottom: 25px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    &.revert {
+      display: block;
+      text-align: center;
+      padding: 0px 42px;
+      color: #484545;
+    }
+  }
+
+  .line {
+    display: flex;
+    align-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    padding: 40px 10%;
+    .each{
+      width: 42%;
+      height: 1.5px;
+      background-color: #9b9898;
+    }
+    ion-label{
+      font-size: 14px;
+      padding: 0px 3%;
+      color: rgb(72, 72, 73);
+    }
+  }
+
+  ion-button {
+    display: block;
+    width: 82%;
+    height: 53px;
+    font-size: 16px;
+    margin: auto;
+    --border-radius: 30px;
+    text-transform: none;
+    &.to-free {
+      margin-top: 30px;
+    }
+    &.delete-account {
+      margin-bottom: 30px;
+    }
+  }
+}

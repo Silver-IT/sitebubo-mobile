@@ -1,24 +1,22 @@
-<ion-header class='small-header' *ngIf ='details'>
-  <ion-toolbar class='toolbar' mode='md'>
+<ion-header class="small-header" *ngIf ="details">
+  <ion-toolbar class="toolbar" mode="md">
     <ion-buttons>
       <ion-title>Your membership</ion-title>
-      <ion-button class='menu' mode='md' (click) = 'toggleMenu()' *ngIf='!newUser'>
-        <ion-icon class='menu' slot='icon-only'></ion-icon>
+      <ion-button class="menu" mode="md" (click) = "toggleMenu()" *ngIf="!newUser">
+        <ion-icon class="menu" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
-
-<ion-content [ngSwitch]='displayValue' *ngIf='details'>
-  <app-first-free *ngSwitchCase='1' [details]='details'></app-first-free>
-  <app-old-free *ngSwitchCase='2' [details]='details'></app-old-free>
-  <app-first-pay *ngSwitchCase='3' [details]='details'></app-first-pay>
-  <app-free-trial *ngSwitchCase='4' [details]='details' [newUser]='newUser'></app-free-trial>
-  <app-no-trial *ngSwitchCase='5' [details]='details'></app-no-trial>
-  <ion-fab class='feedback-fab'vertical="bottom" horizontal="start" slot="fixed">
-    <ion-fab-button mode='md' class='feedback' (click)='openFeedback()'>
-        <ion-icon class='feedback'></ion-icon>
+<ion-content [ngSwitch]="displayValue" *ngIf="details">
+  <app-first-free *ngSwitchCase="1" [details]="details"></app-first-free>
+  <app-old-free *ngSwitchCase="2" [details]="details"></app-old-free>
+  <app-first-pay *ngSwitchCase="3" [details]="details"></app-first-pay>
+  <app-free-trial *ngSwitchCase="4" [details]="details" [newUser]="newUser"></app-free-trial>
+  <app-no-trial *ngSwitchCase="5" [details]="details"></app-no-trial>
+  <ion-fab class="feedback-fab" vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button mode="md" class="feedback" (click)="openFeedback()">
+        <ion-icon class="feedback"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

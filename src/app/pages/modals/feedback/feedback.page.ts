@@ -1,10 +1,9 @@
-import { element } from 'protractor';
 import { Component, OnInit, ChangeDetectorRef, ViewChildren } from '@angular/core';
-import { LoadingController, ModalController, IonTextarea } from '@ionic/angular';
+import { ModalController, IonTextarea } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import { OtherService } from './../../../serverAPI/other/other.service';
-import { IongagetService } from './../../../services/ionGadgets/iongaget.service';
-import { FeebackSuccessPage } from '../feeback-success/feeback-success.page';
+import { OtherApiService } from 'src/app/apis/other/other-api.service';
+import { IongadgetService } from 'src/app/services/ionGadgets/iongadget.service';
+import { FeedbackSuccessPage } from '../feedback-success/feedback-success.page';
 
 @Component({
   selector: 'app-feedback',
@@ -24,10 +23,9 @@ export class FeedbackPage implements OnInit {
   constructor(
     private storage: Storage,
     private cdr: ChangeDetectorRef,
-    private loadingCtrl: LoadingController,
-    private ionService: IongagetService,
+    private ionService: IongadgetService,
     private modalCtrl: ModalController,
-    private otherService: OtherService,
+    private otherService: OtherApiService,
   ) { }
 
   ngOnInit() {
@@ -78,7 +76,6 @@ export class FeedbackPage implements OnInit {
     for (let i = 0; i < this.questions.length; i++ ) {
       const element = document.getElementById('c_' + i);
       const text = element.textContent;
-      // console.log(text);
       if (text.length < 10) {
         valid = false;
         break;
@@ -115,7 +112,7 @@ export class FeedbackPage implements OnInit {
 
   async getFeedbackData() {
     return new Promise((resolve, reject) => {
-      let feedbackData = [];
+      const feedbackData = [];
       for (let i = 0; i < this.questions.length; i++ ) {
         const questionID = document.getElementById('question_' + i).textContent;
         const feedback = document.getElementById('c_' + i).textContent;
@@ -138,13 +135,13 @@ export class FeedbackPage implements OnInit {
       this.otherService.addFeedback(data, this.userID, this.token).subscribe((result) => {
         console.log(result);
         this.ionService.closeLoading();
-        if (result['RESPONSECODE'] === 1) {
+        if (result.RESPONSECODE === 1) {
           this.modalCtrl.dismiss().then(() => {
             this.showFeedbackSuccess();
           });
 
         } else {
-          this.ionService.showAlert('Feedback Submit Failed', result['RESPONSE']);
+          this.ionService.presentToast(result.RESPONSE);
         }
       }, err => {
         this.ionService.closeLoading();
@@ -158,7 +155,7 @@ export class FeedbackPage implements OnInit {
 
   async showFeedbackSuccess() {
     const success = await this.modalCtrl.create({
-      component: FeebackSuccessPage
+      component: FeedbackSuccessPage
     });
     return await success.present();
   }

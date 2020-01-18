@@ -1,12 +1,11 @@
-import { Events, NavController } from '@ionic/angular';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Events } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { IongagetService } from './../../../services/ionGadgets/iongaget.service';
-import { SubscriptionsService } from './../../../serverAPI/subscriptions/subscriptions.service';
 import { GeneralService } from './../../../services/generalComponents/general.service';
-import { TransactionService } from './../../../serverAPI/transaction/transaction.service';
-
+import { IongadgetService } from 'src/app/services/ionGadgets/iongadget.service';
+import { SubscriptionApiService } from 'src/app/apis/subscription/subscription-api.service';
+import { TransactionApiService } from 'src/app/apis/transaction/transaction-api.service';
 
 @Component({
   selector: 'app-subscription-welcome',
@@ -21,20 +20,17 @@ export class SubscriptionWelcomePage implements OnInit {
   displayValue: number;
   details: any;
   constructor(
-    private router: Router,
     private activatedRoute: ActivatedRoute,
     private storage: Storage,
-    private ionService: IongagetService,
-    private subscriptionAPI: SubscriptionsService,
+    private ionService: IongadgetService,
+    private subscriptionAPI: SubscriptionApiService,
     private events: Events,
-    private navCtrl: NavController,
     private cdr: ChangeDetectorRef,
     private generalService: GeneralService,
-    private transactionAPI: TransactionService
+    private transactionAPI: TransactionApiService
   ) { }
 
   ngOnInit() {
-   
   }
 
   ionViewWillEnter() {
@@ -49,7 +45,7 @@ export class SubscriptionWelcomePage implements OnInit {
         if (params.isNewUser !== undefined) {
           this.newUser = JSON.parse(params.isNewUser);
         }
-        this.subscriptionID = parseInt(params.planID);
+        this.subscriptionID = parseInt(params.planID, 10);
         if (params.isFreeTrial !== undefined) {
           this.isFreeTrial = JSON.parse(params.isFreeTrial);
         }
@@ -64,17 +60,17 @@ export class SubscriptionWelcomePage implements OnInit {
       this.transactionAPI.getTransactionHistory(userID, token).subscribe(result => {
         this.ionService.closeLoading();
         console.log(result);
-        if (result['RESPONSECODE'] === 1) {
+        if (result.RESPONSECODE === 1) {
           if (result.data && result.data.length > 0) {
-            this.details['invoice_pdf'] = result.data[0].invoice_pdf;
-            this.details['lastpaymentAmount'] = result.data[0].amount;
+            this.details.invoice_pdf = result.data[0].invoice_pdf;
+            this.details.lastpaymentAmount = result.data[0].amount;
             temp = result.data;
             temp.forEach((history) => {
-               if (history['free_trial_transaction']) {
+               if (history.free_trial_transaction) {
                  count ++;
-               }   
+               }
             });
-          } 
+          }
           resolve(count);
         } else {
           reject(null);
@@ -82,7 +78,7 @@ export class SubscriptionWelcomePage implements OnInit {
       }, err => {
         this.ionService.closeLoading();
         this.ionService.presentToast('Error happened from server');
-      })
+      });
     });
 
   }
@@ -114,28 +110,28 @@ export class SubscriptionWelcomePage implements OnInit {
     this.storage.get('userInfo').then((user) => {
       this.subscriptionAPI.currentSubscription(user.id, user.token).subscribe((result) => {
         console.log(result.data);
-        if (result['RESPONSECODE'] === 1) {
+        if (result.RESPONSECODE === 1) {
           this.storage.set('planInfo', result.data).then(() => {
             this.events.publish('planInfo_set', result.data);
-            let temp = result.data;
+            const temp = result.data;
             const arr = temp.price.toString().split('.');
             temp.bigprc = arr[0];
             temp.smallprc = arr[1];
             this.details = temp;
-            this.getTransactionHistory(user.id, user.token).then((result) => {
-              if (result === 1) {
+            this.getTransactionHistory(user.id, user.token).then((res) => {
+              if (res === 1) {
                 this.firstPay = true;
               } else {
                 this.firstPay = false;
               }
-              this.defineDisplay().then((result) => {
-                this.displayValue = result;
+              this.defineDisplay().then((another) => {
+                this.displayValue = another;
                 this.cdr.detectChanges();
               });
             });
-          });     
+          });
         } else {
-          this.ionService.showAlert('Error from Server', result['RESPONSE']);
+          this.ionService.showAlert('Error from Server', result.RESPONSE);
         }
       }, err => {
         this.ionService.showAlert('Error from Server', 'Unable to call Server API');
@@ -150,5 +146,4 @@ export class SubscriptionWelcomePage implements OnInit {
   openFeedback() {
     this.generalService.openFeedback();
   }
-
 }

@@ -4,32 +4,54 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class TempService {
+
   public dashboardParams: any;
   public notifications: any;
   public filterType = 0;
   public unreadCount: any;
-  constructor() {
-  }
+  public brokenLinksCount: number;
+  public dashboardData: any;
+  public deviceID: any;
 
-  saveDashboradParams(params, filterType): Promise<any> {
+  constructor() { }
+
+  saveDashboradParams(params, filterType): Promise<boolean> {
     return new Promise((resolve) => {
-      this.dashboardParams = params; 
+      this.dashboardParams = params;
       this.filterType = filterType;
       resolve(true);
     });
   }
-  
-  saveNotifications(notifications): Promise<any> {
+
+  saveBrokenLinksCount(count): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.brokenLinksCount = count;
+      resolve(true);
+    });
+  }
+
+  saveNotifications(notifications): Promise<boolean> {
     return new Promise((resolve) => {
       this.notifications = notifications;
       resolve(true);
     });
   }
 
-  saveUnreadCount(count): Promise<any> {
+  saveUnreadCount(count): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.unreadCount = count;
       resolve(true);
     });
+  }
+
+  saveDashboardData(dashboard): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.dashboardData = dashboard;
+      resolve(dashboard);
+    });
+  }
+
+  setDeviceID(deviceID) {
+    this.deviceID = deviceID;
   }
 }

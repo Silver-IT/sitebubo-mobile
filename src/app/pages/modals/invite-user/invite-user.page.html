@@ -1,42 +1,42 @@
 <ion-header>
-  <ion-toolbar mode='ios' class="modal-toolbar">
+  <ion-toolbar mode="ios" class="modal-toolbar">
     <ion-buttons>
       <ion-title>Member</ion-title>
-      <ion-button class='close' mode='ios' (click) = 'dismiss()'>
-        <ion-icon class='close' ios="md-close" md="md-close" slot='icon-only'></ion-icon>
+      <ion-button class="close" mode="ios" (click)="dismiss()">
+        <ion-icon class="close" ios="md-close" md="md-close" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-button  [disabled]='!readyToSubmit' class='readySubmit' mode='ios' (click)='addInvitedUser()'>Add</ion-button>
+      <ion-button  [disabled]="!readyToSubmit" class="readySubmit" mode="ios" (click)="addInvitedUser()">Add</ion-button>
     </ion-buttons> 
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <form class="custom-body"  [formGroup]="addInvitedUserForm">
-      <ion-item lines='none'  [disabled] = 'duringSubmit'  mode='ios' class='item-input' [ngClass]="{'error-input': validate_email && (addInvitedUserForm.get('email').hasError('pattern')) }">
-        <ion-icon class='email' slot='start'></ion-icon>
-        <ion-input #emailInput mode='ios' type='email' minlength='6' [(ngModel)]="email" placeholder='Email Address' formControlName="email" name="email"></ion-input>
+      <ion-item lines="none"  [disabled] = "duringSubmit"  mode="ios" class="item-input" [ngClass]="{'error-input': validateEmail && (addInvitedUserForm.get('email').hasError('pattern')) }">
+        <ion-icon class="email" slot="start"></ion-icon>
+        <ion-input #emailInput mode="ios" type="email" minlength="6" [(ngModel)]="email" placeholder="Email Address" formControlName="email" name="email"></ion-input>
      </ion-item>
       
-      <div class="validation-errors" *ngIf='validate_email'>
-        <ng-container *ngFor="let validation of validation_messages.email">
+      <div class="validation-errors" *ngIf="validateEmail">
+        <ng-container *ngFor="let validation of validationMessages.email">
           <div class="error-message"
             *ngIf="addInvitedUserForm.get('email').hasError(validation.type)">
-            <ion-icon class='error'></ion-icon>
+            <ion-icon class="error"></ion-icon>
             <ion-label>{{ validation.message }}</ion-label>
           </div>
         </ng-container>
       </div>
-      <div class="validation-errors" *ngIf='invalidEmail'>
+      <div class="validation-errors" *ngIf="invalidEmail">
         <ng-container>
           <div class="error-message">
-            <ion-icon class='error'></ion-icon>
+            <ion-icon class="error"></ion-icon>
             <ion-label>{{ extraError }}</ion-label>
           </div>
         </ng-container>
       </div>
   </form>
-  <ion-item class='website-report' mode='ios'>
+  <ion-item class="website-report" mode="ios">
     <ion-label>Receive website reports</ion-label>
-    <ion-checkbox color='tertiary' mode='md' [disabled] = 'duringSubmit' slot="start" [(ngModel)]="reportChecked"></ion-checkbox>
+    <ion-checkbox color="tertiary" mode="md" [disabled] = "duringSubmit" slot="start" [(ngModel)]="reportChecked"></ion-checkbox>
   </ion-item>
 </ion-content>

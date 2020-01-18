@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import { AllDonePage } from './../../pages/modals/all-done/all-done.page';
-import { GeneralService } from './../generalComponents/general.service';
-import { IongagetService } from './../ionGadgets/iongaget.service';
-import { UserService } from './../../serverAPI/user/user.service';
-
+// page
+import { AllDonePage } from 'src/app/pages/modals/all-done/all-done.page';
+// services
+import { GeneralService } from '../generalComponents/general.service';
+import { IongadgetService } from './../ionGadgets/iongadget.service';
+// api
+import { UserApiService } from './../../apis/user/user-api.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,8 +17,8 @@ export class MembershipService {
     private actionCtrl: ActionSheetController,
     private modalCtrl: ModalController,
     private generalService: GeneralService,
-    private ionService: IongagetService,
-    private userAPI: UserService,
+    private ionService: IongadgetService,
+    private userAPI: UserApiService,
     private storage: Storage
   ) { }
 
@@ -30,20 +32,19 @@ export class MembershipService {
           handler: () => {
             this.submitDeletion().then((result) => {
               if (result) {
-                this.allDone();            
+                this.allDone();
               }
             }).catch(err => {
-              
             });
           }
-        }, 
+        },
         {
           text: 'No',
           icon: 'close',
           role: 'cancel'
         }
       ]
-    });;
+    });
     await deletion.present();
   }
 
@@ -53,17 +54,17 @@ export class MembershipService {
         this.ionService.showLoading();
         this.userAPI.deleteAccount(user.id, user.token).subscribe((result) => {
           this.ionService.closeLoading();
-          if (result['RESPONSECODE'] === 1) {
-            resolve(true)  
+          if (result.RESPONSECODE === 1) {
+            resolve(true);
           } else {
-            this.ionService.presentToast(result['RESPONSE']);
+            this.ionService.presentToast(result.RESPONSE);
             reject(false);
           }
         }, err => {
           this.ionService.presentToast('Account Deletion Failed due to the server');
           reject(false);
         });
-      })
+      });
     });
   }
 

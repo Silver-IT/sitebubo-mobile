@@ -1,41 +1,41 @@
-<div class="content" *ngIf = 'expireData'>
-  <ion-card class="priority" [ngClass] = '{ "positive":expireData?.expireday > 7 , "negative":expireData?.expireday < 8}'>
+<div class="content" *ngIf="expireData">
+  <ion-card class="priority" [ngClass] = "{ 'positive':expireData?.expireday > 7 ,'negative':expireData?.expireday < 8}">
     <ion-card-header>
-      <ion-label>Domain Expires In</ion-label>
+      <ion-label>DOMAIN EXPIRES IN</ion-label>
     </ion-card-header>
-    <ion-icon class="status  expire-danger" *ngIf = 'expireData?.expireday < 8'></ion-icon>
-    <ion-icon class="status  expire-safe" *ngIf = 'expireData?.expireday > 7'></ion-icon>
-    <div class="center" [ngClass] = '{ "l-safe":expireData?.expireday > 7 , "l-danger":expireData?.expireday < 8}'>
-      <ion-label class='number'>
-        {{ expireData?.expireday }}
+    <ion-icon class="status  expire-danger" *ngIf="expireData?.expireday < 8"></ion-icon>
+    <ion-icon class="status  expire-safe" *ngIf="expireData?.expireday > 7"></ion-icon>
+    <div class="center" [ngClass]="{ 'l-safe':expireData?.expireday > 7 , 'l-danger':expireData?.expireday < 8}">
+      <ion-label class="number" counto [countFrom] ="0" [duration]="1" [countTo]="expireData?.expireday" [step]="10" (countoChange)="expiredays = $event">
+        {{ expiredays | intparse }}
       </ion-label>
-      <ion-label class='days'>Days</ion-label>
+      <ion-label class="days">Days</ion-label>
     </div>
   </ion-card>
   
-  <ion-list mode='ios'>
-    <ion-item mode = 'ios'>
+  <ion-list mode="ios">
+    <ion-item mode="ios">
       <ion-label class="title">Register Url:</ion-label>
       <ion-label class="state">{{ expireData?.whois_registrar_url }}</ion-label>
     </ion-item>
-    <ion-item mode = 'ios'>
+    <ion-item mode="ios">
       <ion-label class="title">Created Date:</ion-label>
       <ion-label class="state">{{ expireData?.whois_created_at | datetime }}</ion-label>
     </ion-item>
-    <ion-item mode = 'ios'>
+    <ion-item mode="ios">
       <ion-label class="title">Changed Date:</ion-label>
       <ion-label class="state">{{ expireData?.whois_changed_at | datetime }}</ion-label>
     </ion-item>
-    <ion-item mode = 'ios'>
+    <ion-item mode="ios">
       <ion-label class="title">Expiry Date:</ion-label>
       <ion-label class="state">{{ expireData?.whois_expire_at | datetime }}</ion-label>
     </ion-item>
-    <ion-item mode = 'ios'>
+    <ion-item mode="ios">
       <ion-label class="title">Registrant:</ion-label>
       <ion-label class="state">{{ expireData?.whois_registrant_name }}</ion-label>
     </ion-item>
-    <ion-item mode = 'ios' lines='none'>
-      <ion-label class="state">
+    <ion-item mode="ios" lines="none">
+      <ion-label class="description">
         We will send you a reminder 7 days before the domain is due to expiry, We recommend you have auto renew on to avoid any chance of losing the domain.
       </ion-label>
     </ion-item>

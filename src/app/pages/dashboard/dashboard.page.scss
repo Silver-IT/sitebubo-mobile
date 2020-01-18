@@ -79,8 +79,6 @@ ion-content {
         height: 30px;
         ion-label {
           display: block;
-          text-transform: none;
-          // color: gray;
           font-size: 12px;
           &.lower {
             text-transform: lowercase;
@@ -89,112 +87,119 @@ ion-content {
       }
     }
   }
-  .secondary {
-    ion-card {
-      margin-top: 15px;
-      padding: 10px;
-      height: 87px;
-      background-repeat: no-repeat;
-      background-size: 102% 102%;
-      ion-reorder {
-        // background: #00000070;
-        color: #f9f9f9;
-        position: absolute;
-        top: 0;
-        left: 0;
-        // border-radius: 5px;
-        z-index: 2;
-      }
-      &.conversion-rate {
-        background-color: white;
-        color: black;
-      }
-      &.visitors {
-        color: black;
-        background-color: white;
-      }
-      &.seo {
-        background-image: url('../../../assets/imgs/dashboard/seo_card.png');
-      }
-      &.site-score {
-        background-image: url('../../../assets/imgs/dashboard/sitescore_card.png');
-      }
-      &.broken-links {
-        background-image: url('../../../assets/imgs/dashboard/brokenlinks_card.png');
-      }
-      &.domain-expire {
-        background-image: url('../../../assets/imgs/dashboard/domainexpire_card.png');
-      }
-      &.full-report {
-        background-image: url('../../../assets/imgs/dashboard/fullreport_card.png');
-      }
-      ion-row {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        padding: 0px 12px;
-        &.white-row {
-          padding: 0px;
-        }
-        ion-col {
-          display: block;
-          &.flex-col {
-            display: flex;
-            align-items: flex-end;
-          }
-          ion-label {
-            display: block;
-            &.big-font {
-              font-size: 21px;
-              margin-bottom: 2px;
-            }
-            &.bigger-font {
-              font-size: 29px;
-            }
-            &.heavy-font {
-              padding-left: 10px;
-              font-size: 14px;
-              font-weight: bold;
-            }
-            &.small-font {
-              font-size: 16px;
-            }
-            &.conversion-rate {
-              padding-left: 10px;
-              color: #00BBC6;
-              font-size: 19px;
-              font-weight: bold;
-            }
-            &.visitors-cnt {
-              padding-left: 10px;
-              color: #4DAEEF;
-              font-size: 19px;
-              font-weight: bold;
-            }
-          }
-          &.last-checked {
-            display: block;
-            text-transform: none;
-            color: gray;
-            font-size: 12px;
-            padding: 0px;
-          }
-          ion-badge {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: black;
-            background-color: white;
-          }
-        }
-      }
+}
+.secondary {
+  ion-card {
+    margin-top: 15px;
+    padding: 10px;
+    height: 87px;
+    border-radius: 13px;
+    background-repeat: no-repeat;
+    background-size: 105% 105%;
+    background-position: center;
+    ion-reorder {
+      // background: #00000070;
+      color: #f9f9f9;
+      position: absolute;
+      top: 0;
+      left: 0;
+      // border-radius: 5px;
+      z-index: 2;
     }
-    ion-card + ion-card {
-     
+    &.conversion-rate {
+      background-color: white;
+      color: black;
+    }
+    &.visitors {
+      color: black;
+      background-color: white;
+    }
+    &.seo {
+      background-image: url('../../../assets/imgs/dashboard/seo_card.png');
+    }
+    &.site-score {
+      background-image: url('../../../assets/imgs/dashboard/sitescore_card.png');
+    }
+    &.broken-links {
+      background-image: url('../../../assets/imgs/dashboard/brokenlinks_card.png');
+    }
+    &.domain-expire {
+      background-image: url('../../../assets/imgs/dashboard/domainexpire_card.png');
+    }
+    &.full-report {
+      background-image: url('../../../assets/imgs/dashboard/fullreport_card.png');
+    }
+    ion-row {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0px 12px;
+      &.white-row {
+        padding: 0px;
+      }
+      &.last-checked ion-label {
+        color: gray !important;
+      }
+      ion-col {
+        display: block;
+        &.flex-col {
+          display: flex;
+          align-items: flex-end;
+        }
+        ion-label {
+          display: block;
+          &.more {
+            color: white !important;
+          }
+          &.big-font {
+            font-size: 21px;
+            margin-bottom: 2px;
+          }
+          &.bigger-font {
+            font-size: 29px;
+          }
+          &.heavy-font {
+            padding-left: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            color: black;
+          }
+          &.small-font {
+            font-size: 16px;
+          }
+          &.conversion-rate {
+            padding-left: 10px;
+            color: #00BBC6;
+            font-size: 19px;
+            font-weight: bold;
+          }
+          &.visitors-cnt {
+            padding-left: 10px;
+            color: #4DAEEF;
+            font-size: 19px;
+            font-weight: bold;
+          }
+        }
+        &.last-checked {
+          display: block;
+          text-transform: none;
+          color: black;
+          font-size: 11px;
+          padding: 0px;
+          // font-weight: bold;
+        }
+        ion-badge {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          font-size: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: black;
+          background-color: white;
+        }
+      }
     }
   }
 }
@@ -344,6 +349,7 @@ ion-menu {
         ion-label.pluginName {
           padding-left: 20px;
           font-size: 16px;
+          white-space: unset !important;
         }
         ion-button {
           font-size: 15px;

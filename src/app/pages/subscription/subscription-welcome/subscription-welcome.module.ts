@@ -1,19 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ComponentsModule } from './../../../components/components.module';
-import { SubscriptionWelcomePage } from './subscription-welcome.page';
+import { SubscriptionWelcomePageRoutingModule } from './subscription-welcome-routing.module';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: SubscriptionWelcomePage
-  }
-];
+import { SubscriptionWelcomePage } from './subscription-welcome.page';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
   imports: [
@@ -21,7 +15,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     ComponentsModule,
-    RouterModule.forChild(routes)
+    SubscriptionWelcomePageRoutingModule
   ],
   declarations: [SubscriptionWelcomePage]
 })

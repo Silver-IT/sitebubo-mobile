@@ -17,8 +17,6 @@ ion-toolbar {
   }
 }
 ion-content{
-  // --padding-start: 5%;
-  // --padding-end: 5%;
   .noResult {
     display: block;
     margin: auto;
@@ -41,7 +39,8 @@ ion-content{
       width: 90%;
       display: block;
       margin: 20px auto;
-      transition: all 0.3s ease-in;
+      border-radius: 10px !important;
+      // transition: all 0.3s ease-in;
       &.zoomIn {
         width: 90%;
         box-shadow: 0px 0px 22px rgb(0, 0, 0);
@@ -114,10 +113,10 @@ ion-content{
         }
         ion-item-options {
           border: none;
-          --background: #fe7a80;
+          --background: #FF3F3F;
           ion-item-option {
             --border-color: transparent;
-           --background: #fe7a80;
+           --background: #FF3F3F;
           }
         }
       }

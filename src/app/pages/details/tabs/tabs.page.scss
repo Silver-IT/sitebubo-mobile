@@ -1,79 +1,81 @@
 ion-header {
-  ion-toolbar {
-    ion-buttons {
-      height: 50px;
-      ion-title.domain-name {
-        text-transform: uppercase;
-      }
-      ion-button {
-        position: absolute;
-        &.back {
-          left: 0;
+    ion-toolbar {
+      ion-buttons {
+        height: 50px;
+        ion-title.domain-name {
+          text-transform: uppercase;
         }
-        &.menu {
-          right: 0;
-        }
-        &.bell {
-          right: 35px;
-        }
-        &.filter {
-          left: 0;
+        ion-button {
+          position: absolute;
+          &.back {
+            left: 0;
+          }
+          &.menu {
+            right: 0;
+          }
+          &.bell {
+            right: 35px;
+          }
+          &.filter {
+            left: 0;
+          }
         }
       }
     }
   }
-}
-
-
-ion-tab-bar {
-    height: 65px;
-    ion-tab-button {
-      background-repeat: no-repeat;
-      background-size: contain;
-      ion-icon {
-        font-size: 20px;
-        &.t-uptime {
-          background-image: url('../../../../assets/icons/tabs/t-uptime.png');
-        }
-        &.t-security {
-          background-image: url('../../../../assets/icons/tabs/t-security.png');
-        }
-        &.t-speed {
-          background-image: url('../../../../assets/icons/tabs/t-speed.png');
-        }
-        &.t-seo {
-          background-image: url('../../../../assets/icons/tabs/t-seo.png');
-        }
-        &.t-more {
-          background-image: url('../../../../assets/icons/tabs/t-more.png');
-        }
-      }
-      ion-label {
-        font-size: 11px;
-        color: #9B9B9B;
-        margin-top: 5px;
-      }
-      &.tab-selected {
+  
+  
+  ion-tab-bar {
+      height: 65px;
+      ion-tab-button {
+        background-repeat: no-repeat;
+        background-size: contain;
         ion-icon {
+          font-size: 20px;
           &.t-uptime {
-            background-image: url('../../../../assets/icons/tabs/t-uptimeActive.png') !important;
+            background-image: url('../../../../assets/icons/tabs/tab-uptime.png');
           }
           &.t-security {
-            background-image: url('../../../../assets/icons/tabs/t-securityActive.png') !important;
+            background-image: url('../../../../assets/icons/tabs/tab-security.png');
           }
           &.t-speed {
-            background-image: url('../../../../assets/icons/tabs/t-speedActive.png') !important;
+            background-image: url('../../../../assets/icons/tabs/tab-speed.png');
           }
           &.t-seo {
-            background-image: url('../../../../assets/icons/tabs/t-seoActive.png') !important;
+            background-image: url('../../../../assets/icons/tabs/tab-seo.png');
           }
           &.t-more {
-            background-image: url('../../../../assets/icons/tabs/t-moreActive.png') !important;
+            background-image: url('../../../../assets/icons/tabs/tab_more.png');
           }
         }
         ion-label {
-          color: #FE7A80 !important;
+          font-size: 11px;
+          color: #9B9B9B;
+          margin-top: 5px;
+        }
+        &.tab-selected {
+          ion-icon {
+            animation: bounce-in-top 1.5s both;
+            &.t-uptime {
+              background-image: url('../../../../assets/icons/tabs/tab-activeuptime.png') !important;
+            }
+            &.t-security {
+              background-image: url('../../../../assets/icons/tabs/tab-activesecurity.png') !important;
+            }
+            &.t-speed {
+              background-image: url('../../../../assets/icons/tabs/tab-activespeed.png') !important;
+            }
+            &.t-seo {
+              background-image: url('../../../../assets/icons/tabs/tab-activeseo.png') !important;
+            }
+            &.t-more {
+              background-image: url('../../../../assets/icons/tabs/tab_activemore.png') !important;
+            }
+          }
+          ion-label {
+            color: #FE7A80 !important;
+          }
         }
       }
-    }
-}
+  }
+  

@@ -1,18 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { InviteUserPage } from './invite-user.page';
+import { InviteUserPageRoutingModule } from './invite-user-routing.module';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: InviteUserPage
-  }
-];
+import { InviteUserPage } from './invite-user.page';
 
 @NgModule({
   imports: [
@@ -20,7 +14,7 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    InviteUserPageRoutingModule
   ],
   declarations: [InviteUserPage]
 })

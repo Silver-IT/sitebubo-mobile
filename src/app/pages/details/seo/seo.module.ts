@@ -1,16 +1,10 @@
-import { ComponentsModule } from './../../../components/components.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
+import { SeoPageRoutingModule } from './seo-routing.module';
 import { SeoPage } from './seo.page';
-const routes: Routes = [
-  {
-    path: '',
-    component: SeoPage
-  }
-];
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
   imports: [
@@ -18,7 +12,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     ComponentsModule,
-    RouterModule.forChild(routes)
+    SeoPageRoutingModule
   ],
   declarations: [SeoPage]
 })

@@ -1,17 +1,18 @@
-import { ActionSheetController, Events } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { GeneralService } from './../../../services/generalComponents/general.service';
 import { TempService } from './../../../services/temp/temp.service';
 import { Storage } from '@ionic/storage';
-import { IongagetService } from './../../../services/ionGadgets/iongaget.service';
-import { MonitorService } from './../../../serverAPI/monitor/monitor.service';
+import { IongadgetService } from 'src/app/services/ionGadgets/iongadget.service';
+import { MonitorApiService } from 'src/app/apis/monitor/monitor-api.service';
 
 @Component({
   selector: 'app-uptime',
   templateUrl: './uptime.page.html',
   styleUrls: ['./uptime.page.scss'],
 })
+
 export class UptimePage implements OnInit {
   @ViewChild('content', { static: false }) content: HTMLElement;
   userID: number;
@@ -23,21 +24,16 @@ export class UptimePage implements OnInit {
   event = {
     hide: false,
     show: false
-  }
+  };
   constructor(
     private generalSerive: GeneralService,
     private tempService: TempService,
     private router: Router,
-    private monitorAPI: MonitorService,
-    private ionService: IongagetService,
+    private monitorAPI: MonitorApiService,
+    private ionService: IongadgetService,
     private storage: Storage,
-    private actionCtrl: ActionSheetController,
-    private events: Events
+    private actionCtrl: ActionSheetController
   ) { }
-
-  ionViewWillEnter() {
-
-  }
 
   ngOnInit() {
     this.initData();
@@ -57,18 +53,19 @@ export class UptimePage implements OnInit {
 
   getUptimeStatus() {
     if (this.tempService.dashboardParams) {
-      this.monitorAPI.getUptimeStatus(this.tempService.dashboardParams.domainName, this.tempService.dashboardParams.domainUserID, this.userID, this.token )
-      .subscribe((result) => {
+      this.monitorAPI
+      .getUptimeStatus(this.tempService.dashboardParams.domainName, this.tempService.dashboardParams.domainUserID, this.userID, this.token )
+      .subscribe((result: any) => {
         console.log(result);
-        if (result['RESPONSECODE'] === 1) {
+        if (result.RESPONSECODE === 1) {
           this.uptimeStatus = result.data.uptime[0];
           this.defineRecords();
         } else {
-          this.ionService.presentToast(result['RESPONSE']);
+          this.ionService.presentToast(result.RESPONSE);
         }
       }, err => {
         this.router.navigate(['dashboard']);
-      });    
+      });
     } else {
       this.router.navigate(['domain-list'], { replaceUrl: true });
     }
@@ -76,22 +73,22 @@ export class UptimePage implements OnInit {
 
   defineRecords() {
     if (this.filterType === 1) {
-      this.filterLabel = 'Last 24 hours';
-      this.downtimeRecord = this.uptimeStatus['downtimes_24hours'];
+      this.filterLabel = 'last 24 hours';
+      this.downtimeRecord = this.uptimeStatus.downtimes_24hours;
     } else if (this.filterType === 2) {
-      this.filterLabel = 'Last 7 days';
-      this.downtimeRecord = this.uptimeStatus['downtimes_7days'];
+      this.filterLabel = 'last 7 days';
+      this.downtimeRecord = this.uptimeStatus.downtimes_7days;
     } else {
-      this.filterLabel = 'Last 30 days';
-      this.downtimeRecord = this.uptimeStatus['downtimes_30days'];
+      this.filterLabel = 'last 30 days';
+      this.downtimeRecord = this.uptimeStatus.downtimes_30days;
       console.log(this.downtimeRecord);
     }
   }
 
-  calcuateDuration(dataArray): any {
-    return new Promise((resolve, reject) => {
+  calcuateDuration(dataArray: Array<any>): any {
+    return new Promise((resolve) => {
       let temp = []; temp = dataArray;
-      let final = [];
+      const final = [];
       temp.forEach((element) => {
         let ultratemp: any;
         let letter: string;
@@ -105,14 +102,13 @@ export class UptimePage implements OnInit {
         if (element.minutes !== '0' ) {
           letter += element.days + ' minutes ';
         }
-
         ultratemp = {
           duration: letter,
           date: element.date,
           time: element.time
-        }
+        };
         final.push(ultratemp);
-      })
+      });
       resolve(final);
     });
   }
@@ -148,16 +144,5 @@ export class UptimePage implements OnInit {
       ]
     });
     await action.present();
-  }
-
-  logScrolling(event) {
-    // const temp = event.detail.currentY;
-    // if ( temp > 50 && !this.event.hide) {
-    //   this.events.publish('hide_header', true);
-    //   this.event.hide = true;
-    // } else if (temp < 50 && this.event.hide) {
-    //   this.events.publish('hide_header', false);
-    //   this.event.hide = false;
-    // } 
   }
 }

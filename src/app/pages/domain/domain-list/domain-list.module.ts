@@ -1,26 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { DomainListPage } from './domain-list.page';
-import { ComponentsModule } from './../../../components/components.module';
-const routes: Routes = [
-  {
-    path: '',
-    component: DomainListPage
-  }
-];
+import { DomainListPageRoutingModule } from './domain-list-routing.module';
 
+import { DomainListPage } from './domain-list.page';
+import { ComponentsModule } from 'src/app/components/components.module';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     ComponentsModule,
-    RouterModule.forChild(routes)
+    DomainListPageRoutingModule
   ],
   declarations: [DomainListPage]
 })

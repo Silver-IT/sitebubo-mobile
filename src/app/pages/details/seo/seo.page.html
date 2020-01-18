@@ -1,23 +1,25 @@
-<ion-header class='underHeader'>
-    <ion-toolbar mode='md' class='toolbar'>
-        <ion-segment mode='md' [value]='pageType' (ionChange) = 'switchPages($event)'>
-          <ion-segment-button mode='md' value='1' checked>
-            <ion-label>SEO Score</ion-label>
-          </ion-segment-button>
-        </ion-segment>
-        <ion-button class="red issues" (click) = 'launchIssues("seo", 1)'>
-          <ion-label>Issues</ion-label>
-          <div class="submenu-badge" *ngIf="manualAlerts">{{ manualAlerts }}</div>
-        </ion-button>
-        <ion-button class="red manual-scan" (click) = 'manualScan()'>Scan</ion-button>
-    </ion-toolbar>
+<ion-header class="underHeader">
+  <ion-toolbar mode="md" class="toolbar">
+      <ion-segment mode="md" [value]="pageType" (ionChange) = "switchPages($event)">
+        <ion-segment-button mode="md" value="1" checked>
+          <ion-label>SEO Score</ion-label>
+        </ion-segment-button>
+        <ion-segment-button mode="md" value="2">
+          <ion-label>
+            ISSUES
+            <div class="submenu-badge" *ngIf="manualAlerts">{{ manualAlerts }}</div>
+          </ion-label>
+        </ion-segment-button>
+      </ion-segment>
+      <ion-button class="red manual-scan" (click) = "manualScan()">SCAN</ion-button>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content [ngSwitch]='pageType'>
-  <app-cseoscore *ngSwitchCase = '1' [pageType] = 'pageType' [reportDetails] = 'reportDetails'></app-cseoscore>
-  <ion-fab class='feedback-fab nopadding-top' vertical="bottom" horizontal="start" slot="fixed">
-    <ion-fab-button mode='md' class='feedback' (click)='openFeedback()'>
-        <ion-icon class='feedback'></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+<ion-content [ngSwitch]="pageType">
+<app-cseo *ngSwitchCase = "1" [pageType] = "pageType" [reportDetails] = "reportDetails"></app-cseo>
+<ion-fab class="feedback-fab nopadding-top" vertical="bottom" horizontal="start" slot="fixed">
+  <ion-fab-button mode="md" class="feedback" (click)="openFeedback()">
+      <ion-icon class="feedback"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
 </ion-content>

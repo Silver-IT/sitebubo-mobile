@@ -1,7 +1,6 @@
-import { MembershipService } from './../../../services/membership/membership.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { MembershipService } from 'src/app/services/membership/membership.service';
 @Component({
   selector: 'app-old-free',
   templateUrl: './old-free.component.html',
@@ -12,20 +11,15 @@ export class OldFreeComponent implements OnInit {
   constructor(
     private router: Router,
     private memberService: MembershipService
-  ) {
-    //console.log(this.subscriptionName);
-  }
+  ) { }
 
-  ngOnInit() {
-    console.log(this.details);
-  }
+  ngOnInit() {}
 
   changeMembership() {
-    this.router.navigate(['subscription']);
+    this.router.navigate(['plans']);
   }
 
   deleteMembership() {
     this.memberService.deleteAccount();
   }
-
 }

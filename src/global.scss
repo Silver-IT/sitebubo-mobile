@@ -27,12 +27,12 @@
 
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 
-@font-face {
-font-family: 'Roboto';
-src: url('assets/fonts/Roboto-Regular.ttf');
-}
-
 @import "./theme/elements.scss";
 @import "./theme/icons.scss";
 @import "./theme/effects.scss";
 @import "./theme/components.scss";
+
+@font-face {
+font-family: 'Roboto';
+src: url('assets/fonts/Roboto-Regular.ttf');
+};

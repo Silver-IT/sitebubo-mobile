@@ -1,7 +1,6 @@
-import { Events } from '@ionic/angular';
-import { Router } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
-import { Storage } from '@ionic/storage';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-first-free',
   templateUrl: './first-free.component.html',
@@ -10,21 +9,17 @@ import { Storage } from '@ionic/storage';
 export class FirstFreeComponent implements OnInit {
   @Input() details: any;
   constructor(
-    private router: Router,
-    private events: Events,
-    private storage: Storage
+    private router: Router
   ) { }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   addDomain() {
     this.router.navigate(['add-site']);
   }
 
   changePlan() {
-    this.router.navigate(['subscription'], { replaceUrl: true, queryParams: {
+    this.router.navigate(['plans'], { replaceUrl: true, queryParams: {
       newUser: true
     } });
   }

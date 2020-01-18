@@ -5,7 +5,6 @@
         <ion-icon class='filter' slot='icon-only'></ion-icon>
       </ion-button>
       <ion-title *ngIf='!domainCounts'>Sites (?/?)</ion-title>
-      <!-- <ion-title *ngIf='domainCounts'>Sites ({{ domainCounts?.domains }}/{{ domainCounts?.total_domains }})</ion-title> -->
       <ion-title *ngIf='domainCounts'>{{ title }}</ion-title>
       <ion-button class='menu' mode='md' (click)='toggleMenu()'>
         <ion-icon class='menu' slot='icon-only'></ion-icon>
@@ -14,15 +13,15 @@
   </ion-toolbar>
 </ion-header>
 <ion-content *ngIf = 'showContent'>
-  <app-skeleton-domain-list *ngIf='filterType === 0'></app-skeleton-domain-list>
+  <!-- <app-sdomain-list *ngIf='filterType === 0'></app-sdomain-list> -->
   <ion-label class='noResult' *ngIf='filterType === 1 && !domains'>You have no domains added</ion-label>
-  <ion-label class='noResult' *ngIf='filterType === 2 && myDomList.length < 1'>You have no own domains added</ion-label>
+  <!-- <ion-label class='noResult' *ngIf='filterType === 2 && myDomList.length < 1'></ion-label> -->
   <ion-label class='noResult' *ngIf='filterType === 3 && invitedDomList.length < 1'>You have no invited domains added</ion-label>
   <ion-list mode='ios' *ngIf='domains?.length' style="overflow: auto">
     <ion-reorder-group  #group [disabled]='false' (ionItemReorder)="onRenderItems($event)">
       <ion-card mode='ios' *ngFor="let item of domains, let i=index"  id='card_{{ i }}' >
         <ion-reorder #reorder class='inactive' id='reorder_{{i}}'></ion-reorder>
-        <ion-card-header (click)="openDomain(item.id, item.domain_name, item.user_id, item.type)">
+        <ion-card-header (click)="openDomain(item.id, item.domain_name, item.user_id, item.type, item.is_scanned)">
             <img [src]='item.screenshot'/>
         </ion-card-header>
         <ion-item-sliding>

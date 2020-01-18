@@ -12,14 +12,9 @@ export class FirstPayComponent implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit() {
-  }
-
-  ngAfterViewInit() {
-  }
+  ngOnInit() {}
 
   gotoDomainList() {
     this.router.navigate(['domain-list'], {replaceUrl: true});
   }
-
 }
