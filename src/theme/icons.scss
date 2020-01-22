@@ -125,6 +125,14 @@ ion-icon{
     display: block;
     background-image: url('assets/icons/paypal.svg');
   }
+  &.c-inapp {
+    font-size: 63px !important;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: block;
+    background-image: url('assets/icons/inapppurhcase.png');
+  }
   &.add-domain {
     font-size: 28px !important;
   }
@@ -295,5 +303,11 @@ ion-icon{
     margin: auto;
     padding-top: 20px;
     color: red;
+  }
+  &.security-secure {
+    background-image: url('assets/icons/dashboard/secure_security.png');
+  }
+  &.security-unsecure {
+    background-image: url('assets/icons/dashboard/unsecure_security.png');
   }
 }

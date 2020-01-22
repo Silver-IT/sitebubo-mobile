@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import { SubscriptionApiService } from 'src/app/apis/subscription/subscription-api.service';
 import { IongadgetService } from 'src/app/services/ionGadgets/iongadget.service';
 import { Storage } from '@ionic/storage';
+import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
 
 @Component({
   selector: 'app-plans',
@@ -15,6 +16,7 @@ export class PlansPage implements OnInit {
   products: any;
   plansList: any;
   subscriptionID: any;
+  plat: string;
   constructor(
     private storage: Storage,
     private router: Router,
@@ -22,10 +24,16 @@ export class PlansPage implements OnInit {
     private navCtrl: NavController,
     private subscriptionApi: SubscriptionApiService,
     private ionService: IongadgetService,
+    private platform: Platform,
+    private iap: InAppPurchase
   ) { }
 
   ngOnInit() {
-    this.initData();
+    this.platform.ready().then(() => {
+      const platforms = this.platform.platforms();
+      this.plat = platforms[1];
+      this.initData();
+    });
   }
 
   ionViewWillEnter() {
@@ -55,15 +63,6 @@ export class PlansPage implements OnInit {
     });
   }
 
-  getProductsFromIAP() {
-    // this.iap.getProducts(['P2', 'P3', 'P4']).then((products) => {
-    //   // this.products = products;
-    //   // alert(JSON.stringify(products));
-    // }).catch((error) => {
-    //   this.ionService.showAlert('Error From InAppPurchase', 'Couldnot get products from InAppPurchase');
-    // });
-  }
-
   async getSubscriptions(userID, token) {
       this.ionService.showLoading();
       await this.subscriptionApi.getSubscriptionPlan(userID, token).subscribe(async (plans) => {
@@ -90,5 +89,9 @@ export class PlansPage implements OnInit {
   }
 
   restore() {
+    this.iap.restorePurchases().then((res) => {
+      console.log(JSON.stringify(res));
+      this.ionService.presentToast('Successfully restored.');
+    });
   }
 }

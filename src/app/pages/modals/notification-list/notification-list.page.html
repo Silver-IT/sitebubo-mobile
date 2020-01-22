@@ -23,6 +23,8 @@
           <ion-icon class="m-up" *ngIf="item.title === 'Site Up'"></ion-icon>
           <ion-icon class="m-down" *ngIf="item.title === 'Site Down'"></ion-icon>
           <ion-icon class="n-report" *ngIf="item.type === 'report'"></ion-icon>
+          <ion-icon class="security-secure" *ngIf="item.title === 'Site Is Virus Free'"></ion-icon>
+          <ion-icon class="security-unsecure" *ngIf="item.title === 'Site Has Virus'"></ion-icon>
           <ion-label class="date">{{ item.date | datetime }}</ion-label>
         </mat-expansion-panel-header>
         <mat-panel-description>

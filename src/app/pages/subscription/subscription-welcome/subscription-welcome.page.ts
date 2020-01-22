@@ -45,7 +45,7 @@ export class SubscriptionWelcomePage implements OnInit {
         if (params.isNewUser !== undefined) {
           this.newUser = JSON.parse(params.isNewUser);
         }
-        this.subscriptionID = parseInt(params.planID, 10);
+        // this.subscriptionID = parseInt(params.planID, 10);
         if (params.isFreeTrial !== undefined) {
           this.isFreeTrial = JSON.parse(params.isFreeTrial);
         }
@@ -64,6 +64,7 @@ export class SubscriptionWelcomePage implements OnInit {
           if (result.data && result.data.length > 0) {
             this.details.invoice_pdf = result.data[0].invoice_pdf;
             this.details.lastpaymentAmount = result.data[0].amount;
+            this.details.payment_method = result.data[0].payment_method;
             temp = result.data;
             temp.forEach((history) => {
                if (history.free_trial_transaction) {
@@ -113,11 +114,13 @@ export class SubscriptionWelcomePage implements OnInit {
         if (result.RESPONSECODE === 1) {
           this.storage.set('planInfo', result.data).then(() => {
             this.events.publish('planInfo_set', result.data);
+            this.subscriptionID = result.data.id;
             const temp = result.data;
             const arr = temp.price.toString().split('.');
             temp.bigprc = arr[0];
             temp.smallprc = arr[1];
             this.details = temp;
+            console.log(this.details);
             this.getTransactionHistory(user.id, user.token).then((res) => {
               if (res === 1) {
                 this.firstPay = true;

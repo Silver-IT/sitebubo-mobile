@@ -128,8 +128,8 @@
     </ion-item>
     <ion-button *ngIf="showbtn" mode="md" size="default" expand="block" class="continue" (click)="continuePlan();">
         <ion-spinner name="lines-small" *ngIf="!planID"></ion-spinner>
-        <ion-label *ngIf="!freeTrial || planID == '1'">Continue</ion-label>
-        <ion-label *ngIf="freeTrial && planID != '1'">Get started with free trial</ion-label>
+        <ion-label *ngIf="(!freeTrial || planID == '1') || plat === 'ios'">Continue</ion-label>
+        <ion-label *ngIf="freeTrial && planID != '1' && plat !== 'ios'">Get started with free trial</ion-label>
     </ion-button>
   </ion-list>
 </ion-content>

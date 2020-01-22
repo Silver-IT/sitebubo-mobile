@@ -7,6 +7,8 @@ import { GeneralService } from './../../../services/generalComponents/general.se
 import { ExDomainsPage } from './../../modals/ex-domains/ex-domains.page';
 import { PaypalService } from './../../../services/paypal/paypal.service';
 import { SubscriptionApiService } from 'src/app/apis/subscription/subscription-api.service';
+import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-detailed-plan',
@@ -29,6 +31,7 @@ export class DetailedPlanPage implements OnInit {
   currentPlanID: any;
   showbtn = false;
   firstPay: boolean;
+  productId: string;
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -39,34 +42,56 @@ export class DetailedPlanPage implements OnInit {
     private navCtrl: NavController,
     private platform: Platform,
     private modalCtrl: ModalController,
-    private paypal: PaypalService
+    private paypal: PaypalService,
+    private iap: InAppPurchase
   ) {
   }
 
   ngOnInit() {
-    this.getPlanID();
-    this.definePlatform();
+    this.definePlatform().then((res) => {
+      if (res) {
+        this.getPlanID();
+      }
+    });
   }
 
-  definePlatform() {
-    this.platform.ready().then(() => {
-      const plat = this.platform.platforms();
-      this.plat = plat[2];
+  definePlatform(): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.platform.ready().then(() => {
+        const plat = this.platform.platforms();
+        this.plat = plat[1];
+        resolve(true);
+      });
     });
   }
 
   getPlanID() {
     this.activatedRoute.queryParams.subscribe((result) => {
-      console.log(result);
       if (result) {
         this.planID = result.planID;
         this.planName = result.planName;
         this.planPrice = result.planPrice;
+        if (this.plat === 'ios') {
+          this.defineIosProduct();
+        }
         this.initData();
       }
     }, err => {
       this.ionService.showAlert('Error Loading Page', 'No Plan is selected');
     });
+  }
+
+  defineIosProduct() {
+    const planID = parseInt(this.planID, 10);
+    if (planID === 1) {
+
+    } else if (planID === 2) {
+      this.productId = 'P2';
+    } else if (planID === 3) {
+      this.productId = 'P3';
+    } else if (planID === 4) {
+      this.productId = 'P4';
+    }
   }
 
   initData() {
@@ -141,7 +166,11 @@ export class DetailedPlanPage implements OnInit {
     } else if (parseInt(this.planID, 10) < this.currentPlanID) {
       this.checkExDomainList();
     } else {
-      this.gotoPaypal();
+      if (this.plat === 'ios') {
+        this.gotoInappPurchase();
+      } else {
+        this.gotoPaypal();
+      }
     }
   }
 
@@ -172,12 +201,71 @@ export class DetailedPlanPage implements OnInit {
     });
     exDomain.onDidDismiss().then((result) => {
       if (result.role === 'success') {
-        this.gotoPaypal(result.data);
+        if (this.plat === 'ios') {
+          this.gotoInappPurchase(result.data);
+        } else {
+          this.gotoPaypal(result.data);
+        }
       }
     });
     return await exDomain.present();
   }
 
+  async gotoInappPurchase(downgradeData = null) {
+    if (parseInt(this.planID, 10) === 1) {
+      this.ionService.showLoading();
+      this.gotoFreePlan().then((result) => {
+        this.ionService.closeLoading();
+        if (result) {
+          this.downgradeDomains(downgradeData).then(res => {
+            this.router.navigate(['subscription-welcome'],  { queryParams: {
+              isNewUser: this.isNewUser
+            }});
+          });
+        }
+       }).catch((err) => {
+         this.ionService.closeLoading();
+       });
+    } else {
+      await this.iap.getProducts(['P2', 'P3', 'P4']);
+      this.iap.subscribe(this.productId).then(data => {
+       if (data) {
+         this.ionService.showLoading();
+         this.subscriptionAPI
+         .activateSubscriptionIos
+         (parseInt(this.planID, 10), data.transactionId, data.receipt, data.signature, data.productType, this.userID, this.token)
+         .subscribe((result) => {
+            this.ionService.closeLoading();
+            if (result.RESPONSECODE === 1) {
+              this.downgradeDomains(downgradeData).then(res => {
+                if (res) {
+                  const params: NavigationExtras = {
+                    queryParams: {
+                      isNewUser: this.isNewUser,
+                      planID: parseInt(this.planID, 10),
+                      firstPay: this.firstPay
+                    }
+                  };
+                  this.router.navigate(['subscription-welcome'], params);
+                } else {
+                  this.ionService.presentToast('Downgrading plan failed. Please try again later.');
+                }
+              }, err => {
+                this.ionService.presentToast('Downgrading plan failed due to server.');
+              });
+            } else {
+              this.ionService.presentToast('Plan activation failed. Please try again later');
+            }
+         }, err => {
+           this.ionService.closeLoading();
+           this.ionService.presentToast('Plan activation failed due to server.');
+         });
+       }
+      }).catch(err => {
+        this.ionService.presentToast('Payment via In app purchase failed. Try again later.');
+      });
+    }
+  }
 
   gotoPaypal(downgradeData = null) {
     if (parseInt(this.planID, 10) === 1) {
@@ -197,10 +285,10 @@ export class DetailedPlanPage implements OnInit {
        });
     } else {
       this.paypal.payNow(this.userID, parseInt(this.planID, 10), this.token, this.freeTrial).then((result) => {
+        this.ionService.closeLoading();
         if (result === 'success') {
           if (downgradeData !== null) {
             this.downgradeDomains(downgradeData).then(res => {
-              this.ionService.closeLoading();
               if (res) {
                 const params: NavigationExtras = {
                   queryParams: {
@@ -251,7 +339,6 @@ export class DetailedPlanPage implements OnInit {
     return new Promise((resolve, reject) => {
       this.subscriptionAPI.downgradePlan(downgradeData.domains, this.userID, this.token, downgradeData.feedback).subscribe((result) => {
         this.ionService.closeLoading();
-        console.log(result);
         if (result.RESPONSECODE === 1) {
           resolve(true);
         } else {

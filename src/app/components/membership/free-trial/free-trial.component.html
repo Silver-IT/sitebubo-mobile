@@ -7,7 +7,8 @@
   </ion-label>
   <ion-label class="c-bigfnt">£{{details.bigprc}}.<span class="c-smallfnt">{{details.smallprc}}</span></ion-label>
   <ion-label class="c-norfnt">will be taken on <b>{{details.next_payment_date}}</b></ion-label>
-  <ion-icon class="c-paypal"></ion-icon>
+  <ion-icon class="c-paypal" *ngIf="details.payment_method === 'Paypal'"></ion-icon>
+  <ion-icon class="c-inapp" *ngIf="details.payment_method === 'Inapp'"></ion-icon>
   <ion-label class="c-norfnt" style="margin:15px">{{details.name}} Plan</ion-label>
   <ion-button *ngIf="!newUser" mode="md" expand="block" class="c-greenButton red" (click)="upgrade()">
     {{ details.id !== 4 ? "Upgrade" : "Change" }}

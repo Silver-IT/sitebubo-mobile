@@ -46,6 +46,6 @@
           </ion-row>
         </ion-card-content>
       </ion-card>
-      <ion-button *ngIf="plansList" mode="md" class="restore-btn restore" size="default"  (click)="restore()" >Restore</ion-button>
+      <ion-button *ngIf="plansList && plat === 'ios'" mode="md" class="restore-btn restore" size="default"  (click)="restore()" >Restore</ion-button>
     </ion-list>
 </ion-content>

@@ -77,6 +77,7 @@ export class ViewMembershipPage implements OnInit {
           if (result.data && result.data.length > 0) {
             this.planInfo.invoice_pdf = result.data[0].invoice_pdf;
             this.planInfo.lastpaymentAmount = result.data[0].amount;
+            this.planInfo.payment_method = result.data[0].payment_method;
           }
           resolve(true);
         } else {

@@ -74,8 +74,8 @@ export class GeneralService {
 
   async openRating() {
     this.appRate.preferences.storeAppURL = {
-      ios: '1436677538',
-      android: 'market://details?id=com.nasir.healthApp',
+      ios: '1493706411',
+      android: 'market://details?id=com.sitebubo.app',
     };
     this.appRate.promptForRating(true);
   }

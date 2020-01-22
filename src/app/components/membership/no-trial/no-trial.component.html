@@ -1,7 +1,8 @@
 <div  id="paystatus" class="c-content" *ngIf="details">
   <ion-label class="c-bigfnt">£{{ details.bigprc }}.<span class="c-smallfnt">{{ details.smallprc }}</span></ion-label>
   <ion-label class="c-norfnt">will be taken on {{ details.next_payment_date }}</ion-label>
-  <ion-icon class="c-paypal"></ion-icon>
+  <ion-icon class="c-paypal" *ngIf="details.payment_method === 'Paypal'"></ion-icon>
+  <ion-icon class="c-inapp" *ngIf="details.payment_method === 'Inapp'"></ion-icon>
   <ion-label class="c-norfnt" style="margin-top: 15px">{{ details.name }} Plan<a (click)="changePlan()">change</a></ion-label>
   <div class="lastpay">
     <ion-label>Last payment:</ion-label>

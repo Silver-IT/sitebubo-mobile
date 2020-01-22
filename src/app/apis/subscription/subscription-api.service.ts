@@ -39,6 +39,14 @@ export class SubscriptionApiService extends BaseApiService {
     return this.sendGetRequest(url);
   }
 
+  activateSubscriptionIos(subscriptionID, transactionID, receipt, signature, productType, userID, token): any {
+    let url = this.subscription_url + 'activatesubscriptionios?';
+    url += 'susbscription_id=' + subscriptionID + '&transaction_id=' + transactionID;
+    url += '&receipt=' + receipt + '&signature=' + signature + '&producttype=' +  productType;
+    url += '&user_id=' + userID + '&token=' + token;
+    return this.sendGetRequest(url);
+  }
+
   currentSubscription(userID, token): any {
     let url = this.subscription_url + 'currentsubscription?';
     url += 'user_id=' + userID + '&token=' + token;
