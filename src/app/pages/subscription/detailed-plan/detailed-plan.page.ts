@@ -8,8 +8,6 @@ import { ExDomainsPage } from './../../modals/ex-domains/ex-domains.page';
 import { PaypalService } from './../../../services/paypal/paypal.service';
 import { SubscriptionApiService } from 'src/app/apis/subscription/subscription-api.service';
 import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-
 @Component({
   selector: 'app-detailed-plan',
   templateUrl: './detailed-plan.page.html',
