@@ -1,0 +1,7 @@
+{
+  "name": "sitebubo-sample",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
