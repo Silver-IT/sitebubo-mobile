@@ -1,0 +1,141 @@
+<ion-header class="underHeader">
+  <ion-toolbar class="toolbar">
+    <ion-segment mode="md" value="1">
+      <ion-segment-button mode="md" value = "1" checked>
+        <ion-label>Uptime</ion-label>
+      </ion-segment-button>
+      <ion-segment-button mode="md" [disabled]="true">
+      </ion-segment-button>
+      <ion-segment-button mode="md" [disabled]="true">
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<!-- <ion-content #content [scrollEvents]="true">
+  <ion-card class="priority" [ngClass]="{ 'negative': uptimeStatus?.status === 'DOWN', 'positive': uptimeStatus?.status === 'UP' }">
+    <ion-skeleton-text animated *ngIf = "!uptimeStatus"></ion-skeleton-text>
+    <ion-card-header>
+      <ion-label class="upperletter">SITE IS {{ uptimeStatus? uptimeStatus["status"]: "" }}</ion-label>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-icon class="d-siteUp" *ngIf = "uptimeStatus?.status === 'UP'"></ion-icon>
+      <ion-icon class="d-siteDown" *ngIf = "uptimeStatus?.status === 'DOWN'"></ion-icon>
+    </ion-card-content>
+  </ion-card>
+  <div class="description">
+    <ion-label class="since" *ngIf = "!uptimeStatus">
+      <ion-skeleton-text animated ></ion-skeleton-text>
+    </ion-label>
+    <ion-label class="scan" *ngIf = "!uptimeStatus">
+      <ion-skeleton-text animated ></ion-skeleton-text>
+    </ion-label>
+    <ion-label class="last-checked" *ngIf = "!uptimeStatus">
+      <ion-skeleton-text animated ></ion-skeleton-text>
+    </ion-label>
+    <ion-label class="since" *ngIf = "uptimeStatus?.status === 'UP'">
+      Since {{ uptimeStatus? uptimeStatus["last_uptime"]["days"]: "" }} days, {{ uptimeStatus? uptimeStatus["last_uptime"]["hours"]: ""}} hours, {{ uptimeStatus? uptimeStatus["last_uptime"]["minutes"]: ""}} min{{ uptimeStatus["last_uptime"]["minutes"] === 1? "": "s" }}
+    </ion-label>
+
+    <ion-label class="since" *ngIf = "uptimeStatus?.status === 'DOWN'">
+      Since {{ uptimeStatus? uptimeStatus["last_downtime"]["days"]: "" }} days, {{ uptimeStatus? uptimeStatus["last_downtime"]["hours"]: ""}} hours, {{ uptimeStatus? uptimeStatus["last_downtime"]["minutes"]: ""}} min{{ uptimeStatus["last_downtime"]["minutes"] === 1? "": "s" }}
+    </ion-label>
+    <ion-label class="scan" *ngIf = "uptimeStatus">Site is checked every {{ uptimeStatus? uptimeStatus["checkmins"]: "?" }} min{{ uptimeStatus["checkmins"] === 1? "": "s" }}</ion-label>
+    <ion-label class="last-checked" *ngIf = "uptimeStatus">Last Checked: <b>{{ uptimeStatus? uptimeStatus["last_checked"]: "?" }}</b></ion-label>
+  </div>
+  
+  <ion-card class="status-card latest" *ngIf = "!uptimeStatus">
+      <ion-skeleton-text animated  style="height: 95px;"></ion-skeleton-text>
+  </ion-card>
+
+  <ion-card class="status-card latest" mode="ios" *ngIf = "uptimeStatus?.last_downtime.date">
+    <ion-icon class="m-down"></ion-icon>
+    <div class="status-des">
+      <ion-label class="title">Latest downtime</ion-label>
+      <ion-label class="des">was recorded on {{ uptimeStatus?.last_downtime.date | datetime}}</ion-label>
+      <ion-label class="des">for {{ uptimeStatus?.last_downtime.hours }} hrs {{ uptimeStatus?.last_downtime.minutes }} mins</ion-label>
+    </div>
+  </ion-card>
+
+  <ion-button mode="md" class="red filterItem" (click)="showMoreInfo()" *ngIf="filterLabel && uptimeStatus?.last_downtime.date">
+    <ion-icon class="filter"></ion-icon>
+    <ion-label>{{ filterLabel }}</ion-label>
+  </ion-button>
+
+  <div class="status" *ngIf = "downtimeRecord.length > 0">
+    <ion-card class="status-card" mode="ios" *ngFor = "let item of downtimeRecord">
+      <ion-icon class="m-down"></ion-icon>
+      <div class="status-des">
+        <ion-label class="title">Downtime</ion-label>
+        <ion-label class="des">was recorded on {{ item.date | datetime }}</ion-label>
+        <ion-label class="des">for {{ item.hours }} hrs {{ item.minutes }} mins</ion-label>
+      </div>
+    </ion-card>
+  </div>
+  <ion-label class="no-result" *ngIf = "uptimeStatus && downtimeRecord.length === 0 && uptimeStatus?.last_downtime.date">No down time results in {{ filterLabel }}</ion-label>
+  <ion-label class="no-result" *ngIf = "uptimeStatus && downtimeRecord.length === 0 && !uptimeStatus?.last_downtime.date">No down time records so far</ion-label>
+  <ion-fab class="feedback-fab nopadding-top" vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button mode="md" class="feedback" (click)="openFeedback()">
+        <ion-icon class="feedback"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content> -->
+
+<ion-content>
+  <ion-card mode="ios" class="first-card">
+    <div class="header">
+      <ion-icon class="filter-extra" (click)="openFilter()"></ion-icon>
+      <ion-label class="label">Response Time </ion-label>
+      <ion-label class="green">last {{ filterLabel }}</ion-label>
+    </div>
+    <ion-label class="description">
+      Shows the "instant" that the monitor started running a response in seconds (checked every {{ uptimeStatus?.checkmins }} mins)
+    </ion-label>
+    <google-chart [data]="uptimeChart"></google-chart>
+  </ion-card>
+  <ion-card mode="ios" class="status">
+    <ion-label class="label">Current Status</ion-label>
+    <div class="status">
+      <ion-icon [ngClass]="{'d-siteDown': uptimeStatus?.status === 'DOWN', 'd-siteUp': uptimeStatus?.status === 'UP'}"></ion-icon>
+      <ion-label [ngClass]="{ 'green': uptimeStatus?.status === 'UP', 'red': uptimeStatus?.status !== 'UP' }"> {{ uptimeStatus?.status }}</ion-label>
+    </div>
+    <ion-label class="last-uptime-ago">Since {{ uptimeStatus?.last_uptime.days }} days, {{ uptimeStatus?.last_uptime.days }} hours, {{ uptimeStatus?.last_uptime.days }} minutes</ion-label>
+    <ion-label class="last-uptime-date">
+      ({{ uptimeStatus?.last_uptime.date | datetime }} at {{ uptimeStatus?.last_uptime.time }})
+    </ion-label>
+  </ion-card>
+  <ion-card class="percentage" mode="ios">
+    <ion-label class="label">Uptime</ion-label>
+    <div class="uptimes">
+      <ion-icon class="m-up"></ion-icon>
+      <ion-label class="green">{{ uptimeStatus?.percentage.last_24_hours }}%</ion-label>
+      <ion-label class="filters">  (last 24 hours)</ion-label>
+    </div>
+    <div class="uptimes">
+      <ion-icon class="m-up"></ion-icon>
+      <ion-label class="green">{{ uptimeStatus?.percentage.last_24_hours }}%</ion-label>
+      <ion-label class="filters">  (last 7 days)</ion-label>
+    </div>
+    <div class="uptimes">
+      <ion-icon class="m-up"></ion-icon>
+      <ion-label class="green">{{ uptimeStatus?.percentage.last_24_hours }}%</ion-label>
+      <ion-label class="filters"> (last 30 days)</ion-label>
+    </div>
+  </ion-card>
+  <div class="filter">
+    <ion-icon class="filter-extra" (click)="downtimeFilter()"></ion-icon>
+    <ion-label class="filter-label">Last {{ downtimeFilterLabel }}</ion-label>
+  </div>
+  <ion-label class="no-result" *ngIf = "uptimeStatus && downtimeRecord.length === 0 && uptimeStatus?.last_downtime.date">No down time results in {{ filterLabel }}</ion-label>
+  <ion-label class="no-result" *ngIf = "uptimeStatus && downtimeRecord.length === 0 && !uptimeStatus?.last_downtime.date">No down time records so far</ion-label>
+  <div class="status" *ngIf = "downtimeRecord.length > 0">
+    <ion-card class="status-card" mode="ios" *ngFor = "let item of downtimeRecord">
+      <ion-icon class="m-down"></ion-icon>
+      <div class="status-des">
+        <ion-label class="title">Downtime</ion-label>
+        <ion-label class="des">was recorded on {{ item.date | datetime }}</ion-label>
+        <ion-label class="des">for {{ item.hours }} hrs {{ item.minutes }} mins</ion-label>
+      </div>
+    </ion-card>
+  </div>
+</ion-content>

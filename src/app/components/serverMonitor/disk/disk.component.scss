@@ -1,0 +1,15 @@
+ion-card {
+  table {
+    width: 90%;
+    margin: 20px auto;
+    td:first-of-type {
+      font-weight: bold;
+    }
+    td {
+      color: black;
+      padding: 10px;
+      border: 1px solid black; 
+      border-collapse: collapse;
+    }
+  }
+}

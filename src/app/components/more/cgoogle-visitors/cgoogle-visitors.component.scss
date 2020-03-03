@@ -1,0 +1,79 @@
+div.header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 15px;
+  text-align: center;
+  box-shadow: 0 5px 11px -5px #cacaca;
+  ion-button {
+    --background: transparent;
+    --color: black;
+  }
+  ion-label {
+    display: block;
+    &.previous-checked {
+      color: grey;
+    }
+  }
+}
+
+ion-card {
+  padding-bottom: 20px;
+  &.goals{
+    margin-bottom: 40px;
+  }
+  ion-label {
+    display: block;
+    color: black;
+    &.label {
+      font-size: 24px;
+      padding-top: 20px;
+      padding-left: 20px;
+      font-weight: 500;
+      padding-bottom: 20px;
+    }
+    &.sub-label {
+      font-size: 16px;
+      padding-bottom: 10px;
+      padding-left: 20px;
+    }
+    &.difference {
+      font-size: 14px;
+      padding-left: 20px;
+      padding-top: 10px;
+    }
+    &.num-users {
+      font-size: 40px;
+      font-weight: 500;
+      padding: 10px 0px 0px 20px;
+    }
+    &.sub-gray {
+      color: gray;
+      font-size: 14px;
+      padding-left: 20px;
+    }
+    &.sub-num {
+      font-size: 22px;
+      font-weight: 500;
+      margin: 5px auto !important;
+    }
+  }
+  ion-segment {
+    margin-bottom: 20px;
+    ion-segment-button {
+      --border-radius: 0px;
+      --border-color: lightgray;
+      --border-width: 0.5px 0px 0.5px 0px;
+      padding: 10px;
+      ion-label {
+        padding: unset !important;
+      }
+      &.segment-button-checked {
+        --border-color: #3880ff;
+        ion-label {
+          color: white !important;
+        }
+      }
+    }
+  }
+}

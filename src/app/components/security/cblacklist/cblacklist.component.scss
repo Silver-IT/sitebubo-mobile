@@ -1,0 +1,115 @@
+// ion-item {
+//   --min-height: 52px;
+//   --padding-start: 20px;
+//   --padding-end: 20px;
+//   &:last-child {
+//     --border-color: transparent;
+//   }
+//   ion-label {
+//     &.title {
+//       font-size: 14px;
+//       min-width: 50%;
+//       font-weight: bold !important;
+//       white-space: unset;
+//     }
+//     &.status {
+//       font-size: 13px;
+//       text-align: center;
+//       font-weight: 100 !important;
+//       white-space: unset;
+//     }
+//   }
+// }
+// ion-card {
+//   ion-card-title {
+//     padding-top: 20px;
+//     padding-bottom: 10px;
+//   }
+//   .last_checked {
+//     font-size: 14px;
+//     font-weight: bold;
+//   }
+//   .des {
+//     font-size: 13px;
+//   }
+// }
+
+ion-label.report {
+  display: block;
+  text-align: center;
+  font-size: 16px;
+  padding-top: 20px;
+}
+ion-card.description {
+  padding: 20px;
+  background-color: #f6fafb;
+  border: solid #6ab1c7;
+  border-width: 0px 0px 0px 7px;
+  ion-label {
+    font-size: 19px;
+    display: block;
+    text-align: center;
+  }
+}
+div.result {
+  ion-card {
+    ion-col {
+      padding: 10px;
+      &.category {
+        text-align: left;
+        ion-label {
+          display: block;
+          margin-top: 10px;
+          font-size: 16px;
+        }
+      }
+      &.status {
+        background: #84c622;
+        ion-icon {
+          color: white;
+          font-size: 40px;
+          display: block;
+          margin: auto;
+        }
+        ion-label.status-check {
+          text-align: center;
+          display: block;
+          color: white;
+          font-size: 14px;
+        }
+      }
+    }
+    img {
+      width: auto;
+      height: 30px;
+      // margin: auto;
+      &.domain-clean-by-google-safe-browsing {
+        content: url('../../../../assets/imgs/blacklist/googlesafebrowsing.png');
+      }
+      &.domain-clean-by-norton-safe-web {
+        content: url('../../../../assets/imgs/blacklist/Norton.png');
+      }
+      &.domain-clean-by-mcafee {
+        content: url('../../../../assets/imgs/blacklist/Macafee.png');
+      }
+      &.domain-clean-by-sucuri-labs {
+        content: url('../../../../assets/imgs/blacklist/sucuri.png');
+      }
+      &.domain-clean-by-eset {
+        content: url('../../../../assets/imgs/blacklist/eset.png');
+      }
+      &.domain-clean-by-phishtank {
+        content: url('../../../../assets/imgs/blacklist/phishtank.png');
+      }
+      &.domain-clean-by-yandex {
+        content: url('../../../../assets/imgs/blacklist/yandex.png');
+      }
+      &.domain-clean-by-opera {
+        content: url('../../../../assets/imgs/blacklist/Opera.png');
+      }
+      &.domain-clean-by-spamhaus {
+        content: url('../../../../assets/imgs/blacklist/spamhaus.png');
+      }
+    }
+  }
+}

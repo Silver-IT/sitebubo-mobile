@@ -1,0 +1,28 @@
+form {
+  margin-top: 30px;
+  ion-item{
+    display: block;
+    margin: auto;
+    margin-top: 20px;
+    padding: 0 5%;
+    --box-shadow: 0 0 5px 2px #e8e8e8;
+    ion-icon{
+      margin: 0px;
+    }
+    ion-input {
+      margin-left: 3%;
+      --border-color: transparent;
+      border-left: 1px solid #C2C3C5;
+      --padding-start: 14px;
+      height: 48px;
+    }    
+  }
+  
+}
+.website-report {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 0 5%;
+  --inner-border-width: 0;
+  --border-color: transparent;
+}

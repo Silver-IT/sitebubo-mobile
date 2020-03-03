@@ -1,0 +1,75 @@
+<div class="header  header-extra"  *ngIf="diskData">
+  <ion-icon class="filter-extra" (click)="changeFilterType()">
+  </ion-icon>
+  <div class="filter-header">
+    <ion-label class="label">Disk Usage</ion-label>
+    <ion-label class="filter-type">last {{ filterLabel }}</ion-label>
+  </div>
+</div>
+
+<ion-card class="data-table"  mode="ios">
+  <table>
+    <tr>
+      <td>Mount</td>
+      <td>{{ diskData?.server.disk_table[0].mount }}</td>
+      <td>{{ diskData?.server.disk_table[1].mount }}</td>
+    </tr>
+    <tr>
+      <td>Device</td>
+      <td>{{ diskData?.server.disk_table[0].device }}</td>
+      <td>{{ diskData?.server.disk_table[1].device }}</td>
+    </tr>
+    <tr>
+      <td>Filesystem</td>
+      <td>{{ diskData?.server.disk_table[0].filesystem }}</td>
+      <td>{{ diskData?.server.disk_table[1].filesystem }}</td>
+    </tr>
+    <tr>
+      <td>Size</td>
+      <td>{{ diskData?.server.disk_table[0].size }}</td>
+      <td>{{ diskData?.server.disk_table[1].size }}</td>
+    </tr>
+    <tr>
+      <td>Used</td>
+      <td>{{ diskData?.server.disk_table[0]['s-used'] }}</td>
+      <td>{{ diskData?.server.disk_table[1]['s-used'] }}</td>
+    </tr>
+    <tr>
+      <td>Free</td>
+      <td>{{ diskData?.server.disk_table[0].free }}</td>
+      <td>{{ diskData?.server.disk_table[1].free }}</td>
+    </tr>
+    <tr>
+      <td>Inodes</td>
+      <td>{{ diskData?.server.disk_table[0].Inodes }}</td>
+      <td>{{ diskData?.server.disk_table[1].Inodes }}</td>
+    </tr>
+    <tr>
+      <td>I-Used</td>
+      <td>{{ diskData?.server.disk_table[0]['I-used'] }}</td>
+      <td>{{ diskData?.server.disk_table[1]['I-used'] }}</td>
+    </tr>
+    <tr>
+      <td>I-Free</td>
+      <td>{{ diskData?.server.disk_table[0]['I-free'] }}</td>
+      <td>{{ diskData?.server.disk_table[1]['I-free'] }}</td>
+    </tr>
+    <tr>
+      <td>I-Used%</td>
+      <td>{{ diskData?.server.disk_table[0]['I-used-%'] }}</td>
+      <td>{{ diskData?.server.disk_table[1]['I-used-%'] }}</td>
+    </tr>
+  </table>
+</ion-card>
+
+<div class="filter-header" *ngIf="diskData">
+  <ion-label class="label">Disk Usage</ion-label>
+  <ion-label class="filter-type">last {{ filterLabel }}</ion-label>
+</div>
+<google-chart [data]="diskUsageChart"></google-chart>
+
+<div class="filter-header" *ngIf="diskData">
+  <ion-label class="label">Inode Usage</ion-label>
+  <ion-label class="filter-type">last {{ filterLabel }}</ion-label>
+</div>
+<google-chart [data]="inodeUsageChart"></google-chart>

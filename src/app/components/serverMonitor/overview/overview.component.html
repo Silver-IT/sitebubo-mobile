@@ -1,0 +1,106 @@
+<ion-card mode="ios" class="server-monitor">
+  <ion-card-header>
+    SERVER USAGE
+  </ion-card-header>
+  <ion-card-content>
+    <ion-row>
+      <ion-col size="4">
+        <ion-label class="server-label">CPU</ion-label>
+        <circle-progress
+        [outerStrokeWidth]="5"
+        [innerStrokeWidth]="2"
+        [radius]="40"
+        [percent]="overViewData?.server.cpu"
+        [outerStrokeColor]="status?.cpu"
+        [innerStrokeColor]="status?.cpu"
+      ></circle-progress>
+      <div class="status">
+        <div class="percent" #cpuTitle>
+          <ion-label class="number">{{ overViewData?.server.cpu | intparse }}</ion-label>
+          <ion-label class="unit">%</ion-label>
+        </div>
+        <ion-label class="used">used</ion-label>
+      </div>
+      </ion-col>
+      <ion-col size="4">
+        <ion-label class="server-label">RAM</ion-label>
+        <circle-progress
+          [outerStrokeWidth]="5"
+          [innerStrokeWidth]="2"
+          [radius]="40"
+          [percent]="overViewData?.server.ram_used"
+          [outerStrokeColor]="status?.ram"
+          [innerStrokeColor]="status?.ram"
+        ></circle-progress>
+        <div class="status">
+          <div class="percent" #ramTitle>
+            <ion-label class="number">{{ overViewData?.server.ram_used | intparse }}</ion-label>
+            <ion-label class="unit">%</ion-label>
+          </div>
+          <ion-label class="used">used</ion-label>
+        </div>
+      </ion-col>
+      <ion-col size="4">
+        <ion-label class="server-label">DISK</ion-label>
+        <circle-progress
+          [outerStrokeWidth]="5"
+          [innerStrokeWidth]="2"
+          [radius]="40"
+          [percent]="overViewData?.server.disk"
+          [outerStrokeColor]="status?.disk"
+          [innerStrokeColor]="status?.disk"
+        ></circle-progress>
+        <div class="status">
+          <div class="percent" #diskTitle>
+            <ion-label class="number">{{ overViewData?.server.disk | intparse }}</ion-label>
+            <ion-label class="unit">%</ion-label>
+          </div>
+          <ion-label class="used">used</ion-label>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-label class="server-lastcheck">
+      Last Checked <b>{{ overViewData?.last_checked }}</b>
+    </ion-label>
+  </ion-card-content>
+</ion-card>
+<!-- cpu usage -->
+<div class="header"  *ngIf="overViewData">
+  <ion-icon class="filter-extra" (click)="changeFilterType()">
+  </ion-icon>
+  <div class="filter-header">
+    <ion-label class="label">CPU Usage</ion-label>
+    <ion-label class="filter-type">last {{ filterLabel }}</ion-label>
+  </div>
+</div>
+<google-chart [data]="cpuChart"></google-chart>
+<!-- load averages -->
+<div class="filter-header" *ngIf="overViewData">
+  <ion-label class="label">Load Averages</ion-label>
+  <ion-label class="filter-type">last {{ filterLabel }}</ion-label>
+</div>
+<google-chart [data]="loadChart"></google-chart>
+<!-- ram averages -->
+<div class="filter-header"  *ngIf="overViewData">
+  <ion-label class="label">RAM Usage</ion-label>
+  <ion-label class="filter-type">last {{ filterLabel }}</ion-label>
+</div>
+<google-chart [data]="ramChart"></google-chart>
+<!-- network speed -->
+<div class="filter-header" *ngIf="overViewData">
+  <ion-label class="label">Network Speed</ion-label>
+  <ion-label class="filter-type">last {{ filterLabel }}</ion-label>
+</div>
+<google-chart [data]="networkChart"></google-chart>
+<!-- disk usage -->
+<div class="filter-header" *ngIf="overViewData">
+  <ion-label class="label">Disk Usage</ion-label>
+  <ion-label class="filter-type">last {{ filterLabel }}</ion-label>
+</div>
+<google-chart [data]="diskChart"></google-chart>
+<!-- inode usage -->
+<div class="filter-header" *ngIf="overViewData">
+  <ion-label class="label">Inode Usage</ion-label>
+  <ion-label class="filter-type">last {{ filterLabel }}</ion-label>
+</div>
+<google-chart [data]="inodeChart"></google-chart>

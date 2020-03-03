@@ -1,0 +1,41 @@
+<ion-content>
+  <div class="completed">
+    <img src= "assets/icons/logoAlone.svg" />
+    <ion-label *ngIf="completed"><b>{{ title }} </b>completed</ion-label>
+    <ion-label *ngIf="!completed"><b>{{ title }} </b>in Progress</ion-label>
+  </div>
+  <ion-label class="domain_name">{{ domainName }}</ion-label>
+  <div #results class="results"></div>
+  <div class="footer">
+    <div *ngIf="status.started && !status.process" mode="ios">
+      <ion-label>{{ tempResult?.monitor }} {{ tempResult?.status }}</ion-label>
+    </div>
+    <div #temp class="process" mode="ios" *ngIf="status.process">
+      <ion-label>{{ tempResult?.monitor }} </ion-label>
+      <ion-label class="fade-in-right" *ngIf="tempResult.status === 'Started'"> Connected</ion-label>
+      <ion-label class="fade-in-right" *ngIf="tempResult.status === 'in Progress'"> {{ tempResult?.status }} ... </ion-label>
+      <ion-label class="fade-in-right" *ngIf="tempResult.status === 'Finished'"> {{ tempResult?.status }}</ion-label>
+    </div>
+  </div>
+  <div class="img" [ngSwitch]="currentMonitor">
+    <img *ngSwitchCase="'Domain Monitor'" src="assets/imgs/scanMonitors/domainMonitor.gif" />
+    <img *ngSwitchCase="'DNS & IP Monitor'" src="assets/imgs/scanMonitors/dnsIpMonitor.gif" />
+    <img *ngSwitchCase="'Security Monitor'" src="assets/imgs/scanMonitors/securityMonitor.gif" />
+    <img *ngSwitchCase="'Speed Monitor'" src="assets/imgs/scanMonitors/speedMonitor.gif" />
+    <img *ngSwitchCase="'Desktop Speed Monitor'" src="assets/imgs/scanMonitors/desktopSpeedMonitor.gif" />
+    <img *ngSwitchCase="'Mobile Speed Monitor'" src="assets/imgs/scanMonitors/mobileSpeedMonitor.gif" />
+    <img *ngSwitchCase="'Mobile Friendly Monitor'" src="assets/imgs/scanMonitors/mobileFriendlyMonitor.gif" />
+    <img *ngSwitchCase="'Uptime Monitor'" src="assets/imgs/scanMonitors/uptimeMonitor.gif" />
+    <img *ngSwitchCase="'SEO Monitor'" src="assets/imgs/scanMonitors/seoMonitor.gif" />
+    <img *ngSwitchCase="'PDF Site Report'" src="assets/imgs/scanMonitors/pdfMonitor.gif" />
+
+    <img *ngSwitchCase="'Security Scanning'" src="assets/imgs/scanMonitors/securityMonitor.gif" />
+    <img *ngSwitchCase="'Speed Scanning'" src="assets/imgs/scanMonitors/speedMonitor.gif" />
+    <img *ngSwitchCase="'Desktop Speed Scanning'" src="assets/imgs/scanMonitors/desktopSpeedMonitor.gif" />
+    <img *ngSwitchCase="'Mobile Speed Scanning'" src="assets/imgs/scanMonitors/mobileSpeedMonitor.gif" />
+  </div>
+  <div class="status">
+    <ion-label class="progress-status">{{ progresShow | intparse }}% Done</ion-label>
+    <ion-progress-bar color="success" [value]="percentage"></ion-progress-bar>
+  </div>
+</ion-content>

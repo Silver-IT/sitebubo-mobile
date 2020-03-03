@@ -1,0 +1,32 @@
+ion-header {
+  &.underHeader { 
+    ion-segment.single {
+      margin-left: 5%;
+      margin-right: 5%;
+    }
+    ion-segment {
+      --min-height: 50px !important;
+      ion-segment-button {
+        text-transform: none;
+        min-height: 48px;
+        --color: gray;
+        --color-checked: white;
+        --indicator-color-checked: #a586fd !important;
+        ion-label {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+    ion-segment.serverMonitor {
+      ion-segment-button { 
+        max-width: 20%;
+      }
+    }
+  }
+}
+
+ion-content {
+  --padding-bottom: 40px !important;
+}

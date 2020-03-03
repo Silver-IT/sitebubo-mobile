@@ -1,0 +1,416 @@
+<ion-header class="big-header">
+  <ion-toolbar class="toolbar upper-toolbar" mode="md">
+    <ion-buttons>
+      <ion-title *ngIf="!domainName">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-title>
+      <ion-title *ngIf="domainName" class="domain-name">{{ domainName }}</ion-title>
+      <ion-button mode="md" class="back" [routerLink]="['/domain-list']" routerLinkActive="router-link-active" routerDirection="forward">
+        <ion-icon  name="arrow-back" mode="ios" class="back" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button mode="md" class="bell" (click)="openNotificationModal()">
+        <ion-icon class="d-notificationBell" slot="icon-only"></ion-icon>
+        <div class="notification-div" *ngIf="unreadCount">{{ unreadCount }}</div>
+      </ion-button>
+      <ion-button mode="md" class="menu" (click)="toggleMainMenu()">
+        <ion-icon class="menu" slot="icon-only" ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar mode="md" class="toolbar undertoolbar">
+    <ion-buttons>
+      <ion-title>Dashboard</ion-title>
+      <ion-button mode="md" class="settings" (click)="toogleMonitorMenu()">
+        <ion-icon class="d-settings" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button mode="md" class="user_settings" (click)="toogleUserMenu()" *ngIf="domainData ? !domainData['site-info']['invited'] : false">
+        <ion-icon class="d-userSetting" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container>
+    <ng-template [ngIf]="domainData?.server">
+      <ion-card mode="ios" class="server-monitor" (click)="jumpToTabs('overview')">
+        <ion-card-header>
+          SERVER USAGE
+        </ion-card-header>
+        <ion-card-content>
+          <ion-row>
+            <ion-col size="4">
+              <ion-label class="server-label">CPU</ion-label>
+              <circle-progress
+              [outerStrokeWidth]="5"
+              [innerStrokeWidth]="2"
+              [radius]="40"
+              [percent]="domainData?.server.cpu | intparse"
+              [outerStrokeColor]="status?.cpu"
+              [innerStrokeColor]="status?.cpu"
+            ></circle-progress>
+            <div class="status">
+              <div class="percent" #cpuTitle>
+                <ion-label class="number">{{domainData?.server.cpu | intparse }}</ion-label>
+                <ion-label class="unit">%</ion-label>
+              </div>
+              <ion-label class="used">used</ion-label>
+            </div>
+            </ion-col>
+            <ion-col size="4">
+              <ion-label class="server-label">RAM</ion-label>
+              <circle-progress
+                [outerStrokeWidth]="5"
+                [innerStrokeWidth]="2"
+                [radius]="40"
+                [percent]="domainData?.server.ram_used | intparse"
+                [outerStrokeColor]="status?.ram"
+                [innerStrokeColor]="status?.ram"
+              ></circle-progress>
+              <div class="status">
+                <div class="percent" #ramTitle>
+                  <ion-label class="number">{{domainData?.server.ram_used | intparse }}</ion-label>
+                  <ion-label class="unit">%</ion-label>
+                </div>
+                <ion-label class="used">used</ion-label>
+              </div>
+            </ion-col>
+            <ion-col size="4">
+              <ion-label class="server-label">DISK</ion-label>
+              <circle-progress
+                [outerStrokeWidth]="5"
+                [innerStrokeWidth]="2"
+                [radius]="40"
+                [percent]="domainData?.server.disk | intparse"
+                [outerStrokeColor]="status?.disk"
+                [innerStrokeColor]="status?.disk"
+              ></circle-progress>
+              <div class="status">
+                <div class="percent" #diskTitle>
+                  <ion-label class="number">{{domainData?.server.disk | intparse }}</ion-label>
+                  <ion-label class="unit">%</ion-label>
+                </div>
+                <ion-label class="used">used</ion-label>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-label class="server-lastcheck">
+            Last Checked <b>{{ domainData?.server.last_checked }}</b>
+          </ion-label>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+  </ng-container>
+  <div class="priority" >
+    <ion-card  mode="ios" class="uptime" (click)="jumpToTabs('uptime')">
+      <ion-skeleton-text animated *ngIf="!domainData" style="height: 120px;"></ion-skeleton-text>
+      <ion-card-title *ngIf="domainData">
+        <ion-label>SITE IS </ion-label>
+        <ion-label class="highlighted">{{ domainData?.uptime.status }}</ion-label>
+      </ion-card-title>
+      <ion-card-header *ngIf="domainData">
+        <ion-icon class="d-siteUp" *ngIf="domainData?.uptime.status === 'UP'"></ion-icon>
+        <ion-icon class="d-siteDown" *ngIf="domainData?.uptime.status === 'DOWN'"></ion-icon>
+      </ion-card-header>
+      <ion-card-content *ngIf="domainData">
+        <ion-label>Last Checked</ion-label>
+        <ion-label class="highlighted">{{ domainData?.uptime.time }}</ion-label>
+      </ion-card-content>
+    </ion-card>
+    <ion-card  mode="ios" class="virus" (click)="jumpToTabs('security')">
+      <ion-skeleton-text animated *ngIf="!domainData" style="height: 120px;"></ion-skeleton-text>
+      <ion-card-title *ngIf="domainData">
+        <ion-label>SITE {{ domainData?.security.status === 'SECURE' ? 'IS ': 'HAS '}}</ion-label>
+        <ion-label class="highlighted">{{ domainData?.security.status==='SECURE' ? 'CLEAN': 'MALWARE'  }}</ion-label>
+      </ion-card-title>
+      <ion-card-header *ngIf="domainData">
+        <ion-icon class="d-virusfree" *ngIf="domainData?.security.status === 'SECURE'"></ion-icon>
+        <ion-icon class="d-virusdetected" *ngIf="domainData?.security.status !== 'SECURE'"></ion-icon>
+      </ion-card-header>
+      <ion-card-content *ngIf="domainData">
+        <ion-label>Last Checked</ion-label>
+        <ion-label class="highlighted">{{ domainData?.security.time }}</ion-label>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ion-list *ngIf="!domainData" style="margin-top: 20px">
+    <ion-card>
+      <ion-skeleton-text animated style="height: 87px;"></ion-skeleton-text>
+    </ion-card>
+    <ion-card style="margin-top: 15px;">
+      <ion-skeleton-text animated style="height: 87px;"></ion-skeleton-text>
+    </ion-card>
+    <ion-card style="margin-top: 15px;">
+      <ion-skeleton-text animated style="height: 87px;"></ion-skeleton-text>
+    </ion-card>
+    <ion-card style="margin-top: 15px;">
+      <ion-skeleton-text animated style="height: 87px;"></ion-skeleton-text>
+    </ion-card>
+    <ion-card style="margin-top: 15px;">
+      <ion-skeleton-text animated style="height: 87px;"></ion-skeleton-text>
+    </ion-card>
+    <ion-card style="margin-top: 15px;">
+      <ion-skeleton-text animated style="height: 87px;"></ion-skeleton-text>
+    </ion-card>
+  </ion-list>
+
+  <div class="secondary" *ngIf="domainData">
+    <ion-reorder-group  #group [disabled]="false" (ionItemReorder)="onRenderItems($event)">
+      <ng-container *ngFor="let item of orders">
+        <ng-template [ngIf]="item === 'google-analytics-conversion-rate'">
+          <ion-card id="google-analytics-conversion-rate" class="conversion-rate" (click)="jumpToTabs('analytics')" >
+            <ion-reorder></ion-reorder>
+            <ion-row class="white-row">
+              <ion-col size="2">
+                <ion-icon class="d-conversionRate"></ion-icon>
+              </ion-col>
+              <ion-col size="7">
+                <ion-label class="heavy-font">CONVERSION RATE</ion-label>
+                <ion-label class="conversion-rate" counto [countFrom] = "0" [duration]="1" [countTo]="domainData['google-analytics-conversion-rate'].conversion" [step]="10" (countoChange)="countos.conversion = $event">{{ countos.conversion |intparse }}%</ion-label>
+              </ion-col>
+              <ion-col size="3" class="last-checked">
+                <ion-label>Last Checked</ion-label>
+                <ion-label class="highlighted">{{ domainData?.analytics?.last_checked }}</ion-label>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </ng-template>
+        <ng-template [ngIf] = "item === 'google-analytics-visitors'">
+          <ion-card  id="google-analytics-visitors" class="visitors" (click)="jumpToTabs('analytics')">
+            <ion-reorder></ion-reorder>
+            <ion-row class="white-row">
+              <ion-col size="2">
+                <ion-icon class="d-visitorRate"></ion-icon>
+              </ion-col>
+              <ion-col size="7">
+                <ion-label class="heavy-font">VISITORS THIS MONTH</ion-label>
+                <ion-label class="visitors-cnt" counto [countFrom] = "0" [duration]="1" [countTo]="domainData['google-analytics-visitors']['visitors']" [step]="10" (countoChange)="countos.visitors = $event">{{ countos.visitors | intparse }}</ion-label>
+              </ion-col>
+              <ion-col size="3" class="last-checked">
+                <ion-label>Last Checked</ion-label>
+                <ion-label class="highlighted">{{ domainData["google-analytics-visitors"]["last_checked"] | smallCase }}</ion-label>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </ng-template>
+        <ng-template [ngIf] = "item === 'seo-score'">
+          <ion-card id="seo-score" class="seo" (click)="jumpToTabs('seo')">
+            <ion-reorder></ion-reorder>
+            <ion-row>
+              <ion-col size="6">
+                <ion-label class="big-font">SEO SCORE</ion-label>
+                <ion-label class="small-font">{{ domainData["seo-score"]["seostatus"] }}</ion-label>
+              </ion-col>
+              <ion-col size="4" class="flex-col">
+                <ion-label class="bigger-font" counto [countFrom] = "0" [duration]="1" [countTo]="domainData['seo-score']['seoscore']" [step]="10" (countoChange)="countos.seo = $event">
+                  {{ countos.seo | intparse }}
+                </ion-label>
+                <ion-label class="big-font">/100</ion-label>
+              </ion-col>
+              <ion-col size="2">
+                <ion-icon class="d-seo"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </ng-template >
+        <ng-template [ngIf]= "item === 'site-speed'">
+          <ion-card id="site-speed" class="site-score" (click)="jumpToTabs('speed')">
+            <ion-reorder></ion-reorder>
+            <ion-row>
+              <ion-col size="6">
+                <ion-label class="big-font">SITE SPEED</ion-label>
+                <ion-label class="small-font">{{ domainData["site-speed"]["speedstatus"] }}</ion-label>
+              </ion-col>
+              <ion-col size="4" class="flex-col">
+                <ion-label class="bigger-font" counto [countFrom] = "0" [duration]="1" [countTo]="domainData['site-speed']['speedindex']" [step]="10" (countoChange)="countos.speed = $event">{{ countos.speed | floatone }}</ion-label>
+                <ion-label class="big-font">sec</ion-label>
+              </ion-col>
+              <ion-col size="2">
+                <ion-icon class="d-siteScore"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </ng-template>
+        <ng-template [ngIf] = "item === 'broken-links'">
+          <ion-card id="broken-links" class="broken-links" (click)="jumpToTabs('link')">
+            <ion-reorder></ion-reorder>
+            <ion-row>
+              <ion-col size="7">
+                <ion-label class="big-font">BROKEN LINKS</ion-label>
+              </ion-col>
+              <ion-col size="3">
+                <ion-badge  counto [countFrom] = "0" [duration]="1" [countTo]="domainData['broken-links']['count']" [step]="10" (countoChange)="countos.brokens = $event">{{ countos.brokens | intparse }}</ion-badge>
+              </ion-col>
+              <ion-col size="2">
+                <ion-icon class="d-brokenlink"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </ng-template>
+        <ng-template [ngIf]="item === 'domain-expiry'">
+          <ion-card id="domain-expire" class="domain-expire" (click)="jumpToTabs('expire')">
+            <ion-reorder></ion-reorder>
+            <ion-row>
+              <ion-col size="10">
+                <ion-label  class="big-font">DOMAIN EXPIRY</ion-label>
+                <ion-label class="small-font">{{ domainData ? domainData["domain-expiry"]["expiry"] : 0 }} Days</ion-label>
+              </ion-col>
+              <ion-col size="2">
+                <ion-icon class="d-domainExpire"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </ng-template>
+        <ng-template [ngIf] = "item === 'full-report'">
+          <ion-card id="full-report" class="full-report" (click)="openFullReport()">
+            <ion-reorder></ion-reorder>
+            <ion-row>
+              <ion-col size="10">
+                <ion-label  class="big-font" >FULL REPORT</ion-label>
+              </ion-col>
+              <ion-col size="2">
+                <ion-icon class="d-fullReport"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </ng-template>
+      </ng-container>
+    </ion-reorder-group>
+  </div>
+  
+  <ion-menu [swipeGesture]="false" class="userSetting" side="end" type="overlay"  #userSetting  menuID="userSetting" contentId="userSetting">
+      <ion-header mode="ios">
+          <ion-toolbar>
+            <ion-buttons>
+                <ion-button class="invite" mode="ios" (click)="inviteUser()">
+                  Invite
+                </ion-button>
+                <ion-title>Members({{ invitedUserList.length }}/{{ invitableUsers }})</ion-title>
+                <ion-button class="close" mode="ios" (click)="dismissUserSetting()">
+                  <ion-icon class="close" ios="md-close" md="md-close" slot="icon-only"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+      <ion-content>
+        <ion-label *ngIf=" invitedUserList.length === 0 " class="errorMessage">{{ invitedErroMessage }}</ion-label>
+        <ion-list *ngIf=" invitedUserList.length > 0 ">
+            <ion-item-sliding mode="md" *ngFor="let user of invitedUserList">
+              <ion-item-options side="start" *ngIf="user.approved">
+                <ion-item-option class="report" mode="md">
+                  <div class="left end-point">
+                    <ion-checkbox mode="md" [checked]="user.email_report" (ionChange)="updateReportInfo($event, user.id, user.name)"></ion-checkbox>
+                    <ion-label>Report</ion-label>
+                  </div>
+                </ion-item-option>
+              </ion-item-options>
+
+              <ion-item-options side="start" *ngIf="!user.approved">
+                <ion-item-option class="email" mode="md" (click)="resendInvitation(user.email)">
+                  <div class="left end-point">
+                      <ion-icon class="menu-email"></ion-icon>
+                      <ion-label>Email</ion-label>
+                  </div>
+                </ion-item-option>
+              </ion-item-options>
+
+              <ion-item mode="ios">
+                <div class="border report" *ngIf="user.approved"></div>
+                <div class="border email" *ngIf="!user.approved"></div>
+                <div class="border right"></div>
+                <ion-icon class="activeUser" *ngIf = "user.approved"></ion-icon>
+                <ion-icon class="inactiveUser"  *ngIf="!user.approved"></ion-icon>
+                <div>
+                  <ion-label class="name">{{ user?.name }}</ion-label>
+                  <ion-label class="url">{{ user?.email }}</ion-label>
+                </div>
+              </ion-item>
+              <ion-item-options side="end">
+                <ion-item-option class="delete" mode="md" (click) = "deleteUser(user.id, user.name)">
+                    <div class="right end-point">
+                      <ion-icon class="deleteicon"></ion-icon>
+                      <ion-label>Delete</ion-label>
+                    </div>
+                </ion-item-option>
+              </ion-item-options>
+            </ion-item-sliding>
+        </ion-list>
+      </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="userSetting" ></ion-router-outlet>
+
+  <ion-menu [swipeGesture]="false" class="monitorSetting" side="start" type="overlay" #monitorSetting menuID="monitorSetting" contentId="monitorSetting" [disabled]="true">
+    <ion-header mode="ios">
+      <ion-toolbar>
+        <ion-buttons>
+          <div class="monitor">
+            <ion-icon class="d-monitors"></ion-icon>
+            <ion-label>Monitors</ion-label>
+          </div>
+          <ion-button class="close" mode="ios" (click)="dismissMonitorSetting()">
+            <ion-icon class="close" ios="md-close" md="md-close" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list mode="ios">
+        <ng-container *ngFor="let item of pluginData">
+          <ng-template [ngIf]="item?.name==='google-analytics'">
+            <ion-item mode="ios" >
+              <ion-icon class="d-googleAnalytics"></ion-icon>
+              <ion-label class="pluginName">Google Analytics</ion-label>
+              <ion-button  mode="md" (click)="connectPlugin(item.name,'Google Analytics', item.connection)" [ngClass]="{ 'connected' : item?.connection, 'disconnected': !item?.connection }">
+                <ion-label *ngIf="!item?.connection">Connect</ion-label>
+                <ion-label *ngIf="item?.connection">Disconnect</ion-label>
+              </ion-button>
+            </ion-item>
+          </ng-template>
+          <ng-template [ngIf]="item?.name==='dns-checker'">
+            <ion-item mode="ios">
+              <ion-icon class="d-dnsChecker"></ion-icon>
+              <ion-label class="pluginName">DNS Checker</ion-label>
+              <ion-button mode="md" (click)="connectPlugin(item.name,'DNS Checker', item.connection)" [ngClass]="{ 'connected' : item?.connection, 'disconnected': !item?.connection }">
+                <ion-label *ngIf="!item?.connection">Connect</ion-label>
+                <ion-label *ngIf="item?.connection">Disconnect</ion-label>
+              </ion-button>
+            </ion-item>
+          </ng-template>
+          <ng-template [ngIf]="item?.name==='email-checker'">
+            <ion-item mode="ios">
+              <ion-icon class="d-emailChecker"></ion-icon>
+              <ion-label class="pluginName">Email Checker</ion-label>
+              <ion-button  mode="md" (click)="connectPlugin(item.name,'Email Checker', item.connection)" [ngClass]="{ 'connected' : item?.connection, 'disconnected':  !item?.connection }">
+                <ion-label *ngIf="!item?.connection">Connect</ion-label>
+                <ion-label *ngIf="item?.connection">Disconnect</ion-label>
+              </ion-button>
+            </ion-item>
+          </ng-template>
+          <ng-template [ngIf]="item?.name==='rank-checker'">
+            <ion-item mode="ios">
+              <ion-icon class="d-rankChecker"></ion-icon>
+              <ion-label class="pluginName">Rank Checker</ion-label>
+              <ion-button mode="md" (click)="connectPlugin(item.name,'Rank Checker', item.connection)" [ngClass]="{ 'connected' : item?.connection, 'disconnected': !item?.connection }">
+                <ion-label *ngIf="!item?.connection">Connect</ion-label>
+                <ion-label *ngIf="item?.connection">Disconnect</ion-label>
+              </ion-button>
+            </ion-item>
+          </ng-template>
+          <ng-template [ngIf]="item?.name==='server-monitor'">
+            <ion-item mode="ios">
+              <ion-icon class="d-serverMonitor"></ion-icon>
+              <ion-label class="pluginName">Server Monitor</ion-label>
+              <ion-button mode="md" (click)="connectServerMonitor(item.connection, item.verify)" [ngClass]="{ 'connected' : item?.connection, 'disconnected': !item?.connection || !item?.verify }">
+                <ion-label *ngIf="!item?.connection">Connect</ion-label>
+                <ion-label *ngIf="item?.connection && !item?.verify">Connect again</ion-label>
+                <ion-label *ngIf="item?.connection && item.verify">Disconnect</ion-label>
+              </ion-button>
+            </ion-item>
+          </ng-template>
+        </ng-container>     
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="monitorSetting"></ion-router-outlet>
+</ion-content>

@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar mode="ios" class="modal-toolbar">
+    <ion-buttons>
+      <ion-title>Notifications</ion-title>
+      <ion-button class="close" mode="ios" (click) = "dismiss()">
+        <ion-icon class="close" ios="md-close" md="md-close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-header class="segment">
+  <ion-segment mode="ios" (ionChange)="changeFilterType($event)">
+    <ion-segment-button mode="ios" value="1" >All</ion-segment-button>
+    <ion-segment-button mode="ios" value="2" checked>Unread</ion-segment-button>
+    <ion-segment-button mode="ios" value="3">Read</ion-segment-button>
+  </ion-segment>
+</ion-header>
+<ion-content>
+  <ion-list mode="ios">
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let item of showData, let i = index">
+        <mat-expansion-panel-header [collapsedHeight]="'65px'" [expandedHeight]="'65px'">
+          <ion-icon class="m-up" *ngIf="item.title === 'Site Up'"></ion-icon>
+          <ion-icon class="m-down" *ngIf="item.title === 'Site Down'"></ion-icon>
+          <ion-icon class="n-report" *ngIf="item.type === 'report'"></ion-icon>
+          <ion-icon class="security-secure" *ngIf="item.title === 'Site Is Virus Free'"></ion-icon>
+          <ion-icon class="security-unsecure" *ngIf="item.title === 'Site Has Virus'"></ion-icon>
+          <ion-label class="date">{{ item.date | datetime }}</ion-label>
+        </mat-expansion-panel-header>
+        <mat-panel-description>
+          <ion-label class="title">{{ item.title }}</ion-label>
+          <ion-label>{{ item.message }}</ion-label>
+        </mat-panel-description>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <ion-label class="no-result" *ngIf="showData.length == 0 && filterType == 1">There are no notifications</ion-label>
+    <ion-label class="no-result" *ngIf="showData.length == 0 && filterType == 2">There are no unread notifications</ion-label>
+    <ion-label class="no-result" *ngIf="showData.length == 0 && filterType == 3">There are no read notifications</ion-label>
+  </ion-list>
+</ion-content>

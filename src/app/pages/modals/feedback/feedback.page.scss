@@ -1,0 +1,25 @@
+ion-content{  
+  ion-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    div.details {
+      padding-top: 5%;
+      width: 90%;
+      margin: auto;
+      ion-label.question {
+        font-size: 15px;
+        padding-left: 14px;
+        font-weight: bold;
+      }
+      ion-textarea {
+        width: 100%;
+        font-size: 14px;
+        margin-top: 4%;
+        border: 0.5px solid #d4d4d4;
+        border-radius: 15px;
+        --padding-start: 14px;
+      }
+    }
+  }
+}

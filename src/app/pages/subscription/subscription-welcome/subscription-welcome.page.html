@@ -1,0 +1,39 @@
+<ion-header class="small-header" *ngIf ="details">
+  <ion-toolbar class="toolbar" mode="md">
+    <ion-buttons>
+      <ion-title>Your membership</ion-title>
+      <ion-button class="menu" mode="md" (click) = "toggleMenu()" *ngIf="!newUser">
+        <ion-icon class="menu" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content [ngSwitch]="displayValue" *ngIf="details">
+  <!-- new user on paid plan -->
+  <ion-label class="c-header" *ngIf="newUser && platform ==='ios' !isFreeTrial">Welcome Friend!</ion-label>
+  <ion-label class="c-welcome" style="margin:15px" *ngIf="newUser && platform ==='ios'">
+    We hope this is the begining of a long and fruitful friendship where we hope to provide you
+    enough peace of mind.
+  </ion-label>
+  <!-- old user on paid plan Downgraded -->
+  <ion-label class="c-header" *ngIf="!newUser && status === 'downgrade' && !isFreeTrial">Successfully Downgraded!</ion-label>
+  <ion-label class="c-welcome" style="margin:15px" *ngIf="!newUser && status === 'downgrade'">
+    You have now been switched to your new plan
+  </ion-label>
+  <!-- old user on paid plan Upgraded -->
+  <ion-label class="c-header" *ngIf="!newUser && status === 'upgrade' !isFreeTrial">Successfully Upgraded</ion-label>
+  <ion-label class="c-welcome" style="margin:15px" *ngIf="!newUser && status === 'upgrade'">
+    You can now start enjoying the benefilts on your new plan.
+  </ion-label>
+
+  <app-first-free *ngSwitchCase="1" [details]="details"></app-first-free>
+  <app-old-free *ngSwitchCase="2" [details]="details"></app-old-free>
+  <app-first-pay *ngSwitchCase="3" [details]="details"></app-first-pay>
+  <app-free-trial *ngSwitchCase="4" [details]="details" [newUser]="newUser"></app-free-trial>
+  <app-no-trial *ngSwitchCase="5" [details]="details"  [newUser]="newUser"></app-no-trial>
+  <ion-fab class="feedback-fab" vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button mode="md" class="feedback" (click)="openFeedback()">
+        <ion-icon class="feedback"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

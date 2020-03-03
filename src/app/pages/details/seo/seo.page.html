@@ -1,0 +1,22 @@
+<ion-header class="underHeader">
+  <ion-toolbar mode="md" class="toolbar">
+      <ion-segment mode="md" [value]="pageType">
+        <ion-segment-button mode="md" value="1" checked>
+          <ion-label>SEO Score</ion-label>
+        </ion-segment-button>
+        <ion-segment-button mode="md" [disabled]="true">
+        </ion-segment-button>
+        <ion-segment-button mode="md" [disabled]="true">
+        </ion-segment-button>
+      </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [ngSwitch]="pageType">
+<app-cseo *ngSwitchCase = "1"></app-cseo>
+<ion-fab class="feedback-fab nopadding-top" vertical="bottom" horizontal="start" slot="fixed">
+  <ion-fab-button mode="md" class="feedback" (click)="openFeedback()">
+      <ion-icon class="feedback"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+</ion-content>

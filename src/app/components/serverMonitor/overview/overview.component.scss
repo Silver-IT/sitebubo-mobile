@@ -1,0 +1,27 @@
+div.header {
+  &.header-extra {
+    margin-top: 20px;
+  }
+  display: flex;
+  padding: 0px 20px;
+}
+div.filter-header {
+  display: block;
+  margin: auto;
+  text-align: center;
+  .label {
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .sub-label {
+    display: block;
+    font-size: 10px;
+    margin-bottom: 10px;
+  }
+  .filter-type {
+    color: #2f932e !important;
+    font-weight: bold;
+    padding-left: 10px;
+    font-size: 14px;
+  }
+}

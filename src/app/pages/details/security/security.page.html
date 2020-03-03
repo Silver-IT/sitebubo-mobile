@@ -1,0 +1,33 @@
+<ion-header class="underHeader">
+  <ion-toolbar mode="md" class="toolbar">
+    <ion-segment mode="md" [value]="pageType" (ionChange) = "switchPages($event)">
+      <ion-segment-button mode="md" value="1">
+        <ion-label>
+          SECURITY
+        </ion-label>
+      </ion-segment-button>
+      <ion-segment-button mode="md" value="2">
+        <ion-label>
+          MALWARE
+        </ion-label>
+      </ion-segment-button>
+      <ion-segment-button mode="md" value="3">
+        <ion-label>
+          BLACKLIST
+        </ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [ngSwitch]="pageType">
+  <app-csecurity *ngSwitchCase = "1"></app-csecurity>
+  <app-cmalware *ngSwitchCase = "2"></app-cmalware>
+  <app-cblacklist *ngSwitchCase = "3"></app-cblacklist>
+  <ion-fab class="feedback-fab nopadding-top" vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button mode="md" class="feedback" (click)="openFeedback()">
+        <ion-icon class="feedback"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

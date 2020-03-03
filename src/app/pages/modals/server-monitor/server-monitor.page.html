@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar mode="ios" class="modal-toolbar">
+    <ion-buttons>
+      <ion-title>Server Monitor</ion-title>
+      <ion-button class="close" mode="ios"  (click) = "dismiss()">
+        <ion-icon class="close" ios="md-close" md="md-close" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button class="readySubmit" mode="ios" (click)="verifyServerMonitor()">Verify</ion-button>
+    </ion-buttons>  
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-label class="step">Step 1</ion-label>
+    <ion-label class="des">
+      Please run the following command as root to install or reinstall the nMon agent on server www.{{ tempService.dashboardParams.domainName }}
+    </ion-label>
+    <div class="step-1">
+      <ion-item [disabled]="true" mode="md">
+        <ion-icon class="email"></ion-icon>
+        <ion-input mode="ios" type="text" [value]="serverData?.command">
+        </ion-input>
+      </ion-item>
+      <ion-icon class="d-download" (click)="shareWithSocial('code')"></ion-icon>
+    </div>
+    
+    <ion-label class="step">Step 2</ion-label>
+    <ion-label class="des">Upload an HTML file to your site</ion-label>
+    <ion-card mode="ios" class="detail">
+      <ion-label class="list">
+        <b>1. Download </b><a (click)="gotoLink(serverData?.verification_file)">this HTML verfication file</a>
+        <ion-icon class="d-download small" (click)="shareWithSocial('file')"></ion-icon>
+      </ion-label>
+      <ion-label class="list">
+        <b>2. Upload </b>the file to https://www.{{ tempService.dashboardParams.domainName }}
+      </ion-label>
+      <ion-label class="list">
+        <b>3. Confirm </b>successfully uploaded by visiting {{ serverData?.verify_url }} in your browser
+      </ion-label>
+      <ion-label class="list">
+        <b>4. Click </b>VERIFY top right
+      </ion-label>
+      <ion-label class="footer">
+        To stay verified don't remove the HTML file, even after verification succeeds
+      </ion-label>
+    </ion-card>
+  </ion-list>
+</ion-content>

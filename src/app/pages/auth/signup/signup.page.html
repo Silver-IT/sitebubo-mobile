@@ -1,0 +1,93 @@
+<ion-content >
+  <div class="content">
+    <div class = "logo" id="logo">
+      <img src="assets/imgs/sub_logo.svg" alt="">
+    </div>
+    <div class="email-login" id="signup">
+      <form [formGroup]="validateSignupform" (ngSubmit)="validateForm()"> 
+        <ion-label class="pageName">Register</ion-label>
+        <ion-list>
+           <ion-item [disabled]="readyForSubmit || facebookReady" mode="md" class="item-input" [ngClass]="{'error-input': validateFullname && (validateSignupform.get('fullname').hasError('minlength')) }">
+            <ion-icon class="fullname" slot="start"></ion-icon>
+            <ion-input  mode="md" type="text"  [(ngModel)]="fname" placeholder="Full Name" formControlName="fullname" name="fullname" (ionBlur)="setFullnameValidation(true)" (ionFocus)="setFullnameValidation(false)"></ion-input>
+          </ion-item>
+          <div class="validation-errors" *ngIf="validateFullname">
+            <ng-container *ngFor="let validation of validationMessages.fullname">
+              <div class="error-message"
+                *ngIf="validateSignupform.get('fullname').hasError(validation.type)">
+                <ion-icon class="error"></ion-icon>
+                <ion-label>{{ validation.message }}</ion-label>
+              </div>
+            </ng-container>
+          </div>
+
+          <ion-item [disabled]="readyForSubmit || facebookReady" mode="md" class="item-input" [ngClass]="{'error-input': validateEmail && (validateSignupform.get('email').hasError('pattern')) }">
+            <ion-icon class="email" slot="start"></ion-icon>
+            <ion-input  mode="md" type="email" [(ngModel)]="email" placeholder="Email Address" formControlName="email" name="email" (ionBlur)="setEmailValidation(true)" (ionFocus)="setEmailValidation(false)"></ion-input>
+          </ion-item>
+          <div class="validation-errors" *ngIf="validateEmail">
+            <ng-container *ngFor="let validation of validationMessages.email">
+              <div class="error-message"
+                *ngIf="validateSignupform.get('email').hasError(validation.type)">
+                <ion-icon class="error"></ion-icon>
+                <ion-label>{{ validation.message }}</ion-label>
+              </div>
+            </ng-container>
+          </div>
+          <div class="validation-errors" *ngIf="duplicatedEmail">
+            <ng-container>
+              <div class="error-message">
+                <ion-icon class="error"></ion-icon>
+                <ion-label>Email Address Already Exists</ion-label>
+              </div>
+            </ng-container>
+          </div>
+
+          <ion-item [disabled]="readyForSubmit || facebookReady" mode="md" class="item-input" [ngClass]="{ 'error-input': validatePassword && ((validateSignupform.get('password').hasError('pattern') || validateSignupform.get('password').hasError('minlength'))) }">
+            <ion-icon class="password" slot="start"></ion-icon>
+            <ion-input mode="md" type="password" [(ngModel)]="pwd" placeholder="Password" formControlName="password" name="password" (ionBlur)="setPasswordValidation(true)" (ionFocus)="setPasswordValidation(false)"></ion-input>
+          </ion-item>
+          <div class="validation-errors" *ngIf="validatePassword">
+            <ng-container *ngFor="let validation of validationMessages.password">
+              <div class="error-message"
+                *ngIf="validateSignupform.get('password').hasError(validation.type)">
+                <ion-icon class="error"></ion-icon>
+                <ion-label>{{ validation.message }}</ion-label>
+              </div>
+            </ng-container>
+          </div>
+          <div class="check-toogle">
+            <div class="toogle">
+              <ion-checkbox color="tertiary" (ionChange)="btnchkTerm()" mode="md"></ion-checkbox>
+              <ion-label id="terms" (click)="presentTerm()">I agree to the <b><u>Terms & Conditions</u></b></ion-label>
+            </div>
+            <div class="toogle">
+              <ion-checkbox color="tertiary" (ionChange)="btnchkPol()" mode="md"></ion-checkbox>
+              <ion-label id="privacy" (click)="presentPrivacy()">I have read the <b><u>Privacy Policy</u></b></ion-label>
+            </div>
+          </div>
+        </ion-list>
+        <ion-button [disabled]="readyForSubmit || facebookReady" mode="md" class="login" size="large" type="submit">
+            <ion-spinner name="lines-small" *ngIf="readyForSubmit"></ion-spinner>
+            <ion-label *ngIf="!readyForSubmit">Sign Up</ion-label>
+        </ion-button>
+      </form>
+      
+      <!-- <div class="social-login">
+          <div class="line">
+            <div class="each left"></div>
+            <ion-label>OR CONNECT WITH</ion-label>
+            <div class="each right"></div>
+          </div>
+          <ion-button [disabled]="readyForSubmit || facebookReady" mode="md" class="facebook" size="default" (click)="signUpwithFB()">
+              <ion-spinner name="lines-small" *ngIf="facebookReady"></ion-spinner>
+              <ion-icon class="logo-facebook" slot="start"></ion-icon>
+              <ion-label *ngIf="!facebookReady">Facebook</ion-label>
+          </ion-button>
+      </div>     -->
+      <div class="accident">
+        <ion-label (click) = "gotoLogIn()">Already have an account?<b> Log In </b></ion-label>
+      </div>
+    </div>
+  </div>
+</ion-content>

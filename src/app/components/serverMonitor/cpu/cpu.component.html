@@ -1,0 +1,21 @@
+<div class="header  header-extra"  *ngIf="cpuData">
+  <ion-icon class="filter-extra" (click)="changeFilterType()">
+  </ion-icon>
+  <div class="filter-header">
+    <ion-label class="label">CPU Usage</ion-label>
+    <ion-label class="filter-type">last {{ filterLabel }}</ion-label>
+  </div>
+</div>
+<google-chart [data]="chart0"></google-chart>
+
+<div class="filter-header" *ngIf="cpuData">
+  <ion-label class="label">Core 0 Usage</ion-label>
+  <ion-label class="filter-type">last {{ filterLabel }}</ion-label>
+</div>
+<google-chart [data]="chart1"></google-chart>
+
+<div class="filter-header" *ngIf="cpuData">
+  <ion-label class="label">Core 1 Usage</ion-label>
+  <ion-label class="filter-type">last {{ filterLabel }}</ion-label>
+</div>
+<google-chart [data]="chart2"></google-chart>

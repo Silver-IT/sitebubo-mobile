@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar mode="ios" class="modal-toolbar">
+    <ion-buttons>
+      <ion-title>Site</ion-title>
+      <ion-button class="close" mode="ios" (click) = "dismiss()">
+        <ion-icon class="close" ios="md-close" md="md-close" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button  disabled="{{ !readyToSubmit }}" class="readySubmit" mode="ios" (click)="ValidateDomain()">Create</ion-button>
+    </ion-buttons>  
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="content">
+    <form [formGroup]="domainAddForm">
+      <ion-list mode="ios" >
+        <ion-item mode="md" disabled="{{ duringSubmit }}" [ngClass]="{'error-input': validateDomainUrl && (domainAddForm.get('domainUrl').hasError('pattern') && (domainAddForm.get('domainUrl').dirty || domainAddForm.get('domainUrl').touched)) }">
+          <ion-icon slot="start" class="domainUrl"></ion-icon>
+          <ion-input  #urlInput class="domainUrl" mode="md" type="text" placeholder="yourdomain.com" formControlName="domainUrl" name="domainUrl" [(ngModel)]="domname" (ionFocus)="setDomainUrlValidation(false)" (ionBlur)="setDomainUrlValidation(true)" (ionChange)="detectChangesInForm()"><ion-label>www.</ion-label></ion-input>
+        </ion-item>
+        <div class="validation-errors" *ngIf="validateDomainUrl">
+          <ng-container *ngFor="let validation of validationMessages.domainUrl">
+            <div class="error-message"
+              *ngIf="domainAddForm.get('domainUrl').hasError(validation.type) && (domainAddForm.get('domainUrl').dirty || domainAddForm.get('domainUrl').touched)">
+              <ion-icon class="error"></ion-icon>
+              <ion-label>{{ validation.message }}</ion-label>
+            </div>
+          </ng-container>
+        </div>
+        <div class="validation-errors" *ngIf="duplicatedDomain">
+          <ng-container>
+            <div class="error-message">
+              <ion-icon class="error"></ion-icon>
+              <ion-label>{{ extraError }}</ion-label>
+            </div>
+          </ng-container>
+        </div>
+        <ion-item mode="md" disabled="{{ duringSubmit }}" [ngClass]="{'error-input': validateDomainName && (domainAddForm.get('domainName').hasError('minlength') && (domainAddForm.get('domainName').dirty || domainAddForm.get('domainName').touched)) }">
+          <ion-icon slot="start" class="domainName"></ion-icon>
+          <ion-input mode="md" type="text" placeholder="site name" formControlName="domainName" name="domainName" [(ngModel)]="compname" (ionFocus)="setDomainNameValidation(false)" (ionBlur)="setDomainNameValidation(true)" (ionChange)="detectChangesInForm()"></ion-input>
+        </ion-item>
+        <div class="validation-errors" *ngIf="validateDomainName">
+          <ng-container *ngFor="let validation of validationMessages.domainName">
+            <div class="error-message"
+              *ngIf="domainAddForm.get('domainName').hasError(validation.type) && (domainAddForm.get('domainName').dirty || domainAddForm.get('domainName').touched)">
+              <ion-icon class="error"></ion-icon>
+              <ion-label>{{ validation.message }}</ion-label>
+            </div>
+          </ng-container>
+        </div>
+      </ion-list>
+    </form>
+  </div>
+</ion-content>

@@ -1,0 +1,78 @@
+<ion-header class="underHeader" *ngIf="pageType !== 0">
+  <ion-segment class="single" mode="md" [value]="pageType" *ngIf="pageType === 2">
+    <ion-segment-button mode="md" value = "2">
+      <ion-label>
+        BROKEN LINKS
+        <div class="submenu-badge" *ngIf="brokenlinksCount">{{ brokenlinksCount }}</div>
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="md" [disabled]="true">
+    </ion-segment-button>
+    <ion-segment-button mode="md" [disabled]="true">
+    </ion-segment-button>
+  </ion-segment>
+  <ion-segment class="single" mode="md" [value]="pageType" *ngIf="pageType === 1">
+    <ion-segment-button mode="md" value = "1">
+      <ion-label>
+        DOMAIN EXPIRY
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="md" [disabled]="true">
+    </ion-segment-button>
+    <ion-segment-button mode="md" [disabled]="true">
+    </ion-segment-button>
+  </ion-segment>
+  <ion-segment class="multi" mode="md" [value]="pageType" *ngIf="pageType === 3">
+    <ion-segment-button mode="md" value="3">
+      <ion-label>
+        GOOGLE ANALYTICS
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="md" value="conversion" [disabled]="true">
+    </ion-segment-button>
+  </ion-segment>
+  <ion-segment scrollable class="serverMonitor" mode="md" [value]="serverMonitorPage" *ngIf="pageType === 4" (ionChange)="changeServerMonitorPage($event)">
+    <ion-segment-button mode="md" value="0">
+      <ion-label>
+        OVERVIEW
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="md" value="1">
+      <ion-label>
+        CPU
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="md" value="2">
+      <ion-label>
+        RAM
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="md" value="3">
+      <ion-label>
+        DISKS
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="md" value="4">
+      <ion-label>
+        NETWORK
+      </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content>
+  <app-cmore-options *ngIf="pageType === 0"></app-cmore-options>
+  <app-cbroken-links *ngIf="pageType === 2"></app-cbroken-links>
+  <app-cdomain-expire *ngIf="pageType === 1"></app-cdomain-expire>
+  <app-cgoogle-visitors *ngIf="pageType === 3"></app-cgoogle-visitors>
+  <app-overview *ngIf="pageType === 4 && serverMonitorPage === 0"></app-overview>
+  <app-cpu *ngIf="pageType === 4 && serverMonitorPage === 1"></app-cpu>
+  <app-ram *ngIf="pageType === 4 && serverMonitorPage === 2"></app-ram>
+  <app-disk *ngIf="pageType === 4 && serverMonitorPage === 3"></app-disk>
+  <app-network *ngIf="pageType === 4 && serverMonitorPage === 4"></app-network>
+  <ion-fab class="feedback-fab nopadding-top" vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button mode="md" class="feedback" (click)="openFeedback()">
+        <ion-icon class="feedback"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

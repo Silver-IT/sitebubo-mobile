@@ -1,0 +1,317 @@
+<!-- <ion-card mode="ios">
+  <ion-label class="date">Start Date: {{ visitorsDetails?.start_date | datetime }}</ion-label>
+  <ion-label class="date">End Date: {{ visitorsDetails?.end_date | datetime }}</ion-label>
+  <ion-list mode="ios">
+    <ion-item>
+      <ion-icon ios="md-person" md="md-person" slot="start"></ion-icon>
+      <ion-label class="title">Users</ion-label>
+      <ion-label class="value">{{ visitorsDetails?.users }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon ios="md-person-add" md="md-person-add" slot="start"></ion-icon>
+      <ion-label class="title">New Users</ion-label>
+      <ion-label class="value">{{ visitorsDetails?.newusers }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon class="active-session" ios="ios-chatbubbles" md="ios-chatbubbles" slot="start"></ion-icon>
+      <ion-label class="title">Sessions</ion-label>
+      <ion-label class="value">{{ visitorsDetails?.sessions }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon class="deactive-session" ios="ios-chatbubbles" md="ios-chatbubbles" slot="start"></ion-icon>
+      <ion-label class="title">No. Sessions per User</ion-label>
+      <ion-label class="value">{{ visitorsDetails?.sessionsperuser }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon ios="md-eye" md="md-eye" slot="start"></ion-icon>
+      <ion-label class="title">Page Views</ion-label>
+      <ion-label class="value">{{ visitorsDetails?.pageviews }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon ios="ios-albums" md="ios-albums" slot="start"></ion-icon>
+      <ion-label class="title">Pages/Session</ion-label>
+      <ion-label class="value">{{ visitorsDetails?.pageviewspersession }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon ios="ios-timer" md="ios-timer" slot="start"></ion-icon>
+      <ion-label class="title">Avg.Session Duration</ion-label>
+      <ion-label class="value">{{ visitorsDetails?.avgsessionduration }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon ios="md-pulse" md="md-pulse" slot="start"></ion-icon>
+      <ion-label class="title">Bounce Rate</ion-label>
+      <ion-label class="value">{{ visitorsDetails?.bouncerate }}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-card> -->
+
+<div class="header">
+  <ion-button mode="md" class="previous" slot="icon-only" [disabled]="!analyticsDetail?.arrow.prev" (click)="getAnotherResult('prev');">
+    <ion-icon ios="ios-arrow-back" md="ios-arrow-back"></ion-icon>
+  </ion-button>
+  <div class="dates-compare">
+    <ion-label class="last-checked">{{ analyticsDetail?.dates[0].start_date | noyear }} - {{ analyticsDetail?.dates[0].end_date | noyear }}</ion-label>
+    <ion-label class="previous-checked" *ngIf="analyticsDetail?.dates[1]">vs {{ analyticsDetail?.dates[1].start_date | noyear }} - {{ analyticsDetail?.dates[1].end_date | noyear }}</ion-label>
+  </div>
+  <ion-button mode="md" class="next" slot="icon-only" [disabled]="!analyticsDetail?.arrow.next" (click)="getAnotherResult('next');">
+    <ion-icon ios="ios-arrow-forward" md="ios-arrow-forward"></ion-icon>
+  </ion-button>
+</div>
+
+<ion-card mod="ios" class="real-time">
+  <ion-label class="label">Real time</ion-label>
+  <ion-label class="sub-label">Users right now</ion-label>
+  <ion-label class="num-users">{{ analyticsDetail?.realtime.score }}</ion-label>
+</ion-card>
+
+<ion-card class="audience">
+  <ion-label class="label">
+    Audience overview
+  </ion-label>
+  <ion-segment mode="ios" [value]="audienceFilter" (ionChange)="changeAudienceFilter($event)">
+    <ion-segment-button mode="ios" value="0">
+      <ion-label class="sub-label">Users</ion-label>
+      <ion-label class="sub-num">{{ analyticsDetail?.users.score }}</ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.users?.difference?.alert === 'positive','black':  analyticsDetail?.users?.difference?.alert === 'equal', 'negative': analyticsDetail?.users?.difference?.alert === 'negative'}">{{ analyticsDetail?.users?.difference?.text }}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="ios" value="1">
+      <ion-label class="sub-label">Sessions</ion-label>
+      <ion-label class="sub-num">{{ analyticsDetail?.sessions.score }}</ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.sessions?.difference?.alert === 'positive', 'black': analyticsDetail?.sessions?.difference?.alert === 'equal', 'negative': analyticsDetail?.sessions?.difference?.alert === 'negative'}">{{ analyticsDetail?.sessions.difference?.text }}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="ios" value="2">
+      <ion-label class="sub-label">New Users</ion-label>
+      <ion-label class="sub-num">{{ analyticsDetail?.newusers.score }}</ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.newusers?.difference?.alert === 'positive', 'black': analyticsDetail?.newusers?.difference?.alert === 'equal', 'negative': analyticsDetail?.newusers?.difference?.alert === 'negative'}">{{ analyticsDetail?.newusers.difference?.text }}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <div class="result" [ngSwitch]="audienceFilter">
+    <div class="users" *ngSwitchCase="0">
+      <ion-label class="sub-label">
+        Users over time
+      </ion-label>
+      <ion-label class="sub-gray">
+        Segment: Users
+      </ion-label>
+      <ion-label class="num-users">
+        {{ analyticsDetail?.users.score }}
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.newusers?.difference?.alert === 'positive', 'black': analyticsDetail?.newusers?.difference?.alert === 'equal', 'negative': analyticsDetail?.newusers?.difference?.alert === 'negative'}">{{ analyticsDetail?.users.difference?.text }}</ion-label>
+      <google-chart [data]="usersChart"></google-chart>
+    </div>
+    <div class="sessions"  *ngSwitchCase="1">
+      <ion-label class="sub-label">
+        Sessions over time
+      </ion-label>
+      <ion-label class="sub-gray">
+        Segment: Sessions
+      </ion-label>
+      <ion-label class="num-users">
+        {{ analyticsDetail?.sessions.score }}
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.sessions?.difference?.alert === 'positive', 'black': analyticsDetail?.sessions?.difference?.alert === 'equal', 'negative': analyticsDetail?.sessions?.difference?.alert === 'negative'}">{{ analyticsDetail?.sessions.difference?.text }}</ion-label>
+      <google-chart [data]="sessionsChart"></google-chart>
+    </div>
+    <div class="new-users"  *ngSwitchCase="2">
+      <ion-label class="sub-label">
+        New Users over time
+      </ion-label>
+      <ion-label class="sub-gray">
+        Segment: New Users
+      </ion-label>
+      <ion-label class="num-users">
+        {{ analyticsDetail?.newusers.score }}
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.newusers?.difference?.alert === 'positive', 'black': analyticsDetail.newusers?.difference?.alert === 'equal', 'negative': analyticsDetail?.newusers?.difference?.alert === 'negative'}">{{ analyticsDetail?.newusers?.difference?.text }}</ion-label>
+      <google-chart [data]="newusersChart"></google-chart>
+    </div>
+  </div>
+</ion-card>
+
+<ion-card mode="ios" clss="behaviour">
+  <ion-label class="label">Behaviour overview</ion-label>
+  <ion-segment mode="ios" [value]="behaviourFilter" (ionChange)="changeBehaviourFilter($event)" scrollable>
+    <ion-segment-button mode="ios" value="0">
+      <ion-label class="sub-label">
+        Avg. session duration
+      </ion-label>
+      <ion-label class="sub-num">
+        {{ analyticsDetail?.avgsessionduration.scoretext }}
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.avgsessionduration?.difference?.alert === 'positive', 'black': analyticsDetail?.avgsessionduration?.difference?.alert === 'equal', 'negative': analyticsDetail?.avgsessionduration?.difference?.alert === 'negative'}">
+        {{ analyticsDetail?.avgsessionduration.difference?.text }}
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="ios" value="1">
+      <ion-label class="sub-label">
+       Bounce rate
+      </ion-label>
+      <ion-label class="sub-num">
+        {{ analyticsDetail?.bouncerate.scoretext }}
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.bouncerate?.difference?.alert === 'positive' , 'black': analyticsDetail?.bouncerate?.difference?.alert === 'equal', 'negative': analyticsDetail?.bouncerate?.difference?.alert === 'negative'}">
+        {{ analyticsDetail?.bouncerate.difference?.text  }}
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="ios" value="2">
+      <ion-label class="sub-label">
+       Page view
+      </ion-label>
+      <ion-label class="sub-num">
+        {{ analyticsDetail?.pageviews.scoretext }}
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.pageviews?.difference?.alert === 'positive' , 'black': analyticsDetail?.pageviews?.difference?.alert === 'equal', 'negative': analyticsDetail?.pageviews?.difference?.alert === 'negative'}">
+        {{ analyticsDetail?.pageviews.difference?.text  }}
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="ios" value="3">
+      <ion-label class="sub-label">
+        Page/session
+      </ion-label>
+      <ion-label class="sub-num">
+        {{ analyticsDetail?.pageviewspersession.scoretext }}
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.pageviewspersession?.difference?.alert === 'positive' , 'black': analyticsDetail?.pageviewspersession?.pageviewspersession?.alert === 'equal', 'negative': analyticsDetail?.pageviewspersession?.difference?.alert === 'negative'}">
+        {{ analyticsDetail?.pageviewspersession.difference?.text  }}
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="ios" value="4">
+      <ion-label class="sub-label">
+        Session per user
+      </ion-label>
+      <ion-label class="sub-num">
+        {{ analyticsDetail?.sessionsperuser.scoretext }}
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.sessionsperuser?.difference?.alert === 'positive' , 'black': analyticsDetail?.sessionsperuser?.difference?.alert === 'equal', 'negative': analyticsDetail?.sessionsperuser?.difference?.alert === 'negative'}">
+        {{ analyticsDetail?.sessionsperuser.difference?.text  }}
+      </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <div class="result" [ngSwitch]="behaviourFilter">
+    <div class="average-session" *ngSwitchCase="0">
+      <ion-label class="sub-label">
+        Users over time
+      </ion-label>
+      <ion-label class="sub-gray">
+        Segment: New Users
+      </ion-label>
+      <ion-label class="num-users">
+        {{ analyticsDetail?.avgsessionduration.scoretext }}
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.avgsessionduration?.difference?.alert === 'positive', 'black': analyticsDetail?.avgsessionduration?.difference?.alert === 'equal', 'negative': analyticsDetail?.avgsessionduration?.difference?.alert === 'negative'}">{{ analyticsDetail?.avgsessionduration.difference?.text }}</ion-label>
+      <google-chart [data]="durationChart"></google-chart>
+    </div>
+    <div class="bounce-rate" *ngSwitchCase="1">
+      <ion-label class="sub-label">
+        Users over time
+      </ion-label>
+      <ion-label class="sub-gray">
+        Segment: New Users
+      </ion-label>
+      <ion-label class="num-users">
+        {{ analyticsDetail?.bouncerate.scoretext }}
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.bouncerate?.difference?.alert === 'positive', 'black': analyticsDetail?.bouncerate?.difference?.alert === 'equal', 'negative': analyticsDetail?.bouncerate?.difference?.alert === 'negative'}">{{ analyticsDetail?.bouncerate.difference?.text }}</ion-label>
+      <google-chart [data]="bounceChart"></google-chart>
+    </div>
+    <div class="bounce-rate" *ngSwitchCase="2">
+      <ion-label class="sub-label">
+        Page view over time
+      </ion-label>
+      <ion-label class="sub-gray">
+        Segment: New Users
+      </ion-label>
+      <ion-label class="num-users">
+        {{ analyticsDetail?.pageviews.scoretext }}
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.pageviews?.difference?.alert === 'positive', 'black': analyticsDetail?.pageviews?.difference?.alert === 'equal', 'negative': analyticsDetail?.pageviews?.difference?.alert === 'negative'}">{{ analyticsDetail?.pageviews.difference?.text }}</ion-label>
+      <google-chart [data]="pageviewsChart"></google-chart>
+    </div>
+    <div class="bounce-rate" *ngSwitchCase="3">
+      <ion-label class="sub-label">
+        Page/session over time
+      </ion-label>
+      <ion-label class="sub-gray">
+        Segment: New Users
+      </ion-label>
+      <ion-label class="num-users">
+        {{ analyticsDetail?.pageviewspersession.scoretext }}
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.pageviewspersession?.difference?.alert === 'positive', 'black': analyticsDetail?.pageviewspersession?.difference?.alert === 'equal', 'negative': analyticsDetail?.pageviewspersession?.difference?.alert === 'negative'}">{{ analyticsDetail?.pageviewspersession.difference?.text }}</ion-label>
+      <google-chart [data]="pageviewspersessionChart"></google-chart>
+    </div>
+    <div class="bounce-rate" *ngSwitchCase="4">
+      <ion-label class="sub-label">
+        Session per user over time
+      </ion-label>
+      <ion-label class="sub-gray">
+        Segment: New Users
+      </ion-label>
+      <ion-label class="num-users">
+        {{ analyticsDetail?.sessionsperuser.scoretext }}
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.sessionsperuser?.difference?.alert === 'positive', 'black': analyticsDetail?.sessionsperuser?.difference?.alert === 'equal', 'negative': analyticsDetail?.sessionsperuser?.difference?.alert === 'negative'}">{{ analyticsDetail?.sessionsperuser.difference?.text }}</ion-label>
+      <google-chart [data]="sessionsperuserChart"></google-chart>
+    </div>
+  </div>
+</ion-card>
+
+<ion-card mode="ios" clss="goals">
+  <ion-label class="label">Goals overview</ion-label>
+  <ion-segment mode="ios" [value]="goalFilter" (ionChange)="changeGoalFilter($event)">
+    <ion-segment-button mode="ios" value="0">
+      <ion-label class="sub-label">
+       Goal conversion rate
+      </ion-label>
+      <ion-label class="sub-num">
+        {{ analyticsDetail?.goalconversionrateall.scoretext }}%
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.goalconversionrateall?.difference?.alert === 'positive', 'black': analyticsDetail?.goalconversionrateall?.difference?.alert === 'equal', 'negative': analyticsDetail?.goalconversionrateall?.difference?.alert === 'negative'}">
+        {{ analyticsDetail?.goalconversionrateall.difference?.text }}
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button mode="ios" value="1">
+      <ion-label class="sub-label">
+       Goal completions
+      </ion-label>
+      <ion-label class="sub-num">
+        {{ analyticsDetail?.goalcompletionsall.scoretext }}
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.goalcompletionsall?.difference?.alert === 'positive', 'black': analyticsDetail?.goalcompletionsall?.difference?.alert === 'equal', 'negative': analyticsDetail?.goalcompletionsall?.difference?.alert === 'negative'}">
+        {{ analyticsDetail?.goalcompletionsall.difference?.text }}
+      </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <div class="result" [ngSwitch]="goalFilter">
+    <div class="goal-conversion" *ngSwitchCase="0">
+      <ion-label class="sub-label">
+        Goal conversion rate over time
+      </ion-label>
+      <ion-label class="sub-gray">
+        Segment: New Users
+      </ion-label>
+      <ion-label class="num-users">
+        {{ analyticsDetail?.goalconversionrateall.scoretext }}
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.goalconversionrateall?.difference?.alert === 'positive', 'black': analyticsDetail?.goalconversionrateall?.difference?.alert === 'equal', 'negative': analyticsDetail?.goalconversionrateall?.difference?.alert === 'negative'}">
+        {{ analyticsDetail?.goalconversionrateall.difference?.text }}
+      </ion-label>
+      <google-chart [data]="conversionChart"></google-chart>
+    </div>
+    <div class="bounce-rate"  *ngSwitchCase="1">
+      <ion-label class="sub-label">
+        Goal completions over time
+      </ion-label>
+      <ion-label class="sub-gray">
+        Segment: New Users
+      </ion-label>
+      <ion-label class="num-users">
+        {{ analyticsDetail?.goalcompletionsall.scoretext }}
+      </ion-label>
+      <ion-label class="difference" [ngClass]="{'positive': analyticsDetail?.goalcompletionsall?.difference?.alert === 'positive', 'black': analyticsDetail?.goalcompletionsall?.difference?.alert === 'equal', 'negative': analyticsDetail?.goalcompletionsall?.difference?.alert === 'negative'}">
+        {{ analyticsDetail?.goalcompletionsall.difference?.text }}
+      </ion-label>
+      <google-chart [data]="completionChart"></google-chart>
+    </div>
+  </div>
+</ion-card>

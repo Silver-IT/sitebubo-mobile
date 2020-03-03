@@ -1,0 +1,61 @@
+<ion-app>
+  <ion-menu #menu type="overlay" [swipeGesture] = 'showMenu && !newUser' menuId='totalMenu'>
+    <ion-header class='menu-header' mode='ios'>
+      <div class='logo'>
+        <img src="assets/imgs/sub_logo.svg" alt="">
+      </div>
+      <ion-item>
+        <ion-label class='menu-header'><ion-icon class='menu-email'></ion-icon> {{ email }}</ion-label>            
+      </ion-item>
+    </ion-header>
+    <ion-content style="background-color:white">
+      <ion-list class="listtt1">
+        <ion-menu-toggle auto-hide='false'>
+          <ion-item (click)='openDomainList()'>
+            <ion-icon class='menu-sites' slot='start'></ion-icon>
+            <ion-label>Sites ({{ domainCount }})</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle auto-hide='false'>
+          <ion-item (click) = 'openMyProfile()'>
+            <ion-icon class='menu-profile' slot='start'></ion-icon>
+            <ion-label>Profile</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle auto-hide='false'>
+          <ion-item (click)='openMembership()'>
+            <ion-icon class='menu-membership' slot='start'></ion-icon>
+            <ion-label>Membership</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle auto-hide='false'>
+          <ion-item (click)='openNotificationSettings()'>
+            <ion-icon class='menu-notifcation' slot='start'></ion-icon>
+            <ion-label>Notifications</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle auto-hide='false'>
+          <ion-item (click)='openFeedback()'>
+            <ion-icon class='menu-feedback' slot='start'></ion-icon>
+            <ion-label>Feedback</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle auto-hide='false'>
+          <ion-item (click)='openRating()'>
+            <ion-icon class='menu-rate' slot='start'></ion-icon>
+            <ion-label>Rate App</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+    <ion-footer class='menu-footer'>
+        <ion-menu-toggle auto-hide='false'>
+          <ion-button mode='md' class='signOut' (click)="logout()">Logout</ion-button>
+        </ion-menu-toggle>
+        <ion-menu-toggle auto-hide='false'>
+          <ion-button mode='md' class='changePlan' (click)="ChangePlan()">Change Plan</ion-button> 
+        </ion-menu-toggle>
+    </ion-footer>
+  </ion-menu>
+  <ion-router-outlet main mode='ios' [swipeGesture]="false"></ion-router-outlet>
+</ion-app>

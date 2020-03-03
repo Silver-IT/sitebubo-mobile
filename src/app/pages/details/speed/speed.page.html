@@ -1,0 +1,34 @@
+<ion-header class="underHeader">
+  <ion-toolbar mode="md" class="toolbar">
+      <ion-segment mode="md" [value]="pageType" (ionChange) = "switchPages($event)">
+        <ion-segment-button mode="md" value="1" checked>
+          <ion-label>Speed</ion-label>
+        </ion-segment-button>
+        <ion-segment-button mode="md" value="2">
+          <ion-label>
+            Desktop
+            <div class="submenu-badge" *ngIf="desktopAlert">{{ desktopAlert }}</div>
+          </ion-label>
+        </ion-segment-button>
+        <ion-segment-button mode="md" value="3">
+          <ion-label>
+            Mobile
+            <div class="submenu-badge" *ngIf="mobileAlert">{{ mobileAlert }}</div>
+          </ion-label>
+        </ion-segment-button>
+      </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [ngSwitch]="pageType">
+<app-cspeed *ngSwitchCase = "1"></app-cspeed>
+<app-cdesktop *ngSwitchCase = "2"></app-cdesktop>
+<!-- <app-cseo *ngSwitchCase = "2" [pageType] = "pageType" [reportDetails] = "reportDetails"></app-cseo> -->
+<!-- <app-cseo *ngSwitchCase = "3" [pageType] = "pageType" [reportDetails] = "reportDetails"></app-cseo> -->
+<app-cmobile *ngSwitchCase = "3"></app-cmobile>
+<ion-fab class="feedback-fab nopadding-top" vertical="bottom" horizontal="start" slot="fixed">
+  <ion-fab-button mode="md" class="feedback" (click)="openFeedback()">
+      <ion-icon class="feedback"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+</ion-content>

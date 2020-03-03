@@ -1,0 +1,36 @@
+<ion-card mode="ios">
+  <ion-label class="date">
+    Start Date: {{ conversionDetails?.start_date | datetime }}
+  </ion-label>
+  <ion-label class="date">
+    End Date: {{ conversionDetails?.end_date | datetime }}
+  </ion-label>
+  <ion-list mode="ios" class="upper">
+    <ion-item>
+      <ion-label class="title">Goal Conversion Rate</ion-label>
+      <ion-label class="value">{{ conversionDetails?.goalconversionrateall }}%</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label class="title">Goal Completions</ion-label>
+      <ion-label class="value" slot="end">{{ conversionDetails?.goalcompletionsall }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label class="title">Goal Value</ion-label>
+      <ion-label class="value">{{ conversionDetails?.goalvalueall }}£</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label class="title">Total Abandonement Rate</ion-label>
+      <ion-label class="value">{{ conversionDetails?.goalabandonrateall }}%</ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-list class="down">
+    <ion-list-header>
+      Goal Completion Location
+    </ion-list-header>
+    <ion-label class="no-result" *ngIf="!conversionDetails?.goalcompletionlocation">No goal completion locations</ion-label>
+    <ion-item *ngFor="let item of conversionDetails?.goalcompletionlocation">
+      <ion-label class="title"></ion-label>
+      <ion-label class="value"></ion-label>
+    </ion-item>
+  </ion-list>
+</ion-card>

@@ -1,0 +1,88 @@
+<div class="header">
+  <ion-button mode="md" class="previous" slot="icon-only" [disabled]="!seoData?.arrow.prev" (click)="getAnotherResult('prev');">
+    <ion-icon ios="ios-arrow-back" md="ios-arrow-back"></ion-icon>
+  </ion-button>
+  <div class="dates-compare">
+    <ion-label class="last-checked">{{ seoData?.dates[0].datetime | datetime }}</ion-label>
+    <ion-label class="previous-checked" *ngIf="seoData?.dates[1]">vs {{ seoData?.dates[1].datetime | datetime }}</ion-label>
+  </div>
+  <ion-button mode="md" class="next" slot="icon-only" [disabled]="!seoData?.arrow.next" (click)="getAnotherResult('next');">
+    <ion-icon ios="ios-arrow-forward" md="ios-arrow-forward"></ion-icon>
+  </ion-button>
+</div>
+
+<ion-card mode="ios" class="round-progress">
+  <ion-button mode="ios" expand="block" class="filter">
+    <ion-label>Optimisation Score</ion-label>
+  </ion-button>
+  <circle-progress
+    [percent]="displayData?.status?.percentage"
+    [outerStrokeColor]="displayData?.status?.outline"
+    [innerStrokeColor]="displayData?.status?.inline"
+  ></circle-progress>
+  <div class="details" #seoTitle>
+    <ion-label class="display">{{ displayData?.score | floatone }}</ion-label>
+    <ion-label class="difference" [ngClass]="{'positive': displayData?.difference?.alert === 'positive','equal-color': displayData?.difference?.alert === 'equal', 'negative': displayData?.difference?.alert === 'nagative'}">
+      {{ displayData?.difference?.text }}</ion-label>
+  </div>
+  <div class="colors">
+    <ion-chip class="red-chip">
+      <ion-label>0-49</ion-label>
+    </ion-chip>
+    <ion-chip class="yellow-chip">
+      <ion-label>50-89</ion-label>
+    </ion-chip>
+    <ion-chip class="green-chip"> 
+      <ion-label>90-100</ion-label>
+    </ion-chip>
+  </div>
+  <ion-label class="next-scan"><b>Next Scan:</b> {{ seoData?.update_availbale }}
+  </ion-label>
+  <google-chart [data]="seoChart"></google-chart>
+</ion-card>
+
+<ion-card class="opportunities" mode="ios">
+    <div class="list-header">
+      <ion-label class="bold" >Opportunities</ion-label>
+      <ion-label class="tell"> - These suggestions can help your SEO score increase. The can direct affect the Optimisations score.</ion-label>
+    </div>
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let item of seoData?.opportunity">
+        <mat-expansion-panel-header [collapsedHeight]="'48px'" [expandedHeight]="'48px'">
+          <ion-item mode="ios" lines="none">
+            <ion-icon [ngClass]="{'alert-triangle': item.alertlevel===0,'alert-square': item.alertlevel===1, 'alert-circle': item.alertlevel===2 }"></ion-icon>
+            <ion-label class="item-id seo-oppo"><b>{{ item.title }}</b></ion-label>
+            <ion-label class="seo-diff" [ngClass]="{'alert-0': item.alertlevel===0,'alert-1': item.alertlevel===1,'alert-2': item.alertlevel===2 }">{{ item.score }}</ion-label>
+          </ion-item>
+        </mat-expansion-panel-header>
+        <mat-panel-description >
+          <ion-label class="spec-des">
+            {{ item.description }}
+            <a class="hyperlink" *ngIf="item.learnMoreUrl" (click)="linkToLearnMore(item.learnMoreUrl)">[Learn more]</a>
+          </ion-label>
+        </mat-panel-description>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <div class="list-header diagnostics">
+      <ion-label class="bold">Passed audits (13)</ion-label>
+    </div>
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let item of seoData?.passed_audits">
+        <mat-expansion-panel-header [collapsedHeight]="'48px'" [expandedHeight]="'48px'">
+          <ion-item mode="ios" lines="none">
+            <ion-icon class="alert-circle"></ion-icon>
+            <ion-label class="item-id passed-label"><b>{{ item.title }}</b></ion-label>
+            <ion-label class="seo-diff alert-2">{{ item.score }}</ion-label>
+          </ion-item>
+        </mat-expansion-panel-header>
+        <mat-panel-description >
+          <ion-label class="spec-des">
+            {{ item.description }}
+            <a class="hyperlink" *ngIf="item.learnMoreUrl" (click)="linkToLearnMore(item.learnMoreUrl)">[Learn more]</a>
+          </ion-label>
+        </mat-panel-description>
+      </mat-expansion-panel>
+    </mat-accordion>
+</ion-card>
+
+<ion-button expand="block" class="scan-site red" (click)="socketSeo()">SCAN SITE</ion-button>

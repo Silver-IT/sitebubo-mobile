@@ -1,0 +1,70 @@
+<ion-label class="report">
+  Report Completed: {{ lastChecked | datetime }}
+</ion-label>
+
+<ion-card class="description" mode="ios">
+  <ion-label class="des">
+   If no Positive Matches are found in our 
+   partnered databases, this does <b>not guarantee the website is safe.
+   </b>
+   Caution should always be taken if you are not 100% sure.
+  </ion-label>
+</ion-card>
+
+<div class="result">
+  <ion-card mode="ios" *ngFor="let item of blacklistData">
+    <ion-row>
+      <ion-col size="8" class="category">
+        <img class="{{ item.category }}">
+        <ion-label class="activity">{{ item.activity }}</ion-label>
+      </ion-col>
+      <ion-col size="4" class="status">
+        <ion-icon ios="ios-checkmark-circle-outline" md="ios-checkmark-circle-outline"></ion-icon>
+        <ion-label class="status-check">{{ item.alertlevel === 2 ? 'Clean site': 'Not clean site' }}</ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+</div>
+
+
+
+
+<!-- 
+  <ion-card-title>
+    <ion-label class="last_checked">Last Checked: {{ lastChecked | datetime }}</ion-label>
+  </ion-card-title>
+  <ion-card-content>
+    <ion-label class="des">
+      If no Positive Matches are found then 
+      this does not guarantee the website is 
+      safe. Caution should always be taken
+      if you are not 100% sure.
+    </ion-label>
+  </ion-card-content>
+</ion-card>
+<ion-card #card mode="ios" *ngIf = "blacklistData">
+  <ion-item *ngFor="let item of blacklistData">
+    <ion-label class="title">{{ item.description }}</ion-label>
+    <ion-label class="status">{{ item.activity }}</ion-label>
+    <ion-icon class="s-danger" *ngIf=" item.alertlevel === 0"></ion-icon>
+    <ion-icon class="s-warning" *ngIf=" item.alertlevel === 1"></ion-icon>
+    <ion-icon class="s-safe" *ngIf=" item.alertlevel === 2"></ion-icon>
+  </ion-item>
+</ion-card> -->
+<!-- skeleton -->
+<ion-card *ngIf = "!blacklistData">
+  <ion-list mode="ios" style="margin-top: 40px"  >
+    <ion-item>
+      <ion-skeleton-text animated style="height: 40px"></ion-skeleton-text>
+    </ion-item>
+    <ion-item style="margin-top: 20px">
+      <ion-skeleton-text animated style="height: 40px"></ion-skeleton-text>
+    </ion-item>
+    <ion-item style="margin-top: 20px">
+      <ion-skeleton-text animated style="height: 40px"></ion-skeleton-text>
+    </ion-item>
+    <ion-item style="margin-top: 20px">
+      <ion-skeleton-text animated style="height: 40px"></ion-skeleton-text>
+    </ion-item>
+  </ion-list>
+</ion-card>

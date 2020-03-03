@@ -1,0 +1,76 @@
+ion-content {
+  div.content{
+    width: 100% ;
+    height: 100% ;
+    background-size: 100% 100% !important;
+    background-image: url('../../../assets/imgs/background.png');
+    background-repeat: no-repeat;
+  }
+  div.logo {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    img {
+      width: 65%;
+      height: auto;
+      margin-right: 7%;
+    }
+  }
+  div.picture {
+    width: 100%;
+    height : 42%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    img {
+      width: 92%;
+      height: auto;
+    }
+    ion-label{
+      margin-top: 4%;
+      color: white;
+      font-size: 13px;
+    }
+  }
+  div.btn-options {
+    width: 100%;
+    ion-button {
+      font-size: 18px;
+      width: 75%;
+      height: 54px;
+      display: block;
+      margin: auto;
+      text-transform: none;
+      --border-radius: 30px !important;
+      --border-color :  white !important;
+      --border-width: 2px !important;
+      --border-style: solid;
+      
+      &.signup {
+        --background: white;
+        --background-activated: rgb(240, 240, 240);
+        --color: #917AFF;
+        --color-activated: #917AFF;
+        // --box-shadow: inset 0 0 5px #e4e4e4;
+        --background-focused: rgb(240, 240, 240);
+        --background-hover: rgb(240, 240, 240);
+      }
+      &.login {
+        --background : transparent;
+        --background-activated: linear-gradient(to top right,#d5b1f8,#c09cfd);
+        --color: white;
+        --color-activated: white;
+        --box-shadow: inset 0 0 5px  #c5c4c4;
+        --background-focused: linear-gradient(to top right,#d5b1f8,#c09cfd);
+        --background-hover: linear-gradient(to top right,#d5b1f8,#c09cfd);
+      }
+    }
+    ion-button  + ion-button {
+      margin-top : 4%;
+    }
+  }
+}

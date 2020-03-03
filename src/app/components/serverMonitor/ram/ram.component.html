@@ -1,0 +1,22 @@
+<div class="header header-extra"  *ngIf="ramData">
+  <ion-icon class="filter-extra" (click)="changeFilterType()">
+  </ion-icon>
+  <div class="filter-header">
+    <ion-label class="label">Ram Usage</ion-label>
+    <ion-label class="filter-type">last {{ filterLabel }}</ion-label>
+  </div>
+</div>
+<google-chart [data]="ramUsageChart"></google-chart>
+
+<div class="filter-header" *ngIf="ramData">
+  <ion-label class="label">Ram Usage</ion-label>
+  <ion-label class="filter-type">last {{ filterLabel }}</ion-label>
+  <ion-label class="sub-label">(Including Caches and Buffers)</ion-label>
+</div>
+<google-chart [data]="extraUsageChart"></google-chart>
+
+<div class="filter-header" *ngIf="ramData">
+  <ion-label class="label">Swap Usage</ion-label>
+  <ion-label class="filter-type">last {{ filterLabel }}</ion-label>
+</div>
+<google-chart [data]="swapChart"></google-chart>

@@ -1,0 +1,10 @@
+ion-list {
+  ion-card {
+    ion-card-header{
+      height: 200px;
+      ion-skeleton-text {
+        height: 100%;
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+<ion-header class='small-header'>
+  <ion-toolbar mode='md' class='toolbar'>
+    <ion-buttons>
+      <ion-button class='filter' mode='md' (click) = 'filterSites()'>
+        <ion-icon class='filter' slot='icon-only'></ion-icon>
+      </ion-button>
+      <ion-title *ngIf='!domainCounts'>Sites (?/?)</ion-title>
+      <ion-title *ngIf='domainCounts'>{{ title }}</ion-title>
+      <ion-button class='menu' mode='md' (click)='toggleMenu()'>
+        <ion-icon class='menu' slot='icon-only'></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content *ngIf = 'showContent'>
+  <!-- <app-sdomain-list *ngIf='filterType === 0'></app-sdomain-list> -->
+  <ion-label class='noResult' *ngIf='filterType === 1 && !domains'>You have no domains added</ion-label>
+  <!-- <ion-label class='noResult' *ngIf='filterType === 2 && myDomList.length < 1'></ion-label> -->
+  <ion-label class='noResult' *ngIf='filterType === 3 && invitedDomList.length < 1'>You have no invited domains added</ion-label>
+  <ion-list mode='ios' *ngIf='domains?.length' style="overflow: auto">
+    <ion-reorder-group  #group [disabled]='false' (ionItemReorder)="onRenderItems($event)">
+      <ion-card mode='ios' *ngFor="let item of domains, let i=index"  id='card_{{ i }}' >
+        <ion-reorder #reorder class='inactive' id='reorder_{{i}}'></ion-reorder>
+        <ion-card-header (click)="openDomain(item.id, item.domain_name, item.user_id, item.type, item.is_scanned)">
+            <img [src]='item.screenshot'/>
+        </ion-card-header>
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label class='site-name'>{{ item.domain_name }}</ion-label>
+            <ion-badge *ngIf='item.unreadcount > -1' >{{ item.unreadcount }}</ion-badge>
+            <ion-icon slot='end' name='arrow-forward' mode='ios' class='swipe'></ion-icon>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option mode='md' (click)="deleteDomain(item.domain_name)">
+              <ion-icon class='deleteicon' slot='icon-only'></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-card>
+    </ion-reorder-group>
+  </ion-list>
+</ion-content> 
+<ion-fab class='feedback-fab'vertical="bottom" horizontal="start" slot="fixed">
+  <ion-fab-button mode='md' class='feedback' (click)='openFeedback()'>
+      <ion-icon class='feedback'></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+<ion-fab class='add-domain' vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button mode='md' class='add-domain' (click)="addDomain(domainCounts.my_domains, domainCounts.total_domains)">
+      <ion-icon name="add" mode='md' class='add-domain'></ion-icon>                 
+  </ion-fab-button>
+</ion-fab>

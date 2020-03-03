@@ -1,0 +1,12 @@
+<div class="c-content" *ngIf="details">
+  <!-- <ion-label class="c-header">Welcome to your new plan!</ion-label> -->
+  <ion-label class="c-welcome">Your first payment has been<br /> taken successfully, Thank you! <br /> feel free to keep us updated
+    <br /> your feedback</ion-label>
+  <ion-label class="c-norfnt">Next payment</ion-label>
+  <ion-label class="c-bigfnt">£{{ details.bigprc }}.<span class="c-smallfnt">{{ details.smallprc}}</span></ion-label>
+  <ion-label class="c-norfnt">will be taken on <b>{{ details.next_payment_date}}</b></ion-label>
+  <ion-icon class="c-paypal" *ngIf="details.payment_method === 'Paypal'"></ion-icon>
+  <ion-icon class="c-inapp" *ngIf="details.payment_method === 'Inapp'"></ion-icon>
+  <ion-label class="c-norfnt">{{details.name}} Plan</ion-label>
+  <ion-button block class="c-greenButton red" (click)="gotoDomainList()">My Sites</ion-button>
+</div>

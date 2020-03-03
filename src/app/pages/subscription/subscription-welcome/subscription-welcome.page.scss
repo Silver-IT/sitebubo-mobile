@@ -1,0 +1,25 @@
+ion-header {
+  ion-toolbar {
+    ion-button {
+      position: absolute;
+      z-index: 1;
+      &.menu {
+        right: 0;
+      }
+    }
+  }
+}
+ion-content {
+  ion-label {
+    display: block;
+    &.c-header {
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+    &.c-welcome {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+  }
+}

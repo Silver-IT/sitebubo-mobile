@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar mode="ios" class="modal-toolbar">
+    <ion-buttons>
+      <ion-title>That"s all done!</ion-title>
+      <ion-button class="close" mode="ios" (click) = "dismiss()">
+        <ion-icon class="close" ios="md-close" md="md-close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>  
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+<ion-label class="text-area">
+  We"re sorry to see you go but we hope our service will improve enough to have you join us again in the future.
+</ion-label>
+<ion-label class="thanks">Take care!</ion-label>
+<ion-button class="red" (click)="dismiss()">close</ion-button>
+</ion-content>

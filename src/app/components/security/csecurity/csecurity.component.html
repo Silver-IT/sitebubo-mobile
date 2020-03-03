@@ -1,0 +1,28 @@
+<app-ssecurity *ngIf = "!securityData"></app-ssecurity>
+<ion-card mode="ios" class="status">
+  <ion-label class="label">Current Status</ion-label>
+  <div class="status">
+    <ion-icon [ngClass]="{'d-virusdetected': securityData?.status !== 'VIRUS FREE', 'd-virusfree': securityData?.status === 'VIRUS FREE'}"></ion-icon>
+    <ion-label [ngClass]="{'green': securityData?.status === 'VIRUS FREE','red': securityData?.status !== 'VIRUS FREE' }">{{ securityData?.status==='VIRUS FREE'? 'Clean': 'Malware Detected' }}</ion-label>
+  </div>
+  <ion-label class="last-checked">
+   <b>Last Check:</b> {{ securityData?.date | datetime }}
+  </ion-label>
+  <ion-label class="last-checked">
+   <b>Next Scan:</b> {{ securityData?.update_availbale }}
+  </ion-label>
+</ion-card>
+
+<ion-button class="scan-site red" expand="block" mode="md" (click)="socketSecurity()">SCAN SITE</ion-button>
+
+<ion-card mode="ios" *ngIf = "securityData">
+  <ion-list>
+    <ion-item *ngFor="let item of securityData?.security_details">
+      <ion-label class="title">{{ item.description }}</ion-label>
+      <ion-label class="status" *ngIf = "item.category !== 'malware' && item.category !== 'blacklist-status'">{{ item.status }}</ion-label>
+      <ion-icon class="s-danger" *ngIf=" item.alertlevel === 0"></ion-icon>
+      <ion-icon class="s-warning" *ngIf=" item.alertlevel === 1"></ion-icon>
+      <ion-icon class="s-safe" *ngIf=" item.alertlevel === 2"></ion-icon>
+    </ion-item>
+  </ion-list>
+</ion-card>

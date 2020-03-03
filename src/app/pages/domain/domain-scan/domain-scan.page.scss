@@ -1,0 +1,100 @@
+ion-content {
+	--padding-top: env(safe-area-inset-top);
+	--padding-bottom: env(safe-area-inset-bottom);
+	--background: transparent;
+	width: 100%;
+	height: 100%;
+	background-size: 100% 100% !important;
+	background-image: url("../../../../assets/imgs/background.png");
+	background-repeat: no-repeat;
+	ion-label {
+		&.domain_name {
+			display: flex;
+			text-align: center;
+			align-items: center;
+			width: 100%;
+			height: 10%;
+			color: white;
+			justify-content: center;
+			font-size: 22px;
+		}
+		&.progress-status {
+			display: block;
+			margin: auto;
+			width: 100%;
+			height: calc(5% - 10px);
+			font-size: 20px;
+			color: white;
+			text-align: center;
+			position: absolute;
+			top: 0;
+		}
+	}
+	div.completed {
+		width: 100%;
+		height: 10%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: white;
+		img {
+			width: 55px;
+		}
+		ion-label {
+			font-size: 22px;
+		}
+	}
+	div.img {
+		height: 38%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		align-content: center;
+		width: 100%;
+		img {    
+			height: 90%;
+			width: 100%;
+		}
+	}
+	div.results {
+		height: 30%;
+		display: flex;
+		flex-direction: column;
+    justify-content: center;
+    svg {
+      overflow: visible;
+    }
+    @keyframes draw {
+      from {
+        stroke-linecap: round;
+      }
+      to {
+        stroke-linecap: round;
+        stroke-dashoffset: 0;
+      }
+    }
+	}
+	div.footer {
+		height: 7%;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: white;
+		text-align: center;
+		font-size: 18px;
+	}
+	div.status {
+		height: 5%;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		ion-progress-bar {
+			position: absolute;
+			--progress-background: rgb(102, 255, 0);
+			height: 10px;
+			bottom: 0;
+		}
+	}
+}

@@ -1,0 +1,334 @@
+ion-icon{
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  &.back {
+    font-size: 24px !important;
+  }
+  &.email {
+    background-size: 100% 81% !important;
+    font-size: 22px !important;
+    background-position: center !important;
+    background-image: url('assets/icons/email.svg');
+  }
+  &.password {
+    font-size: 22px !important;
+    background-image: url('assets/icons/password.svg');
+  }
+  &.fullname {
+    font-size: 22px !important;
+    background-image: url('assets/icons/user.svg');
+  }
+  &.help {
+    font-size: 18px;
+    background-image: url('assets/imgs/question-mark.png');
+  }
+  &.menu {
+    font-size: 20px !important;
+    background-image: url('assets/icons/nav-bar.svg');
+  }
+  &.filter {
+    font-size: 20px !important;
+    background-image: url('assets/icons/filter.svg');
+  }
+  &.filter-extra {
+    font-size: 20px !important;
+    background-image: url('assets/icons/dashboard/filter.png');
+  }
+  &.add {
+    font-size: 22px !important;
+    background-image: url('assets/icons/plus.svg');
+  }
+  &.deleteicon{
+    font-size: 24px !important;
+    background-image: url('assets/icons/delete.svg');
+  }
+  
+  &.feedback {
+    font-size: 20px !important;
+    background-image: url('assets/icons/feedback.svg');
+  }
+  &.domainUrl {
+    font-size: 22px !important;
+    background-image: url('assets/icons/site-url.svg');
+  }
+  &.domainName {
+    font-size: 22px !important;
+    background-image: url('assets/icons/site-name.svg');
+  }
+  &.menu-email {
+    background-size: 100% 81% !important;
+    font-size: 24px !important;
+    background-position: center !important;
+    background-image: url('assets/icons/email-envelope.svg');
+  }
+  &.menu-profile {
+    font-size: 22px !important;
+    background-image: url('assets/icons/profile.svg');
+  }
+  &.menu-sites {
+    font-size: 22px !important;
+    background-image: url('assets/icons/site-url.svg');
+  }
+  &.menu-membership {
+    font-size: 22px !important;
+    background-image: url('assets/icons/membership.svg');
+  }
+  &.menu-notifcation {
+    font-size: 22px !important;
+    background-image: url('assets/icons/menu-notification.png');
+  }
+  &.menu-feedback {
+    font-size: 22px !important;
+    background-image: url('assets/icons/feedback-1.svg');
+  }
+  &.menu-rate {
+    font-size: 22px !important;
+    background-image: url('assets/icons/rate-app.svg');
+  }
+  &.close {
+    font-size: 22px !important;
+    color: #1F81BF;
+  }
+  &.white-close {
+    font-size: 22px !important;
+    color: white;
+  }
+  &.refresh {
+    font-size: 22px !important;
+  }
+  &.starter {
+    font-size: 27px !important;
+    background-image: url('assets/icons/subscriptions/plan-starter.svg');
+  }
+  &.small {
+    font-size: 27px !important;
+    background-image: url('assets/icons/subscriptions/plan-small-business.svg');
+  }
+  &.entrepreneur {
+    font-size: 23px !important;
+    background-image: url('assets/icons/subscriptions/plan-entrepreneur.svg');
+  }
+  &.pro-site {
+    font-size: 27px !important;
+    background-image: url('assets/icons/subscriptions/plan-presite-maintainer.svg');
+  }
+  &.currentplan-icon {
+    font-size: 21px !important;
+    background-image: url('assets/icons/subscriptions/currentPlan.svg');
+  }
+  &.c-cancel-membership {
+    font-size: 24px !important;
+    background-image: url('assets/icons/cancel-membership.svg');
+  }
+  &.c-paypal {
+    font-size: 63px !important;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: block;
+    background-image: url('assets/icons/paypal.svg');
+  }
+  &.c-inapp {
+    font-size: 63px !important;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: block;
+    background-image: url('assets/icons/inapppurhcase.png');
+  }
+  &.add-domain {
+    font-size: 28px !important;
+  }
+  &.c-receipt {
+    font-size: 24px;
+    background-image: url('assets/icons/receipt.svg');
+  }
+  &.d-userAdd {
+    font-size: 22px;
+    background-image: url('assets/icons/dashboard/+.svg');
+  }
+  &.d-brokenlink {
+    font-size: 45px !important;
+    background-image: url('assets/icons/dashboard/brokenlink.gif');
+  }
+  &.d-conversionRate {
+    font-size: 45px !important;
+    background-image: url('assets/icons/dashboard/conversion.gif');
+  }
+  &.d-domainExpire {
+    font-size: 45px !important;
+    background-image: url('assets/icons/dashboard/domainexpire.gif');
+  }
+  &.d-fullReport {
+    font-size: 45px !important;
+    background-image: url('assets/icons/dashboard/fullReort.gif');
+  }
+  &.d-notificationBell {
+    background-size: contain !important;
+    font-size: 20px !important;
+    background-image: url('assets/icons/dashboard/notification-bell.png');
+  } 
+  &.d-seo {
+    font-size: 45px !important;
+    background-image: url('assets/icons/dashboard/seo.gif');
+  }
+  &.d-settings {
+    font-size: 30px !important;
+    background-image: url('assets/icons/dashboard/settings.svg');
+  }
+  &.d-siteScore {
+    font-size: 45px !important;
+    background-image: url('assets/icons/dashboard/sitespeed.gif');
+  } 
+  &.d-siteUp {
+    font-size: 75px !important;
+    background-image: url('assets/icons/dashboard/siteup.gif');
+  }
+  &.d-siteDown {
+    font-size: 75px !important;
+    background-image: url('assets/icons/dashboard/siteup.gif');
+    transform: rotate(180deg);
+  }
+  &.n-report {
+    // font-size: 75px !important;
+    background-image: url('assets/icons/notifcation_report.png');
+  }
+  &.d-userSetting {
+    font-size: 22px !important;
+    background-image: url('assets/icons/dashboard/user_setting.svg');
+  }
+  &.d-virusfree {
+    font-size: 75px !important;
+    background-image: url('assets/icons/dashboard/security_secure.gif');
+  }
+  &.d-virusdetected {
+    font-size: 75px !important;
+    background-image: url('assets/icons/dashboard/security_notsecure.gif');
+  }
+  &.d-visitorRate {
+    font-size: 45px !important;
+    background-image: url('assets/icons/dashboard/visitors.gif');
+  }
+  &.activeUser {
+    font-size: 45px;
+    background-image: url('assets/icons/dashboard/userSettings/activeUser.svg');
+  }
+  &.inactiveUser {
+    font-size: 45px;
+    background-image: url('assets/icons/dashboard/userSettings/inactiveUser.svg');
+  }
+  &.d-monitors {
+    font-size: 32px;
+    background-image: url('assets/icons/dashboard/monitorSettings/monitors.svg');
+  }
+  &.d-googleAnalytics {
+    font-size: 35px;
+    background-image: url('assets/icons/dashboard/monitorSettings/googleAnalytics.svg');
+  }
+  &.d-serverMonitor {
+    font-size: 35px;
+    background-image: url('assets/icons/dashboard/monitorSettings/servericon.png');
+  }
+  &.d-emailChecker {
+    font-size: 35px;
+    background-image: url('assets/icons/dashboard/monitorSettings/emailChecker.svg');
+  }
+  &.d-rankChecker {
+    font-size: 35px;
+    background-image: url('assets/icons/dashboard/monitorSettings/rankChecker.svg');
+  }
+  &.d-dnsChecker {
+    font-size: 35px;
+    background-image: url('assets/icons/dashboard/monitorSettings/dnsChecker.svg');
+  }
+  &.d-download {
+  font-size: 30px;
+  background-image: url('assets/icons/dashboard/monitorSettings/download.svg');
+  }
+  &.d-viewId {
+    font-size: 20px;
+    background-image: url('assets/icons/dashboard/monitorSettings/view.png');
+  }
+  &.s-danger {
+    font-size: 14px;
+    border-radius: 50%;
+    background-color: #f53b3c;
+  }
+  &.s-warning {
+    font-size: 14px;
+    border-radius: 50%;
+    background-color: #fbc642;
+  }
+  &.s-safe {
+    font-size: 14px;
+    border-radius: 50%;
+    background-color: #58df4a;
+  }
+  &.m-down {
+    font-size: 20px;
+    background-image: url('assets/icons/dashboard/sitedown_icon.png');
+  }
+  &.m-up {
+    font-size: 20px;
+    background-image: url('assets/icons/dashboard/siteup_icon.png');
+  }
+  &.positive-icon {
+    font-size: 22px;
+    background-image: url('assets/icons/dashboard/monitorSettings/positiveIcon.svg');
+  }
+  &.negative-icon {
+    font-size: 22px;
+    background-image: url('assets/icons/dashboard/monitorSettings/negativeIcon.svg');
+  }
+  &.factor-activated {
+    font-size: 40px;
+    background-image: url('assets/icons/dashboard/monitorSettings/factorActivated.png');
+  }
+  &.negative-factor {
+    font-size: 40px;
+    background-image: url('assets/icons/dashboard/monitorSettings/negativeFactor.png');
+  }
+  &.positive-factor {
+    font-size: 40px;
+    background-image: url('assets/icons/dashboard/monitorSettings/positiveFactor.png');
+  }
+  &.brokenLink {
+    font-size: 32px !important;
+    background-image: url('assets/icons/dashboard/monitorSettings/brokenLink.svg');
+  }
+  &.expire-danger {
+    font-size: 100px !important;
+    background-image: url('assets/icons/dashboard/monitorSettings/expireDanger.png');
+  }
+  &.expire-safe {
+    font-size: 100px !important; 
+    background-image: url('assets/icons/dashboard/monitorSettings/expireSafe.png');
+  }
+  &.youtube {
+    font-size: 80px;
+    display: block;
+    margin: auto;
+    padding-top: 20px;
+    color: red;
+  }
+  &.security-secure {
+    background-image: url('assets/icons/dashboard/secure_security.png');
+  }
+  &.security-unsecure {
+    background-image: url('assets/icons/dashboard/unsecure_security.png');
+  }
+  &.alert-triangle {
+    font-size: 11px !important;
+    background-image: url('assets/icons/dashboard/alertTriangle.png');
+  }
+  &.alert-square {
+    font-size: 11px !important;
+    background-image: url('assets/icons/dashboard/alertsquare.png');
+  }
+  &.alert-circle {
+    align-self: center;
+    font-size: 11px !important;
+    background-image: url('assets/icons/dashboard/alertcircle.png');
+  }
+}

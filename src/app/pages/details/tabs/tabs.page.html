@@ -1,0 +1,46 @@
+<ion-header class="small-header" id="header">
+  <ion-toolbar class="toolbar" mode="md" >
+    <ion-buttons>
+      <ion-title class="domain-name">{{ domainName }}</ion-title>
+      <ion-button class="back" [routerLink]="['/dashboard']" routerDirection="forward" mode="md" >
+        <ion-icon  name="arrow-back" mode="ios"  class="back" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button class="bell" mode="md" (click) = "openNotificationModal()">
+        <ion-icon class="d-notificationBell" slot="icon-only"></ion-icon>
+        <div class="notification-div" *ngIf="unreadCount">{{ unreadCount }}</div>
+      </ion-button>
+      <ion-button class="menu" mode="md" (click)="toggleMenu()">
+        <ion-icon class="menu" slot="icon-only" ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-tabs mode="ios" class="monitor-tabs" id ="tabs">
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="uptime">
+      <ion-icon #tabIcon class="t-uptime"></ion-icon>
+      <ion-label>Uptime</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="security">
+      <ion-icon #tabIcon class="t-security"></ion-icon>
+      <ion-label>Security</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="speed">
+      <ion-icon #tabIcon class="t-speed"></ion-icon>
+      <ion-label>Speed</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="seo">
+      <ion-icon #tabIcon class="t-seo"></ion-icon>
+      <ion-label>Seo</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="more">
+      <ion-icon #tabIcon class="t-more"></ion-icon>
+      <ion-label>More</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

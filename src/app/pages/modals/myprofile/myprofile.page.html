@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar mode="ios" class="modal-toolbar">
+    <ion-buttons>
+      <ion-title>Profile</ion-title>
+      <ion-button class="close" mode="ios" (click) = "dismiss()">
+        <ion-icon class="close" ios="md-close" md="md-close" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button  [disabled]="!readyToSubmit" class="readySubmit" mode="ios" (click)="onSumit()">Update</ion-button>
+    </ion-buttons>  
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="content">
+    <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+      <ion-list mode="ios">
+        <ion-item mode="md" class="item-input" [ngClass]="{'error-input': profileForm.get('fullname').hasError('minlength') }">
+          <ion-icon class="fullname" slot="start"></ion-icon>
+          <ion-input #fullnameInput mode="md" type="text" [(ngModel)]="fullname" placeholder="Full Name" formControlName="fullname" name="fullname" ></ion-input>
+        </ion-item>
+        <div class="validation-errors" *ngIf="fullnameValidation">
+          <ng-container *ngFor="let validation of validationMessages.fullname">
+            <div class="error-message"
+              *ngIf="profileForm.get('fullname').hasError(validation.type)">
+              <ion-icon class="error"></ion-icon>
+              <ion-label>{{ validation.message }}</ion-label>
+            </div>
+          </ng-container>
+        </div>
+      </ion-list>
+    </form>
+  </div>
+</ion-content>
+

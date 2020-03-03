@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar mode="ios" class="modal-toolbar">
+    <ion-buttons>
+      <ion-title>Google Analytics</ion-title>
+      <ion-button class="close" mode="ios" (click) = "dismiss()">
+        <ion-icon class="close" ios="md-close" md="md-close" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button  [disabled]="!readyToSubmit" class="readySubmit" mode="ios" (click)="connectGoogleAnalytics()">Connect</ion-button>
+    </ion-buttons>  
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form [formGroup]="analyticsForm">
+    <ion-list>
+      <ion-label class="step">Step 1 : Add email to google view settings</ion-label>
+      <div class="step-1">
+        <ion-item [disabled]="true" mode="md">
+          <ion-icon class="email"></ion-icon>
+          <ion-input mode="ios" type="text" value="serviceaccount@sitebubo.iam.gserviceaccount.com">
+          </ion-input>
+        </ion-item>
+        <ion-icon class="d-download" (click)="shareWithSocial()"></ion-icon>
+      </div>
+      <div class="step-2">
+        <ion-label class="step">Step 2 : Enter View ID</ion-label>
+        <ion-item mode="md" [ngClass]="{ 'error-input': validateViewID && ((analyticsForm.get('viewID').hasError('minlength'))) }">
+          <ion-icon class="d-viewId" slot="start"></ion-icon>
+          <ion-input #viewIdInput mode="md" type="text" [(ngModel)]="viewID" placeholder="Enter View ID" formControlName="viewID" name="viewID">
+          </ion-input>
+        </ion-item>
+        <div class="validation-errors" *ngIf="validateViewID">
+          <ng-container *ngFor="let validation of validationMessages.viewID">
+            <div class="error-message"
+              *ngIf="analyticsForm.get('viewID').hasError(validation.type)">
+              <ion-icon class="error"></ion-icon>
+              <ion-label>{{ validation.message }}</ion-label>
+            </div>
+          </ng-container>
+        </div>
+        <div class="validation-errors" *ngIf="extraError">
+          <ng-container>
+            <div class="error-message">
+              <ion-icon class="error"></ion-icon>
+              <ion-label>{{ errorMessage }}</ion-label>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <ion-label class="read-more">
+        Learn how to grant permission and obtain the View ID - <a (click)="openReadMore()">Read More</a>
+      </ion-label>
+      <ion-icon class="youtube" ios="logo-youtube" md="logo-youtube" (click)="playTutorialVideo()"></ion-icon>
+    </ion-list>
+  </form>
+</ion-content>

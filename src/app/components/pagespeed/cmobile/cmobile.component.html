@@ -1,0 +1,187 @@
+<div class="header">
+  <ion-button mode="md" class="previous" slot="icon-only" [disabled]="!desktopData?.arrow.prev" (click)="getAnotherResult('prev');">
+    <ion-icon ios="ios-arrow-back" md="ios-arrow-back"></ion-icon>
+  </ion-button>
+  <div class="dates-compare">
+    <ion-label class="last-checked">{{ desktopData?.dates[0].datetime | datetime }}</ion-label>
+    <ion-label class="previous-checked" *ngIf="desktopData?.dates[1]">vs {{ desktopData?.dates[1].datetime | datetime }}</ion-label>
+  </div>
+  <ion-button mode="md" class="next" slot="icon-only" [disabled]="!desktopData?.arrow.next" (click)="getAnotherResult('next');">
+    <ion-icon ios="ios-arrow-forward" md="ios-arrow-forward"></ion-icon>
+  </ion-button>
+</div>
+
+<ion-card mode="ios" class="round-progress">
+  <ion-button mode="ios" expand="block" class="filter">
+    <ion-label>Performance</ion-label>
+  </ion-button>
+  <circle-progress
+    [percent]="displayData?.status?.percentage"
+    [outerStrokeColor]="displayData?.status?.outline"
+    [innerStrokeColor]="displayData?.status?.inline"
+  ></circle-progress>
+  <div class="details" #desktopTitle>
+    <ion-label class="display">{{ displayData?.score }}</ion-label>
+    <ion-label class="difference" 
+    [ngClass]="{'positive': displayData?.difference?.alert === 'positive','equal-color': displayData?.difference?.alert === 'equal', 'negative': displayData?.difference?.alert === 'nagative'}">
+    {{ displayData?.difference?.text }}</ion-label>
+  </div>
+  <div class="colors">
+    <ion-chip class="red-chip">
+      <ion-label>0-49</ion-label>
+    </ion-chip>
+    <ion-chip class="yellow-chip">
+      <ion-label>50-89</ion-label>
+    </ion-chip>
+    <ion-chip class="green-chip"> 
+      <ion-label>90-100</ion-label>
+    </ion-chip>
+  </div>
+  <ion-label class="next-scan"><b>Next Scan:</b> {{ desktopData?.update_availbale }}</ion-label>
+  <google-chart [data]="desktopChart"></google-chart>
+</ion-card>
+
+<ion-card class="metrics" mode="ios">
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Metrics</ion-label>
+      <ion-segment mode="ios" class="metrics-segment" [value]="metricsFilter" (ionChange)="changeMetricsFilter($event)">
+        <ion-segment-button mode="ios" value="0">
+          <ion-icon class="initial"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button mode="ios" value="1">
+          <ion-icon class="details"></ion-icon>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-list-header>
+    <div class="metrics-body" [ngSwitch]="metricsFilter">
+      <div class="metrics-brief" *ngSwitchCase="0">
+        <ion-item mode="ios" *ngFor="let item of desktopData?.metrics">
+          <ion-icon [ngClass]="{'alert-triangle': item.alertlevel===0,'alert-square': item.alertlevel===1, 'alert-circle': item.alertlevel===2 }"></ion-icon>
+          <ion-label class="item-id"><b>{{ item.title }}</b></ion-label>
+          <div class="values">
+            <ion-label class="display_value" [ngClass]="{'alert-0': item.alertlevel===0,'alert-1': item.alertlevel===1, 'alert-2': item.alertlevel===2 }">{{ item.display_value }}</ion-label>
+            <ion-label class="alert" [ngClass]="{'positive': (item?.difference?.alert === 'positive' || item?.difference?.alert === 'equal'), 'negative': item?.difference?.alert === 'negative'}">{{ item.difference?.text }}</ion-label>
+          </div>
+        </ion-item>
+      </div>
+      <div class="metrics-details" *ngSwitchCase="1">
+        <div *ngFor="let item of desktopData?.metrics">
+          <ion-item mode="ios" lines="none">
+            <ion-icon [ngClass]="{'alert-triangle': item.alertlevel===0,'alert-square': item.alertlevel===1, 'alert-circle': item.alertlevel===2 }"></ion-icon>
+            <ion-label class="item-id">
+              <b>{{ item.title }}</b>
+            </ion-label>
+            <div class="values">
+              <ion-label class="display_value" [ngClass]="{'alert-0': item.alertlevel===0,'alert-1': item.alertlevel===1, 'alert-2': item.alertlevel===2 }">{{ item.display_value }}</ion-label>
+              <ion-label class="alert" [ngClass]="{'positive': (item?.difference?.alert === 'positive' || item?.difference?.alert === 'equal'), 'negative': item?.difference?.alert === 'negative'}">{{ item.difference?.text }}</ion-label>
+            </div>
+          </ion-item>
+          <ion-item mode="ios" class="special">
+            <ion-label class="metrics-extra">
+              {{ item.description }}
+              <a class="hyperlink" *ngIf="item.learnMoreUrl" (click)="linkToLearnMore(item.learnMoreUrl)">[Learn more]</a>
+            </ion-label>
+          </ion-item>
+        </div>
+      </div>
+    </div>
+  </ion-list>
+  <ion-label class="metrics-description">
+    Values are estimated and may vary. Then performance score is <u>based only on these metrics</u>.
+  </ion-label>
+</ion-card>
+
+<ion-card class="opportunities" mode="ios">
+  <ion-list>
+    <div class="list-header">
+      <ion-label class="bold">Opportunities</ion-label>
+      <ion-label class="tell"> - These suggestions can help your page load faster. They don't directly affect the Performance score</ion-label>
+    </div>
+    <ion-item mode="ios" class="labels">
+      <ion-label class="first">Opportunity</ion-label>
+      <ion-label class="second">Estimated Savings</ion-label>
+    </ion-item>
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let item of desktopData?.opportunity">
+        <mat-expansion-panel-header [collapsedHeight]="'48px'" [expandedHeight]="'48px'">
+          <ion-item mode="ios" lines="none">
+            <ion-icon [ngClass]="{'alert-triangle': item.alertlevel===0,'alert-square': item.alertlevel===1, 'alert-circle': item.alertlevel===2 }"></ion-icon>
+              <ion-label class="item-id"><b>{{ item.title }}</b></ion-label>
+              <ion-label class="display_value" [ngClass]="{'alert-0': item.alertlevel===0,'alert-1': item.alertlevel===1,'alert-2': item.alertlevel===2 }">{{ item.display_value }}</ion-label>
+          </ion-item>
+        </mat-expansion-panel-header>
+        <mat-panel-description >
+          <ion-label class="spec-des">
+            {{ item.description }}
+            <a class="hyperlink" *ngIf="item.learnMoreUrl" (click)="linkToLearnMore(item.learnMoreUrl)">[Learn more]</a>
+          </ion-label>
+        </mat-panel-description>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <div class="list-header diagnostics">
+      <ion-label class="bold" >Diagnostics</ion-label>
+      <ion-label class="tell"> - More information about the performance of your application. These numbers don't directly affect the Performance score.</ion-label>
+    </div>
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let item of desktopData?.diagonistic">
+        <mat-expansion-panel-header [collapsedHeight]="'48px'" [expandedHeight]="'48px'">
+          <ion-item mode="ios" lines="none">
+            <ion-icon [ngClass]="{'alert-triangle': item.alertlevel===0,'alert-square': item.alertlevel===1, 'alert-circle': item.alertlevel===2 }"></ion-icon>
+            <div class="diagnostics-header">
+                <ion-label class="item-id"><b>{{ item.title }}</b></ion-label>
+                <ion-label [ngClass]="{'alert-0': item.alertlevel===0,'alert-1': item.alertlevel===1, 'alert-2': item.alertlevel===2 }">{{ item.display_value }}</ion-label>
+            </div>
+          </ion-item>
+        </mat-expansion-panel-header>
+        <mat-panel-description >
+          <ion-label class="spec-des">
+            {{ item.description }}
+            <a class="hyperlink" *ngIf="item.learnMoreUrl" (click)="linkToLearnMore(item.learnMoreUrl)">[Learn more]</a>
+          </ion-label>
+        </mat-panel-description>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion multi>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header [collapsedHeight]="'48px'" [expandedHeight]="'48px'">
+          <ion-item mode="ios" lines="none">
+              <ion-label class="item-id"><b>Passed audits</b> ({{ desktopData?.passed_audits.length }})</ion-label>
+          </ion-item>
+        </mat-expansion-panel-header>
+        <mat-panel-description>
+          <mat-accordion>
+            <mat-expansion-panel *ngFor="let item of desktopData?.passed_audits">
+              <mat-expansion-panel-header [collapsedHeight]="'40px'" [expandedHeight]="'40px'">
+                <ion-icon class="alert-circle"></ion-icon>
+                <ion-label class="item-id" style="font-size: 12px;"><b>{{ item.title }}</b></ion-label>
+              </mat-expansion-panel-header>
+              <mat-panel-description>
+                <ion-label style="font-size: 12px; margin-left: -3px;
+                display: block;">{{ item.description }}
+                <a class="hyperlink" *ngIf="item.learnMoreUrl" (click)="linkToLearnMore(item.learnMoreUrl)">[Learn more]</a>
+              </ion-label>
+              </mat-panel-description>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-panel-description>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ion-list>
+</ion-card>
+
+<ion-button expand="block" class="scan-site red">SCAN SITE</ion-button>
+
+<ion-card  mode="ios" class="metrics">
+  <ion-card-header>
+    Runtime Settings
+  </ion-card-header>
+  <ion-list>
+    <ion-item mode="ios" *ngFor="let item of desktopData?.settings;let even = even;" [ngClass]="{ 'even': even }">
+      <ion-label class="item-id first-label">{{ item.description }}</ion-label>
+      <ion-label class="display_value value-label">{{ item.status }}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-card>

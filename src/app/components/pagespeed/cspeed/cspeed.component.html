@@ -1,0 +1,115 @@
+<div class="header">
+  <ion-button mode="md" class="previous" slot="icon-only" [disabled]="!speedData?.arrow.prev" (click)="getAnotherResult('prev');">
+    <ion-icon ios="ios-arrow-back" md="ios-arrow-back"></ion-icon>
+  </ion-button>
+  <div class="dates-compare">
+    <ion-label class="last-checked">{{ speedData?.dates[0].datetime | datetime }}</ion-label>
+    <ion-label class="previous-checked" *ngIf="speedData?.dates[1]">vs {{ speedData?.dates[1].datetime | datetime }}</ion-label>
+  </div>
+  <ion-button mode="md" class="next" slot="icon-only" [disabled]="!speedData?.arrow.next" (click)="getAnotherResult('next');">
+    <ion-icon ios="ios-arrow-forward" md="ios-arrow-forward"></ion-icon>
+  </ion-button>
+</div>
+
+<div class="display">
+  <div class="desktop">
+    <ion-card mode="ios" class="round-progress">
+      <ion-button mode="ios" expand="block" class="filter" (click)="changeDisplayData('desktop')">
+        <ion-label>{{ desktopDisplayData?.title }}</ion-label>
+        <ion-icon ios="ios-arrow-down" md="ios-arrow-down"></ion-icon>
+      </ion-button>
+      <circle-progress
+        [percent]="desktopDisplayData?.status?.percentage"
+        [outerStrokeColor]="desktopDisplayData?.status?.outline"
+        [innerStrokeColor]="desktopDisplayData?.status?.inline"
+      ></circle-progress>
+      <div class="details" #desktopTitle>
+        <ion-label class="brand">Desktop</ion-label>
+        <div class="display">
+          <ion-label class="display">{{ desktopDisplayData?.real_value }}</ion-label>
+          <ion-label class="small"> s</ion-label>
+        </div>
+        <ion-label class="difference" [ngClass]="{'positive': desktopDisplayData?.difference?.alert === 'positive', 'equal-color': desktopDisplayData?.difference?.alert === 'equal', 'negative': desktopDisplayData?.difference?.alert === 'negative'}">{{ desktopDisplayData?.difference?.text }}</ion-label>
+      </div>
+      <div class="colors">
+        <ion-chip class="green-chip"> 
+          <ion-label>0-2 s</ion-label>
+        </ion-chip>
+        <ion-chip class="yellow-chip">
+          <ion-label>2.1-3.9 s</ion-label>
+        </ion-chip>
+        <ion-chip class="red-chip">
+          <ion-label>4+ s</ion-label>
+        </ion-chip>
+      </div>
+      <ion-label class="next-scan"><b>Next Scan:</b> {{ speedData?.update_availbale }}</ion-label>
+      <google-chart [data]="desktopChart"></google-chart>
+    </ion-card>
+    <ion-card class="warning" mode="ios">
+      <ion-card-title>
+        What is affecting your desktop speed?
+      </ion-card-title>
+      <ion-card-content>
+        <div class="factor" (click) = "openFactors('desktop')">
+          <ion-icon class="positive-icon"></ion-icon>
+          <ion-label> Passed audits ({{ speedData?.metrics.desktop.positive_alert }})</ion-label>
+        </div>
+        <div class="factor" (click) = "openFactors('desktop')">
+          <ion-icon class="negative-icon"></ion-icon>
+          <ion-label> Issues ({{ speedData?.metrics.desktop.negative_alert }})</ion-label>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <div class="mobile">
+    <ion-card mode="ios" class="round-progress">
+      <ion-button mode="ios" expand="full" class="filter" (click)="changeDisplayData('mobile')">
+        <ion-label>{{ mobileDisplayData?.title }}</ion-label>
+        <ion-icon ios="ios-arrow-down" md="ios-arrow-down"></ion-icon>
+      </ion-button>
+      <circle-progress
+        [percent]="mobileDisplayData?.status?.percentage"
+        [outerStrokeColor]="mobileDisplayData?.status?.outline"
+        [innerStrokeColor]="mobileDisplayData?.status?.inline"
+      ></circle-progress>
+      <div class="details" #mobileTitle>
+        <ion-label class="brand">Mobile</ion-label>
+        <div class="display">
+          <ion-label class="display">{{ mobileDisplayData?.real_value }}</ion-label>
+          <ion-label class="small"> s</ion-label>
+        </div>
+        <ion-label class="difference" [ngClass]="{'positive': mobileDisplayData?.difference?.alert === 'positive', 'equal-color': mobileDisplayData?.difference?.alert === 'equal', 'negative': mobileDisplayData?.difference?.alert === 'negative'}">{{ mobileDisplayData?.difference?.text }}</ion-label>
+      </div>
+      <div class="colors">
+        <ion-chip class="green-chip"> 
+          <ion-label>0-2 s</ion-label>
+        </ion-chip>
+        <ion-chip class="yellow-chip">
+          <ion-label>2.1-3.9 s</ion-label>
+        </ion-chip>
+        <ion-chip class="red-chip">
+          <ion-label>4+ s</ion-label>
+        </ion-chip>
+      </div>
+      <ion-label class="next-scan"><b>Next Scan:</b> {{ speedData?.update_availbale }}</ion-label>
+      <google-chart [data]="mobileChart"></google-chart>
+    </ion-card>
+    <ion-card class="warning" mode="ios">
+      <ion-card-title>
+        What is affecting your mobile speed?
+      </ion-card-title>
+      <ion-card-content>
+        <div class="factor" (click) = "openFactors('mobile')">
+          <ion-icon class="positive-icon"></ion-icon>
+          <ion-label> Passed audits ({{ speedData?.metrics.mobile.positive_alert }})</ion-label>
+        </div>
+        <div class="factor" (click) = "openFactors('mobile')">
+          <ion-icon class="negative-icon"></ion-icon>
+          <ion-label> Issues ({{ speedData?.metrics.mobile.negative_alert }})</ion-label>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</div>
+
+<ion-button expand="block" class="scan-site red" (click)="socketPageSpeed()">SCAN SITE</ion-button>
