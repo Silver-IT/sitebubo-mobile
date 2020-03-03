@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1083" height="376.28" viewBox="0 0 1083 376.28">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.557" x2="0.443" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#b68bff"/>
+      <stop offset="1" stop-color="#a382ff"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_546" data-name="Group 546" transform="translate(0 70)">
+    <rect id="Rectangle_6" data-name="Rectangle 6" width="1083" height="312" transform="translate(0 -5.72)" fill="url(#linear-gradient)"/>
+    <g id="Ellipse_1_copy_4" data-name="Ellipse 1 copy 4" transform="translate(41 -70)" fill="none" stroke="#f7f7f7" stroke-width="40" opacity="0.06">
+      <ellipse cx="96.5" cy="92.5" rx="96.5" ry="92.5" stroke="none"/>
+      <ellipse cx="96.5" cy="92.5" rx="76.5" ry="72.5" fill="none"/>
+    </g>
+    <g id="Ellipse_1_copy_3" data-name="Ellipse 1 copy 3" transform="translate(934.4 129.09)" fill="none" stroke="#f7f7f7" stroke-width="30" opacity="0.06">
+      <ellipse cx="59.73" cy="57.07" rx="59.73" ry="57.07" stroke="none"/>
+      <ellipse cx="59.73" cy="57.07" rx="44.73" ry="42.07" fill="none"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "627351534239",
+    "firebase_url": "https://sitebubo-mobile.firebaseio.com",
+    "project_id": "sitebubo-mobile",
+    "storage_bucket": "sitebubo-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:627351534239:android:062a62ac81ce8ee348c0aa",
+        "android_client_info": {
+          "package_name": "com.sitebubo.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "627351534239-rhdsl1a0jfutj71q9jejr3vhgca4d8ab.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4A8pDiGOZyfza3W-g59Aboc_Ntg5Eok4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "627351534239-rhdsl1a0jfutj71q9jejr3vhgca4d8ab.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
