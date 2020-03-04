@@ -61,7 +61,7 @@ export class DomainScanPage implements OnInit, OnDestroy {
           return of(x);
         } else {
           return of(x).pipe(
-            concatMap((data) => of(data).pipe(delay(2500)))
+            concatMap((data) => of(data).pipe(delay(1500)))
           );
         }
       })
@@ -163,9 +163,10 @@ export class DomainScanPage implements OnInit, OnDestroy {
   }
 
   addNewMonitor(){
-    let ele = `<div class='special'><ion-label class="slide-in-bottom">${ this.tempResult.monitor } ... ${ this.tempResult.result }`;
+    let ele = `<div class='special'><ion-label class="slide-in-bottom">${ this.tempResult.monitor } ...`;
     ele += `</ion-label>`;
-    ele += `<svg  xmlns="http://www.w3.org/2000/svg" class="check" width="166" height="151" viewBox="0 0 166 150.9">`;
+    // tslint:disable-next-line: max-line-length
+    ele += `<ion-label class="slide-in-bottom">${ this.tempResult.result }<ion-label><svg  xmlns="http://www.w3.org/2000/svg" class="check" width="166" height="151" viewBox="0 0 166 150.9">`;
     ele += `<path d="M0.3 96l62.4 54.1L165.6 0.3"/></svg></div>`;
     this.results.nativeElement.insertAdjacentHTML('beforeend', ele);
   }

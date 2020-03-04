@@ -498,7 +498,9 @@ ion-skeleton-text {
  div.special {
    display: flex;
    align-self: center;
-   justify-content: center;
+   align-items: center;
+   justify-content: space-between;
+   width: 70%;
    line-height: 1.5;
   .check {
     width: 25px;

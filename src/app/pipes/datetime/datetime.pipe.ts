@@ -14,7 +14,7 @@ export class DatetimePipe implements PipeTransform {
     const temp = new Date(parseInt(arrayTemp[2], 10), parseInt(arrayTemp[1], 10) - 1 , parseInt(arrayTemp[0], 10));
     let again = temp.toUTCString();
     const arra  = again.split(' ');
-    again = (parseInt(arra[1], 10) + 1) + ' ' + arra[2] + ' ' + arra[3];
+    again = (parseInt(arra[1], 10) ) + ' ' + arra[2] + ' ' + arra[3];
     if (start[1]) {
       again = again + ' at ' + start[1];
     }
