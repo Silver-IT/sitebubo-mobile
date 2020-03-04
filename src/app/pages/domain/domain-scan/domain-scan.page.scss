@@ -9,11 +9,11 @@ ion-content {
 	background-repeat: no-repeat;
 	ion-label {
 		&.domain_name {
-			display: flex;
+			display: block;
 			text-align: center;
 			align-items: center;
 			width: 100%;
-			height: 10%;
+			height: 5%;
 			color: white;
 			justify-content: center;
 			font-size: 22px;
@@ -32,7 +32,7 @@ ion-content {
 	}
 	div.completed {
 		width: 100%;
-		height: 10%;
+		height: 7%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -57,10 +57,13 @@ ion-content {
 		}
 	}
 	div.results {
-		height: 30%;
+		height: 35%;
 		display: flex;
 		flex-direction: column;
-    justify-content: center;
+		justify-content: flex-end;
+		overflow: scroll;
+		padding-bottom: 30px;
+		touch-action: none;
     svg {
       overflow: visible;
     }
@@ -85,7 +88,8 @@ ion-content {
 		font-size: 18px;
 	}
 	div.status {
-		height: 5%;
+		margin-top: 5%;
+		height: 6%;
 		width: 100%;
 		display: flex;
 		flex-direction: column;

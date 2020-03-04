@@ -144,11 +144,11 @@ export class DomainScanPage implements OnInit, OnDestroy {
       if (this.action === 'addDomain') {
         interval = 0.1;
       } else if (this.action === 'security-scan') {
-        interval = 1;
+        interval = 0.071423;
       } else if (this.action === 'speed-scan') {
-        interval = 0.3333;
+        interval = 0.07692;
       } else if (this.action === 'seo-scan') {
-        interval = 0.3333;
+        interval = 0.041666;
       }
       this.percentage  = this.percentage + interval;
       this.progresShow = this.intparse.transform(this.percentage * 100);
@@ -162,7 +162,7 @@ export class DomainScanPage implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  addNewMonitor() {
+  addNewMonitor(){
     let ele = `<div class='special'><ion-label class="slide-in-bottom">${ this.tempResult.monitor } ... ${ this.tempResult.result }`;
     ele += `</ion-label>`;
     ele += `<svg  xmlns="http://www.w3.org/2000/svg" class="check" width="166" height="151" viewBox="0 0 166 150.9">`;

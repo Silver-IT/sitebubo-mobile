@@ -5,18 +5,6 @@
     <ion-label *ngIf="!completed"><b>{{ title }} </b>in Progress</ion-label>
   </div>
   <ion-label class="domain_name">{{ domainName }}</ion-label>
-  <div #results class="results"></div>
-  <div class="footer">
-    <div *ngIf="status.started && !status.process" mode="ios">
-      <ion-label>{{ tempResult?.monitor }} {{ tempResult?.status }}</ion-label>
-    </div>
-    <div #temp class="process" mode="ios" *ngIf="status.process">
-      <ion-label>{{ tempResult?.monitor }} </ion-label>
-      <ion-label class="fade-in-right" *ngIf="tempResult.status === 'Started'"> Connected</ion-label>
-      <ion-label class="fade-in-right" *ngIf="tempResult.status === 'in Progress'"> {{ tempResult?.status }} ... </ion-label>
-      <ion-label class="fade-in-right" *ngIf="tempResult.status === 'Finished'"> {{ tempResult?.status }}</ion-label>
-    </div>
-  </div>
   <div class="img" [ngSwitch]="currentMonitor">
     <img *ngSwitchCase="'Domain Monitor'" src="assets/imgs/scanMonitors/domainMonitor.png" />
     <img *ngSwitchCase="'DNS & IP Monitor'" src="assets/imgs/scanMonitors/dnsIpMonitor.png" />
@@ -34,6 +22,18 @@
     <img *ngSwitchCase="'Desktop Speed Scanning'" src="assets/imgs/scanMonitors/desktopSpeedMonitor.png" />
     <img *ngSwitchCase="'Mobile Speed Scanning'" src="assets/imgs/scanMonitors/mobileSpeedMonitor.png" />
   </div>
+  <div class="footer">
+    <div *ngIf="status.started && !status.process" mode="ios">
+      <ion-label>{{ tempResult?.monitor }} {{ tempResult?.status }}</ion-label>
+    </div>
+    <div #temp class="process" mode="ios" *ngIf="status.process">
+      <ion-label>{{ tempResult?.monitor }} </ion-label>
+      <ion-label class="fade-in-right" *ngIf="tempResult.status === 'Started'"> Connected</ion-label>
+      <ion-label class="fade-in-right" *ngIf="tempResult.status === 'in Progress'"> {{ tempResult?.status }} ... </ion-label>
+      <ion-label class="fade-in-right" *ngIf="tempResult.status === 'Finished'"> {{ tempResult?.status }}</ion-label>
+    </div>
+  </div>
+  <div #results class="results"></div>
   <div class="status">
     <ion-label class="progress-status">{{ progresShow | intparse }}% Done</ion-label>
     <ion-progress-bar color="success" [value]="percentage"></ion-progress-bar>
