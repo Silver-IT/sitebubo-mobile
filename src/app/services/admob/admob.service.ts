@@ -8,12 +8,12 @@ export class AdmobService {
   admobConfig: AdMobFreeBannerConfig = {
     isTesting: false,
     autoShow: true,
-    id: 'ca-app-pub-9386468627439822/1199065630'
+    id: 'ca-app-pub-9386468627439822/4191581557'
   };
   interstitialConfig: AdMobFreeInterstitialConfig = {
     isTesting: false,
     autoShow: true,
-    id: 'ca-app-pub-9386468627439822/1997481292'
+    id: 'ca-app-pub-9386468627439822/9060764852'
   };
   constructor(
     private admob: AdMobFree,
